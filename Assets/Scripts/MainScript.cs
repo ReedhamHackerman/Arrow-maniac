@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MainScript : MonoBehaviour
 {
-    [SerializeField] private Cinemachine.CinemachineVirtualCamera vcam;
+   
     [SerializeField] private Camera mainCamera;
    
     private void Awake()
