@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectibleManager : MonoBehaviour
+public class CollectibleManager 
 {
     #region Singleton
     private CollectibleManager() { }

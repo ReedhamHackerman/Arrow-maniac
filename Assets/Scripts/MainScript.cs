@@ -4,15 +4,37 @@ using UnityEngine;
 
 public class MainScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Cinemachine.CinemachineVirtualCamera vcam;
+    [SerializeField] private Camera mainCamera;
+   
+    private void Awake()
     {
-        
+        GameManager.Instance.Initialize();
+        InputManager.Instance.Initialize();
+        UIManager.Instance.Initialize();
+        CollectibleManager.Instance.Initialize();
     }
-
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        GameManager.Instance.Start();
+        InputManager.Instance.Start();
+        UIManager.Instance.Start();
+        CollectibleManager.Instance.Start();
     }
+    private void Update()
+    {
+        GameManager.Instance.Refresh();
+        InputManager.Instance.Refresh();
+        UIManager.Instance.Refresh();
+        CollectibleManager.Instance.Refresh();
+    }
+    private void FixedUpdate()
+    {
+        GameManager.Instance.FixedRefresh();
+        InputManager.Instance.FixedRefresh();
+        UIManager.Instance.FixedRefresh();
+        CollectibleManager.Instance.FixedRefresh();
+    }
+   
+   
 }

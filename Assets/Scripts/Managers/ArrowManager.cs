@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArrowManager : MonoBehaviour
+public class ArrowManager 
 {
     #region Singleton
     private ArrowManager() { }
