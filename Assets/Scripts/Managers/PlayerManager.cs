@@ -19,20 +19,26 @@ public class PlayerManager
         }
     }
     #endregion
+
+    private PlayerUnit playerUnit;
+
     public void Initialize()
     {
-
+        playerUnit = GameObject.Instantiate<PlayerUnit>(Resources.Load<PlayerUnit>("Prefabs/Player1")); //Static for now Change this later
+        playerUnit.Initialize();
     }
     public void Start()
     {
-
+        
     }
+
     public void Refresh()
     {
-
+        playerUnit.UpdateUnit();
     }
+
     public void FixedRefresh()
     {
-
+        playerUnit.FixedUpdateUnit();
     }
 }
