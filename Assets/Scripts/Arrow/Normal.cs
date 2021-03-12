@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Normal : Arrows
+public class Normal : Arrow
 {
    
 }

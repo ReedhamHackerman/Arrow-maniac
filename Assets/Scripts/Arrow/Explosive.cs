@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Explosive : Arrows
+public class Explosive : Arrow
 {
+    
 }

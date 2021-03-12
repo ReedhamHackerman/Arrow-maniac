@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ricochet : Arrows
+public class Ricochet : Arrow
 {
    
 }
