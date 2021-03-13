@@ -6,6 +6,7 @@ public class InputManager
 
     public float HorizontalInput => player?.GetAxis("Move Horizontal") ?? 0f;
     public bool GetJumpButtonDown => player?.GetButtonDown("Jump") ?? false;
+    public bool GetDashButtonDown => player?.GetButtonDown("Dash") ?? false;
 
     public InputManager(Player player)
     {
