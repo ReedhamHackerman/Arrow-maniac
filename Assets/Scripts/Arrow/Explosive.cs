@@ -4,5 +4,12 @@ using UnityEngine;
 
 public class Explosive : Arrow
 {
-    
+    public override void OnHitWall(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+
+        }
+    }
+
 }

@@ -11,19 +11,31 @@ public enum ArrowType
 public class Arrow : MonoBehaviour
 {
     public ArrowType arrowType;
-    Rigidbody2D rb;
+   [HideInInspector] public Rigidbody2D rb;
 
-    private void ArrowRotation()
+    public virtual void ArrowRotation()
     {
         float angle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        OnHitWall(collision);
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            Destroy(this.gameObject);
+        }
+    }
+    
+    public virtual void OnHitWall(Collision2D collision)
+    {
+    }
     public void Update()
     {
         ArrowRotation();
     }
-    private void Start()
+    public void  Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
