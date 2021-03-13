@@ -166,8 +166,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerId: 0
   speedHorizontal: 15
-  groundDetectionRange: 4
-  jumpForce: 20
+  groundDetectionRange: 0.8
+  jumpForce: 30
   maxDashTime: 0
   dashSpeed: 0
   _rb: {fileID: 0}

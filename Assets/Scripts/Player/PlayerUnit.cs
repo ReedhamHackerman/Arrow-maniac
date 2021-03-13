@@ -102,6 +102,10 @@ public class PlayerUnit : MonoBehaviour
     private bool isGrounded()
     {
         RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, -Vector2.up, groundDetectionRange, groundLayerMask);
+        if(hitInfo)
+        {
+            Debug.DrawLine(transform.position, hitInfo.point, Color.black);
+        }
         return hitInfo ? true : false;
     }
 
