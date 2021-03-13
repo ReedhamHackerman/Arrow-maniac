@@ -1,36 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using Rewired;
 
 public class InputManager 
 {
-    #region Singleton
-    private InputManager() { }
-    private static InputManager _instance;
-    public static InputManager Instance
+    private Player player;
+
+    public float HorizontalInput => player?.GetAxis("Move Horizontal") ?? 0f;
+    public bool GetJumpButtonDown => player?.GetButtonDown("Jump") ?? false;
+
+    public InputManager(Player player)
     {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = new InputManager();
-            }
-            return _instance;
-        }
+        this.player = player;
     }
-    #endregion
+
     public void Initialize()
     {
 
     }
+
     public void Start()
     {
 
     }
+
     public void Refresh()
     {
 
     }
+
     public void FixedRefresh()
     {
 
