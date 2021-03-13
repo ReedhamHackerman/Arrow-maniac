@@ -19,7 +19,6 @@ public class PlayerUnit : MonoBehaviour
     private Player player;
     private InputManager inputManager;
     private LayerMask groundLayerMask;
-    public bool canJump;
 
     public bool Grounded { get; set; } = true;
 
@@ -36,6 +35,7 @@ public class PlayerUnit : MonoBehaviour
     {
         Grounded = isGrounded();
         Jump();
+        Rotate();
     }
 
     public void FixedUpdateUnit()
@@ -46,6 +46,17 @@ public class PlayerUnit : MonoBehaviour
     private void Move()
     {
         _rb.velocity = new Vector2(inputManager.HorizontalInput * speedHorizontal, _rb.velocity.y);
+    }
+
+    private void Rotate()
+    {
+        if(inputManager.HorizontalInput != 0)
+        {
+            if(inputManager.HorizontalInput < 0)
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+            else if (inputManager.HorizontalInput > 0)
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 
     private void Jump()
