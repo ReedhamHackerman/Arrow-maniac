@@ -14,17 +14,20 @@ public class PlayerUnit : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _myCharacterSprite;
 
+    public Transform[] allPositions;
+
     private Player player;
     private InputManager inputManager;
     private LayerMask groundLayerMask;
+    public bool canJump;
 
     public bool Grounded { get; set; } = true;
 
-    public virtual void Initialize()
+    public void Initialize(int playerId)
     {
-        player = ReInput.players.GetPlayer(playerId);
-        inputManager = new InputManager(this.player);
-
+        this.playerId = playerId;
+        InitializePlayersById();
+        
         _rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
     }
@@ -47,13 +50,25 @@ public class PlayerUnit : MonoBehaviour
 
     private void Jump()
     {
-        if (inputManager.GetJumpButtonDown && Grounded) Debug.Log("jump..");
-            //_rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        if (inputManager.GetJumpButtonDown && Grounded)
+            _rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
     private bool isGrounded()
     {
         RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, -Vector2.up, groundDetectionRange, groundLayerMask);
         return hitInfo ? true : false;
+    }
+
+    private void InitializePlayersById()
+    {
+        //Temporary spawn position code
+        allPositions = new Transform[2];
+        allPositions[0] = GameObject.Find("PosOne").transform;
+        allPositions[1] = GameObject.Find("PosTwo").transform;
+
+        player = ReInput.players.GetPlayer(playerId);
+        inputManager = new InputManager(this.player);
+        transform.position = allPositions[playerId].position;
     }
 }
