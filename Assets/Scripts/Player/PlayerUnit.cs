@@ -63,10 +63,6 @@ public class PlayerUnit : MonoBehaviour
 
     private void Move()
     {
-        //Vector2 aimDir = new Vector2(inputManager.HorizontalInput, inputManager.VerticalInput);
-        //Vector2 direction = transform.position * aimDir;
-        //Debug.DrawLine(transform.position, direction, Color.black);
-
         if(!isDashing)
             _rb.velocity = new Vector2(inputManager.HorizontalInput * speedHorizontal, _rb.velocity.y);
     }
