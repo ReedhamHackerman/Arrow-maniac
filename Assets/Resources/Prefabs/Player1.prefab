@@ -134,7 +134,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &-6049954687701120001
 CapsuleCollider2D:
@@ -149,8 +149,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.17401767, y: 1.2400942}
-  m_Size: {x: 5.9813647, y: 10.268061}
+  m_Offset: {x: 0.17401774, y: 1.4893326}
+  m_Size: {x: 5.9813647, y: 9.769584}
   m_Direction: 0
 --- !u!114 &7215418971267612503
 MonoBehaviour:
@@ -165,15 +165,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 0
-  speedHorizontal: 15
-  groundDetectionRange: 4
-  jumpForce: 20
-  maxDashTime: 0
-  dashSpeed: 0
+  speedHorizontal: 12
+  groundDetectionRange: 0.8
+  jumpForce: 30
+  maxDashTime: 0.1
+  dashSpeed: 40
   _rb: {fileID: 0}
   _animator: {fileID: 0}
   _myCharacterSprite: {fileID: 0}
   facingDirection: {x: 0, y: 0}
+  isDashing: 0
 --- !u!1 &8476890786672357667
 GameObject:
   m_ObjectHideFlags: 0
