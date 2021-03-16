@@ -4,12 +4,48 @@ using UnityEngine;
 
 public class Explosive : Arrow
 {
-    public override void OnHitWall(Collision2D collision)
+    public float radius;
+    public float stuckTime;
+    public bool hasStuck = false;
+    public override void OnHit(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Wall"))
-        {
-
-        }
+       
+            Stuck(radius,stuckTime,collision);
+        
     }
 
+    private void Stuck()
+    {
+        hasHit = true;
+        rb.velocity = Vector2.zero;
+        rb.isKinematic = true;
+        hasStuck = true;
+    }
+
+   
+
+    private void Stuck(float radius,float stuckTime,Collision2D collision2D)
+    {
+        if (collision2D.gameObject.CompareTag("Wall")||collision2D.gameObject.CompareTag("Player"))
+        {
+            Stuck();
+           
+        }
+       
+    }
+    private new void Update()
+    {
+        if (hasStuck == true)
+        {
+            Explode();
+        }
+    }
+    private void Explode()
+    {
+       
+    }
+    private void PlayerDie()
+    {
+
+    }
 }
