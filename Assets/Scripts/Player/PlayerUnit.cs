@@ -27,7 +27,7 @@ public class PlayerUnit : MonoBehaviour
     public Vector2 facingDirection;
 
     private float dashTimeCalculate;
-    private bool isDashing;
+    public bool isDashing;
 
     private Transform[] allPositions;
 
@@ -63,11 +63,8 @@ public class PlayerUnit : MonoBehaviour
 
     private void Move()
     {
-        //Vector2 aimDir = new Vector2(inputManager.HorizontalInput, inputManager.VerticalInput);
-        //Vector2 direction = transform.position * aimDir;
-        //Debug.DrawLine(transform.position, direction, Color.black);
-
-        _rb.velocity = new Vector2(inputManager.HorizontalInput * speedHorizontal, _rb.velocity.y);
+        if(!isDashing)
+            _rb.velocity = new Vector2(inputManager.HorizontalInput * speedHorizontal, _rb.velocity.y);
     }
 
     private void Rotate()
@@ -89,13 +86,19 @@ public class PlayerUnit : MonoBehaviour
 
     private void Dash()
     {
-        if (inputManager.GetDashButtonDown) isDashing = true;
+        if (inputManager.GetDashButtonDown && !isDashing) isDashing = true;
 
         if(isDashing)
         {
             dashTimeCalculate -= Time.deltaTime;
 
-            
+            _rb.velocity = new Vector2(inputManager.HorizontalInput * dashSpeed, _rb.velocity.y);
+
+            if (dashTimeCalculate < 0)
+            {
+                isDashing = false;
+                dashTimeCalculate = maxDashTime;
+            }
         }
     }
 
