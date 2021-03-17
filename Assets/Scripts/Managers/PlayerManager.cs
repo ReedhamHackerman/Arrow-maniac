@@ -55,11 +55,16 @@ public class PlayerManager
         int connectedPlayerCount = ReInput.controllers.joystickCount;
         playerUnitList = new List<PlayerUnit>();
 
-        for (int i = 0; i < connectedPlayerCount; i++)
+        if (connectedPlayerCount > 0)
         {
-            PlayerUnit playerUnit = GameObject.Instantiate<PlayerUnit>(Resources.Load<PlayerUnit>("Prefabs/Player1")); //Static for now Change this later
-            playerUnit.Initialize(i);
-            playerUnitList.Add(playerUnit);
+            for (int i = 0; i < connectedPlayerCount; i++)
+            {
+                PlayerUnit playerUnit = GameObject.Instantiate<PlayerUnit>(Resources.Load<PlayerUnit>("Prefabs/Player1")); //Static for now Change this later
+                playerUnit.Initialize(i);
+                playerUnitList.Add(playerUnit);
+            }
         }
+        else
+            Debug.LogError("Please connect a Joystick!");
     }
 }
