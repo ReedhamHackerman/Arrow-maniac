@@ -166,18 +166,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerId: 0
   speedHorizontal: 12
-  downDetectPosition: {x: 0, y: -0.5}
-  downDetectScale: {x: 0.9, y: 0.27}
+  groundDetectionRange: 0.8
   jumpForce: 30
   maxDashTime: 0.1
   dashSpeed: 40
-  leftDetectPosition: {x: -0.5, y: 0.26}
-  leftDetectScale: {x: 0.2, y: 1.34}
-  rightDetectPosition: {x: 0.5, y: 0.26}
-  rightDetectScale: {x: 0.2, y: 1.34}
   _rb: {fileID: 0}
   _animator: {fileID: 0}
   _myCharacterSprite: {fileID: 0}
+  facingDirection: {x: 0, y: 0}
+  isDashing: 0
 --- !u!1 &8476890786672357667
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,7 +667,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1071980665
   m_SortingLayer: 3
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 18ec3288417eace43ad81f969a9ecc5a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
