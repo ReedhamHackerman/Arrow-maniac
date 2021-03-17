@@ -5,16 +5,31 @@ using Rewired;
 
 public class PlayerUnit : MonoBehaviour
 {
+    [Header("Local Multiplayer")]
     [SerializeField] private int playerId;
+
+    [Header("Movement")]
     [SerializeField] private float speedHorizontal;
+
+    [Header("Jump")]
     [SerializeField] private float groundDetectionRange;
     [SerializeField] private float jumpForce;
 
+    [Header("Dash")]
+    [SerializeField] private float maxDashTime;
+    [SerializeField] private float dashSpeed;
+
+    [Header("References")]
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _myCharacterSprite;
 
-    public Transform[] allPositions;
+    public Vector2 facingDirection;
+
+    private float dashTimeCalculate;
+    public bool isDashing;
+
+    private Transform[] allPositions;
 
     private Player player;
     private InputManager inputManager;
@@ -29,6 +44,8 @@ public class PlayerUnit : MonoBehaviour
         
         _rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
+
+        dashTimeCalculate = maxDashTime;
     }
 
     public void UpdateUnit()
@@ -36,6 +53,7 @@ public class PlayerUnit : MonoBehaviour
         Grounded = isGrounded();
         Jump();
         Rotate();
+        Dash();
     }
 
     public void FixedUpdateUnit()
@@ -45,7 +63,8 @@ public class PlayerUnit : MonoBehaviour
 
     private void Move()
     {
-        _rb.velocity = new Vector2(inputManager.HorizontalInput * speedHorizontal, _rb.velocity.y);
+        if(!isDashing)
+            _rb.velocity = new Vector2(inputManager.HorizontalInput * speedHorizontal, _rb.velocity.y);
     }
 
     private void Rotate()
@@ -63,6 +82,24 @@ public class PlayerUnit : MonoBehaviour
     {
         if (inputManager.GetJumpButtonDown && Grounded)
             _rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
+
+    private void Dash()
+    {
+        if (inputManager.GetDashButtonDown && !isDashing) isDashing = true;
+
+        if(isDashing)
+        {
+            dashTimeCalculate -= Time.deltaTime;
+
+            _rb.velocity = new Vector2(inputManager.HorizontalInput * dashSpeed, _rb.velocity.y);
+
+            if (dashTimeCalculate < 0)
+            {
+                isDashing = false;
+                dashTimeCalculate = maxDashTime;
+            }
+        }
     }
 
     private bool isGrounded()
