@@ -33,6 +33,7 @@ public class PlayerUnit : MonoBehaviour
 
     private Player player;
     private InputManager inputManager;
+    public TimeManager timeManager;
     private LayerMask groundLayerMask;
 
     public bool Grounded { get; set; } = true;
@@ -45,6 +46,8 @@ public class PlayerUnit : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
 
+        timeManager = GameObject.FindGameObjectWithTag("TimeManager").GetComponent<TimeManager>();
+
         dashTimeCalculate = maxDashTime;
     }
 
@@ -54,6 +57,7 @@ public class PlayerUnit : MonoBehaviour
         Jump();
         Rotate();
         Dash();
+        UseAbility();
     }
 
     public void FixedUpdateUnit()
@@ -118,5 +122,20 @@ public class PlayerUnit : MonoBehaviour
         player = ReInput.players.GetPlayer(playerId);
         inputManager = new InputManager(this.player);
         transform.position = allPositions[playerId].position;
+    }
+
+    private void UseAbility()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            timeManager.TimeIsStopped = true;
+            Debug.Log("Called it");
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && timeManager.TimeIsStopped)
+        {
+            timeManager.ContinueTime();
+        }
     }
 }
