@@ -15,6 +15,7 @@ TagManager:
   - 
   - 
   - Arrow
+  - Ground
   - Player
   - 
   - 
@@ -41,4 +42,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Decorations
+    uniqueID: 3720654979
+    locked: 0
+  - name: Ground
+    uniqueID: 1517973149
+    locked: 0
+  - name: Player
+    uniqueID: 3222986631
     locked: 0
