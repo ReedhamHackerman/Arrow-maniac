@@ -5,68 +5,52 @@ using Rewired;
 
 public class Invisible : Abilities
 {
-    [SerializeField] Material disolveMat;
-    [SerializeField] private float startTime;
-    [SerializeField] private float invisibleTime = 2f;
-    [SerializeField] private float endTime;
-    [SerializeField] private bool canUseAbility = true;
-
     private SpriteRenderer[] childSprites;
-
     private float fade = 1f;
-    private Material material;
-    private float fadeAnimationTime;
-    private Material realmaterial;
-    public InputManager inputManager;
-    
 
-    void Start()
+    protected override void Initialize()
     {
-
+        abilityTime = 2f;
         childSprites = GetComponentsInChildren<SpriteRenderer>();
 
     }
 
-   
-    void Update()
+    protected override void Refresh()
     {
-
-
         if (inputManager.UseAbility /*&& canUseAbility*/)
         {
             canUseAbility = false;
             StartCoroutine(InvisibleAbility());
-
         }
     }
-
 
     IEnumerator InvisibleAbility()
     {
         while(fade > 0)
         {
             fade -= Time.deltaTime;
-            //material.SetFloat("_Fade", fadeEffectTime);
-            foreach (SpriteRenderer spriteRenderer in childSprites)
-            {
-                spriteRenderer.material.SetFloat("_Fade", fade);
-            }
-
+            FadeAnimation();
             yield return null;
         }
 
-        yield return new WaitForSeconds(invisibleTime);
+        yield return new WaitForSeconds(abilityTime);
         
-
         while (fade < 1)
         {
             fade += Time.deltaTime;
-            foreach (SpriteRenderer spriteRenderer in childSprites)
-            {
-                spriteRenderer.material.SetFloat("_Fade", fade);
-            }
+            FadeAnimation();
             yield return null;
+
         }
 
+    }
+
+    private void FadeAnimation()
+    {
+        foreach (SpriteRenderer spriteRenderer in childSprites)
+        {
+            spriteRenderer.material.SetFloat("_Fade", fade);
+        }
+        
     }
 }
