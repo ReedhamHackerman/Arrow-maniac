@@ -13,6 +13,7 @@ public class MainScript : MonoBehaviour
         InputManager.Instance.Initialize();
         UIManager.Instance.Initialize();
         CollectibleManager.Instance.Initialize();
+        
     }
     private void Start()
     {

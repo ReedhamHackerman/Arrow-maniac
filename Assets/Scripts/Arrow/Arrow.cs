@@ -11,8 +11,9 @@ public enum ArrowType
 public class Arrow : MonoBehaviour
 {
     public ArrowType arrowType;
-   [HideInInspector] public Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
     public bool hasHit;
+
     public virtual void ArrowRotation()
     {
         if (hasHit==false)
@@ -34,13 +35,18 @@ public class Arrow : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+           //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
+            Destroy(collision.gameObject);
+
             Destroy(this.gameObject);
         }
     }
   
     public void Update()
     {
-       ArrowRotation();
+        ArrowRotation();
+        TimeManager.Instance.Refresh();
+       
     }
     public void  Start()
     {
@@ -48,7 +54,7 @@ public class Arrow : MonoBehaviour
     }
     private void Awake()
     {
-        
+        TimeManager.Instance.Initialize();
     }
    
 }
