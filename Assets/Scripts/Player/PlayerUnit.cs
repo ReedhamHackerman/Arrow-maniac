@@ -33,6 +33,7 @@ public class PlayerUnit : MonoBehaviour
 
     private Player player;
     private InputManager inputManager;
+    private Invisible invisibleScript;
     public TimeManager timeManager;
     private LayerMask groundLayerMask;
 
@@ -45,6 +46,8 @@ public class PlayerUnit : MonoBehaviour
         
         _rb = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
+        invisibleScript = GetComponent<Invisible>();
+        invisibleScript.inputManager = this.inputManager;
 
         timeManager = GameObject.FindGameObjectWithTag("TimeManager").GetComponent<TimeManager>();
 
@@ -130,6 +133,11 @@ public class PlayerUnit : MonoBehaviour
         {
             timeManager.TimeIsStopped = true;
             Debug.Log("Called it");
+
+        }
+
+        if (inputManager.UseAbility)
+        {
 
         }
 

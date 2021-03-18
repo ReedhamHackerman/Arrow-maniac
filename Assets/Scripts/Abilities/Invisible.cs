@@ -3,42 +3,55 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 
-public class Invisible : MonoBehaviour
+public class Invisible : Abilities
 {
     [SerializeField] Material disolveMat;
     [SerializeField] private float startTime;
     [SerializeField] private float invisibleTime = 2f;
     [SerializeField] private float endTime;
     [SerializeField] private bool canUseAbility = true;
-    private float fade = 1f;
 
-   
+    private SpriteRenderer[] childSprites;
+
+    private float fade = 1f;
+    private Material material;
+    private float fadeAnimationTime;
+    private Material realmaterial;
+    public InputManager inputManager;
+    
+
     void Start()
     {
-        disolveMat = gameObject.GetComponent<SpriteRenderer>().material;
-        
+
+        childSprites = GetComponentsInChildren<SpriteRenderer>();
+
     }
 
    
     void Update()
     {
 
-      
-        if (Input.GetButtonDown("Jump") && canUseAbility)
+
+        if (inputManager.UseAbility /*&& canUseAbility*/)
         {
             canUseAbility = false;
             StartCoroutine(InvisibleAbility());
-            
-        }     
+
+        }
     }
 
 
     IEnumerator InvisibleAbility()
     {
-        while(fade> 0)
+        while(fade > 0)
         {
             fade -= Time.deltaTime;
-            disolveMat.SetFloat("_Fade", fade);
+            //material.SetFloat("_Fade", fadeEffectTime);
+            foreach (SpriteRenderer spriteRenderer in childSprites)
+            {
+                spriteRenderer.material.SetFloat("_Fade", fade);
+            }
+
             yield return null;
         }
 
@@ -48,7 +61,10 @@ public class Invisible : MonoBehaviour
         while (fade < 1)
         {
             fade += Time.deltaTime;
-            disolveMat.SetFloat("_Fade", fade);
+            foreach (SpriteRenderer spriteRenderer in childSprites)
+            {
+                spriteRenderer.material.SetFloat("_Fade", fade);
+            }
             yield return null;
         }
 
