@@ -188,9 +188,7 @@ public class PlayerUnit : MonoBehaviour
         else
         {
             if(Grounded && _rb.velocity.y == 0 && !isMoving)
-            {
                 isMoving = true;
-            }
         }
     }
 
