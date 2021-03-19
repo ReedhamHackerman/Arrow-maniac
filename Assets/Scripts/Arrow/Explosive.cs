@@ -21,7 +21,7 @@ public class Explosive : Arrow
         RigidBody2D.isKinematic = true;
         Invoke("Explode", explodeAfterTimer);
         //Dont Make Delegate And Use Just Add function in this Way So U will not face Any initialisation Issue
-        TimeManager.Instance.AddDelegate(() => Explode(),explodeAfterTimer,1);
+        //TimeManager.Instance.AddDelegate(() => Explode(),explodeAfterTimer,1);
     }
    
     private void Explode()

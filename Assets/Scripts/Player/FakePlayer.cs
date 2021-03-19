@@ -5,9 +5,12 @@ using UnityEngine;
 public class FakePlayer : MonoBehaviour
 {
     
-    public GameObject gameob;
+    GameObject gameob;
     public float arrowForce;
-   
+    private void Awake()
+    {
+        gameob = (GameObject)Resources.Load("Prefabs/Arrows/ExplosiveArrow");
+    }
 
     // Update is called once per frame
     void Update()

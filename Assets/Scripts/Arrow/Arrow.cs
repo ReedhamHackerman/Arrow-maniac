@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Rewired;
 public enum ArrowType
 {
@@ -13,7 +11,7 @@ public class Arrow : MonoBehaviour
     public ArrowType arrowType;
     [HideInInspector] protected Rigidbody2D RigidBody2D { get; set; }
     [HideInInspector] protected bool HasHit { get; set; }
-   
+  
     public virtual void ArrowRotation()
     {
         if (HasHit==false)
@@ -41,19 +39,19 @@ public class Arrow : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-    public void Initialize()
+    public virtual void Oninitialize()
     {
         TimeManager.Instance.Initialize();
         RigidBody2D = GetComponent<Rigidbody2D>();
     }
-    public void Refresh()
+    public virtual void OnUpdate()
     {
-
-        if (HasHit==false)
+        if (HasHit == false)
         {
             ArrowRotation();
         }
         TimeManager.Instance.Refresh();
     }
+   
    
 }
