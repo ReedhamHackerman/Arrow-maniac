@@ -19,11 +19,15 @@ public class ArrowManager
         }
     }
     #endregion
-
+    GameObject ricoChetArrow;
+    GameObject normalArrow;
+    GameObject ExplosiveArrow;
 
     public void Initialize()
     {
-
+        normalArrow = (GameObject)Resources.Load("Prefabs/Arrows/NormalArrow");
+        ricoChetArrow = (GameObject)Resources.Load("Prefabs/Arrows/RicochetArrow");
+        ExplosiveArrow = (GameObject)Resources.Load("Prefabs/Arrows/ExplosiveArrow");
     }
     public void Start()
     {
