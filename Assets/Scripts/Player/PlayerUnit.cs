@@ -10,6 +10,7 @@ public class PlayerUnit : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float speedHorizontal;
+    [SerializeField] private float maxSpeed;
 
     [Header("Jump")]
     [SerializeField] private Vector2 downDetectPosition;
@@ -21,19 +22,30 @@ public class PlayerUnit : MonoBehaviour
     [SerializeField] private float dashSpeed;
 
     [Header("Wall Sliding")]
+    [SerializeField] private float wallSlideSpeed;
     [SerializeField] private Vector2 leftDetectPosition;
     [SerializeField] private Vector2 leftDetectScale;
     [SerializeField] private Vector2 rightDetectPosition;
     [SerializeField] private Vector2 rightDetectScale;
+
+    [Header("Wall Jump")]
+    [SerializeField] private float wallJumpForce;
+    [SerializeField] private float wallJumpDirection = -1f;
+    [SerializeField] private Vector2 wallJumpAngle;
 
     [Header("References")]
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _myCharacterSprite;
 
+    [Header("Other Settings")]
+    [SerializeField] private bool showGizmos;
+
     private float dashTimeCalculate;
     private bool isDashing;
-    private bool isMoving;
+    public bool isMoving;
+    private bool canJump;
+    private bool isWallSliding;
 
     private Transform[] allPositions;
 
@@ -54,6 +66,8 @@ public class PlayerUnit : MonoBehaviour
         groundLayerMask = LayerMask.GetMask("Ground");
 
         dashTimeCalculate = maxDashTime;
+
+        isMoving = true;
     }
 
     public void UpdateUnit()
@@ -64,8 +78,9 @@ public class PlayerUnit : MonoBehaviour
 
         Jump();
         Rotate();
-        Dash();
+        //Dash();
         WallSlide();
+        //WallJump();
     }
 
     public void FixedUpdateUnit()
@@ -79,10 +94,10 @@ public class PlayerUnit : MonoBehaviour
         {
             _rb.velocity = new Vector2(inputManager.HorizontalInput * speedHorizontal, _rb.velocity.y);
         }
-        else if(isDashing)
-        {
-            _rb.velocity = new Vector2(inputManager.HorizontalInput * dashSpeed, _rb.velocity.y);
-        }
+        //else if(isDashing)
+        //{
+        //    _rb.velocity = new Vector2(inputManager.HorizontalInput * dashSpeed, _rb.velocity.y);
+        //}
     }
 
     private void Rotate()
@@ -95,22 +110,57 @@ public class PlayerUnit : MonoBehaviour
 
     private void Jump()
     {
-        if (inputManager.GetJumpButtonDown)
+        if (inputManager.GetJumpButtonDown && (Grounded || LeftHit || RightHit))
         {
-            if (Grounded)
-                _rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            canJump = true;
 
-            if (LeftHit)
-            {
-                _rb.AddForce(new Vector2(-inputManager.HorizontalInput, inputManager.VerticalInput) * jumpForce, ForceMode2D.Impulse);
-                isMoving = false;
-            }
+            //if (Grounded)
+            //{
+            //    _rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            //}
 
-            if (RightHit)
-            {
-                _rb.velocity = new Vector2(_rb.velocity.x, 25f);
-            }
+            //if (LeftHit)
+            //{
+            //    _rb.AddForce(new Vector2(-inputManager.HorizontalInput, 0) * jumpForce, ForceMode2D.Impulse);
+            //}
+
+            //if (RightHit)
+            //{
+            //    _rb.velocity = new Vector2(_rb.velocity.x, 25f);
+            //}
         }
+
+        if (canJump)
+        {
+            if(isWallSliding)
+            {
+                if(LeftHit)
+                {
+                    _rb.AddForce(new Vector2(wallJumpForce * wallJumpAngle.x, wallJumpForce * wallJumpAngle.y), ForceMode2D.Impulse);
+                }
+                else if(RightHit)
+                {
+                    _rb.AddForce(new Vector2(wallJumpForce * -wallJumpAngle.x, wallJumpForce * wallJumpAngle.y), ForceMode2D.Impulse);
+                    
+                }
+            }
+            else
+                _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
+
+            canJump = false;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if(collision.collider.CompareTag("Ground"))
+            StartCoroutine(EnableMovement());
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+            isMoving = true;
     }
 
     private void Dash()
@@ -136,21 +186,59 @@ public class PlayerUnit : MonoBehaviour
 
     private void WallSlide()
     {
-        if(!isDashing)
+        if ((LeftHit || RightHit) && !Grounded && _rb.velocity.y < 0)
         {
-            if (LeftHit || RightHit)
-            {
-                isMoving = false;
+            isWallSliding = true;
+        }
+        else
+        {
+            isWallSliding = false;
+        }
 
-                _rb.velocity = new Vector2(_rb.velocity.x, -0.5f);
-            }
-            else
+        if (isWallSliding)
+        {
+            isMoving = false;
+            _rb.velocity = new Vector2(_rb.velocity.x, -wallSlideSpeed);
+        }
+
+        //if(!isDashing)
+        //{
+        //    if (LeftHit || RightHit)
+        //    {
+        //        isMoving = false;
+
+        //        _rb.velocity = new Vector2(_rb.velocity.x, -0.5f);
+        //    }
+        //    else
+        //    {
+        //        if (!isMoving) isMoving = true;
+        //    }
+        //}
+    }
+
+    private void WallJump()
+    {
+        if (isWallSliding && canJump)
+        {
+            if (LeftHit)
             {
-                if (!isMoving) isMoving = true;
+
+            }
+            else if (RightHit)
+            {
+                
+                canJump = false;
             }
         }
     }
 
+    IEnumerator EnableMovement()
+    {
+        yield return new WaitForSeconds(0.2f); //Don't change the seconds
+        isMoving = true;
+    }
+
+    #region GROUND CHECKING
     private bool isGrounded()
     {
         bool isHit = Physics2D.OverlapBox(new Vector2(transform.position.x, transform.position.y + downDetectPosition.y), downDetectScale, 0f, groundLayerMask);
@@ -160,25 +248,29 @@ public class PlayerUnit : MonoBehaviour
     private bool isLeftHit()
     {
         bool isHit = Physics2D.OverlapBox(new Vector2(transform.position.x + leftDetectPosition.x, transform.position.y + leftDetectPosition.y), leftDetectScale, 0f, groundLayerMask);
-        return (isHit && inputManager.HorizontalInput < 0 && !Grounded);
+        return (isHit);
     }
 
     private bool isRightHit()
     {
         bool isHit = Physics2D.OverlapBox(new Vector2(transform.position.x + rightDetectPosition.x, transform.position.y + rightDetectPosition.y), rightDetectScale, 0f, groundLayerMask);
-        return (isHit && inputManager.HorizontalInput > 0 && !Grounded);
+        return (isHit);
     }
+    #endregion
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawCube(new Vector2(transform.position.x, transform.position.y + downDetectPosition.y), downDetectScale);
+        if (showGizmos)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawCube(new Vector2(transform.position.x, transform.position.y + downDetectPosition.y), downDetectScale);
 
-        Gizmos.color = Color.blue;
-        Gizmos.DrawCube(new Vector2(transform.position.x + leftDetectPosition.x, transform.position.y + leftDetectPosition.y), leftDetectScale);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawCube(new Vector2(transform.position.x + leftDetectPosition.x, transform.position.y + leftDetectPosition.y), leftDetectScale);
 
-        Gizmos.color = Color.blue;
-        Gizmos.DrawCube(new Vector2(transform.position.x + rightDetectPosition.x, transform.position.y + rightDetectPosition.y), rightDetectScale);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawCube(new Vector2(transform.position.x + rightDetectPosition.x, transform.position.y + rightDetectPosition.y), rightDetectScale);
+        }
     }
 
     private void InitializePlayersById()
