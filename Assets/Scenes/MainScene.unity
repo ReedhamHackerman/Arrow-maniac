@@ -983,6 +983,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8449584685669664716, guid: 0691ddb84cc8dc041bdcc9af98164c00,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 2dd5b1d0c7fe1a34383d476f77c3b56f, type: 2}
     - target: {fileID: 8449584685669664717, guid: 0691ddb84cc8dc041bdcc9af98164c00,
         type: 3}
       propertyPath: m_EdgeRadius

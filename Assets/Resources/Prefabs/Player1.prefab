@@ -165,26 +165,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 0
-  speedHorizontal: 10
-  maxSpeed: 100
+  movementSpeed: 10
   downDetectPosition: {x: 0, y: -0.5}
   downDetectScale: {x: 0.9, y: 0.27}
   jumpForce: 30
   maxDashTime: 0.1
   dashSpeed: 40
+  dashCooldown: 5
   wallSlideSpeed: 1.5
   leftDetectPosition: {x: -0.5, y: 0.26}
   leftDetectScale: {x: 0.2, y: 1.34}
   rightDetectPosition: {x: 0.5, y: 0.26}
   rightDetectScale: {x: 0.2, y: 1.34}
   wallJumpForce: 10
-  wallJumpDirection: -1
-  wallJumpAngle: {x: 1.5, y: 1.5}
+  wallJumpAngle: {x: 1.5, y: 2}
   _rb: {fileID: 0}
   _animator: {fileID: 0}
   _myCharacterSprite: {fileID: 0}
-  isMoving: 0
-  isWallSliding: 0
+  showGizmos: 0
 --- !u!1 &8476890786672357667
 GameObject:
   m_ObjectHideFlags: 0
