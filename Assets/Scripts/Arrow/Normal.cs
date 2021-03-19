@@ -18,9 +18,9 @@ public class Normal : Arrow
     
    private void Stuck()
     {
-        hasHit = true;
-        rb.velocity = Vector3.zero;
-        rb.isKinematic = true;
+        HasHit = true;
+        RigidBody2D.velocity = Vector3.zero;
+        RigidBody2D.isKinematic = true;
         
     }
 }
