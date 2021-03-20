@@ -12,6 +12,8 @@ public class InputManager
 
     public bool UseAbility2 => player?.GetButtonDown("Ability2") ?? false;
 
+    public bool GetAimButton => player?.GetButton("Aim") ?? false;
+    public bool GetAimButtonUp => player?.GetButtonUp("Aim") ?? false;
 
     public InputManager(Player player)
     {

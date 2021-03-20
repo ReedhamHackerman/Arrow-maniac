@@ -149,7 +149,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1187334974
 GameObject:
@@ -369,9 +369,9 @@ MonoBehaviour:
         _ruleSets: []
     actions:
     - _id: 0
-      _name: Ability2
-      _type: 1
-      _descriptiveName: Ability2
+      _name: Move Horizontal
+      _type: 0
+      _descriptiveName: Horizontal movement
       _positiveDescriptiveName: Move Right
       _negativeDescriptiveName: Move Right
       _behaviorId: 0
@@ -405,18 +405,9 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 0
     - _id: 4
-      _name: Ability
+      _name: Aim
       _type: 1
-      _descriptiveName: Ability
-      _positiveDescriptiveName: 
-      _negativeDescriptiveName: 
-      _behaviorId: 0
-      _userAssignable: 1
-      _categoryId: 0
-    - _id: 5
-      _name: Action0
-      _type: 1
-      _descriptiveName: Action0
+      _descriptiveName: Aim
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _behaviorId: 0
@@ -431,7 +422,7 @@ MonoBehaviour:
     actionCategoryMap:
       list:
       - categoryId: 0
-        actionIds: 000000000100000002000000030000000400000005000000
+        actionIds: 0000000001000000020000000300000004000000
     inputBehaviors:
     - _id: 0
       _name: Default
@@ -502,7 +493,7 @@ MonoBehaviour:
       - _actionCategoryId: 0
         _actionId: 1
         _elementType: 1
-        _elementIdentifierId: 5
+        _elementIdentifierId: 4
         _axisRange: 0
         _invert: 0
         _axisContribution: 0
@@ -554,17 +545,6 @@ MonoBehaviour:
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
-      - _actionCategoryId: 0
-        _actionId: 0
-        _elementType: 1
-        _elementIdentifierId: 5
-        _axisRange: 0
-        _invert: 0
-        _axisContribution: 0
-        _keyboardKeyCode: 0
-        _modifierKey1: 0
-        _modifierKey2: 0
-        _modifierKey3: 0
     keyboardMaps: []
     mouseMaps: []
     customControllerMaps: []
@@ -572,7 +552,7 @@ MonoBehaviour:
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 3
-    actionIdCounter: 6
+    actionIdCounter: 5
     actionCategoryIdCounter: 1
     inputBehaviorIdCounter: 1
     mapCategoryIdCounter: 1
@@ -878,7 +858,7 @@ PrefabInstance:
     - target: {fileID: 8449584684844704203, guid: 0691ddb84cc8dc041bdcc9af98164c00,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8449584684844704203, guid: 0691ddb84cc8dc041bdcc9af98164c00,
         type: 3}

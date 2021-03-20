@@ -9,7 +9,7 @@ public class FakePlayer : MonoBehaviour
     public float arrowForce;
     private void Awake()
     {
-        gameob = (GameObject)Resources.Load("Prefabs/Arrows/ExplosiveArrow");
+        gameob = (GameObject)Resources.Load("Prefabs/Arrows/RicochetArrow");
     }
 
     // Update is called once per frame

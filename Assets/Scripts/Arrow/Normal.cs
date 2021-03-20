@@ -7,7 +7,7 @@ public class Normal : Arrow
     public override void OnHit(Collision2D collision)
     {
         base.OnHit(collision);
-        if (collision.gameObject.CompareTag("Wall"))
+        if (collision.gameObject.CompareTag("Ground"))
         {
             
             Stuck();
@@ -19,8 +19,8 @@ public class Normal : Arrow
    private void Stuck()
     {
         HasHit = true;
-        RigidBody2D.velocity = Vector3.zero;
-        RigidBody2D.isKinematic = true;
+        RB2D.velocity = Vector3.zero;
+        RB2D.isKinematic = true;
         
     }
 }

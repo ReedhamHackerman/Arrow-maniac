@@ -17,17 +17,15 @@ public class Explosive : Arrow
     private void Stuck()
     {
         HasHit = true;
-        RigidBody2D.velocity = Vector2.zero;
-        RigidBody2D.isKinematic = true;
-        Invoke("Explode", explodeAfterTimer);
-        //Dont Make Delegate And Use Just Add function in this Way So U will not face Any initialisation Issue
-        //TimeManager.Instance.AddDelegate(() => Explode(),explodeAfterTimer,1);
+        RB2D.velocity = Vector2.zero;
+        RB2D.isKinematic = true;
+        TimeManager.Instance.AddDelegate(() => Explode(),explodeAfterTimer,1);
     }
    
     private void Explode()
     {
        
-        Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(transform.position, explosionRadius,LayerMask.GetMask("Player"));
+        Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(transform.position, explosionRadius, LayerMask.GetMask("Player"));
         for (int i = 0; i < collider2Ds.Length; i++)
         {
             Destroy(collider2Ds[i].gameObject);

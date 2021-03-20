@@ -19,26 +19,36 @@ public class ArrowManager
         }
     }
     #endregion
-    GameObject ricoChetArrow;
-    GameObject normalArrow;
-    GameObject ExplosiveArrow;
+
+    private ArrowFactory arrowFactory;
 
     public void Initialize()
     {
-        normalArrow = (GameObject)Resources.Load("Prefabs/Arrows/NormalArrow");
-        ricoChetArrow = (GameObject)Resources.Load("Prefabs/Arrows/RicochetArrow");
-        ExplosiveArrow = (GameObject)Resources.Load("Prefabs/Arrows/ExplosiveArrow");
+        arrowFactory = new ArrowFactory();
     }
     public void Start()
     {
-
+      
     }
+
     public void Refresh()
     {
-
+        arrowFactory?.RefreshUpdate();
     }
+
     public void FixedRefresh()
     {
+       // AddArrow(new Ricochet());
+    }
 
+    public Arrow Fire(ArrowType arrowType, Vector2 pos, Quaternion rot)
+    {
+        Arrow toRet = arrowFactory.GetNewArrow(arrowType, pos, rot);
+        return toRet;
+    }
+
+    public void DestroyArrow(Arrow toDestroy)
+    {
+        arrowFactory.RemoveFromList(toDestroy);
     }
 }

@@ -5,51 +5,55 @@ using Rewired;
 
 public class PlayerUnit : MonoBehaviour,IFreezable
 {
-    [Header("Local Multiplayer")]
+    [Header("LOCAL MULTIPLAYER")]
     [SerializeField] private int playerId;
 
     public int PlayerId => playerId;
 
-    [Header("Movement")]
+    [Header("MOVEMENT")]
     [SerializeField] private float movementSpeed;
 
-    [Header("Jump")]
+    [Header("JUMP")]
     [SerializeField] private Vector2 downDetectPosition;
     [SerializeField] private Vector2 downDetectScale;
     [SerializeField] private float jumpForce;
 
-    [Header("Dash")]
+    [Header("DASH")]
     [SerializeField] private float maxDashTime;
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashCooldown;
 
-    [Header("Wall Sliding")]
+    [Header("WALL SLIDING")]
     [SerializeField] private float wallSlideSpeed;
     [SerializeField] private Vector2 leftDetectPosition;
     [SerializeField] private Vector2 leftDetectScale;
     [SerializeField] private Vector2 rightDetectPosition;
     [SerializeField] private Vector2 rightDetectScale;
 
-    [Header("Wall Jump")]
+    [Header("WALL JUMP")]
     [SerializeField] private float wallJumpForce;
     [SerializeField] private Vector2 wallJumpAngle;
 
-    [Header("References")]
+    [Header("AIM-SHOOT")]
+    [SerializeField] private Transform handTransform;
+    [SerializeField] private ArrowType currentEquippedArrow;
+    [SerializeField] private Transform fireFromPos;
+
+    [Header("OTHER SETTINGS")]
+    [SerializeField] private bool showGizmos;
+
     private Rigidbody2D _rb;
     private Animator _animator;
     private SpriteRenderer _myCharacterSprite;
 
-    public Vector2 facingDirection;
-
-    [Header("Other Settings")]
-    [SerializeField] private bool showGizmos;
-
     private float dashTimeCalculate;
     private float dashCooldownTimerCalculate;
+    private float angleAim;
 
     private bool isDashing;
     private bool isMoving;
     private bool isWallSliding;
+    private bool isAiming;
     private bool canUseDash;
     private bool canJump;
     private bool canRotate = true;
@@ -62,6 +66,12 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private Invisible invisibleScript;
     private TimeStop timeStopScript;
     public TimeManager timeManager;
+    private bool canShoot;
+
+    private Transform[] allPositions; //Temporary array to store positions
+
+    private Player player;
+    protected InputManager inputManager;
     private LayerMask groundLayerMask;
 
     private Dictionary<int, Vector2> playersVelocity = new Dictionary<int, Vector2>();
@@ -98,8 +108,8 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         Jump();
         Rotate();
         Dash();
-       // UseAbility();
         WallSlide();
+        Aim();
     }
 
     public void FixedUpdateUnit()
@@ -107,16 +117,21 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         Move();
     }
 
+
+    #region MOVEMENT MECHANICS
     private void Move()
     {
-        if (isMoving)
+        if(!isAiming)
         {
-            _rb.velocity = new Vector2(inputManager.HorizontalInput * movementSpeed, _rb.velocity.y);
-        }
-        
-        if (isDashing)
-        {
-            _rb.velocity = new Vector2(inputManager.HorizontalInput * dashSpeed, _rb.velocity.y);
+            if (isMoving)
+            {
+                _rb.velocity = new Vector2(inputManager.HorizontalInput * movementSpeed, _rb.velocity.y);
+            }
+
+            if (isDashing)
+            {
+                _rb.velocity = new Vector2(inputManager.HorizontalInput * dashSpeed, _rb.velocity.y);
+            }
         }
     }
 
@@ -215,6 +230,50 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         isMoving = true;
     }
 
+    #endregion
+
+    private void Aim()
+    {
+        if (inputManager.GetAimButton)
+        {
+            isAiming = true;
+
+            if (_rb.velocity.x != 0) _rb.velocity = Vector2.zero;
+        }
+
+        if (inputManager.GetAimButtonUp)
+        {
+            isAiming = false;
+            Shoot();
+        }
+
+        if (isAiming)
+        {
+            Vector2 aim = new Vector2(inputManager.HorizontalInput, inputManager.VerticalInput);
+
+            angleAim = Mathf.Atan2(aim.y, aim.x) * Mathf.Rad2Deg;
+            if (angleAim < 0f) angleAim += 360f;
+
+            if (aim.x < 0)
+            {
+                handTransform.localEulerAngles = new Vector3(180, 180, -angleAim);
+            }
+            else
+            {
+                handTransform.localEulerAngles = new Vector3(0f, 0f, angleAim);
+            }
+        }
+        else
+            handTransform.localEulerAngles = Vector2.zero;
+    }
+
+    private void Shoot()
+    {
+        Arrow newArrow = ArrowManager.Instance.Fire(currentEquippedArrow, fireFromPos.position, fireFromPos.rotation);
+        newArrow.Oninitialize();
+        newArrow.AddForceInDirection(fireFromPos.right);
+    }
+
     #region ON COLLISION CODE
     private void OnCollisionExit2D(Collision2D collision)
     {
@@ -276,18 +335,6 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         transform.position = allPositions[playerId].position;
     }
 
-    private void UseAbility()
-    {
-       
-
-        if (inputManager.UseAbility)
-        {
-
-        }
-
-     
-    }
-
     public void Freeze()
     {
         if (this.playerId != PlayerManager.Instance.playerIdUsedAbility)
@@ -309,5 +356,9 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         }
     }
 
-   
+    public void Die()
+    {
+        print("player id " + playerId);
+        Destroy(gameObject);
+    }
 }
