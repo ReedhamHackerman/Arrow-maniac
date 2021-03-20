@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1663664364032876265}
   - component: {fileID: 1663664364032876270}
   - component: {fileID: 1663664364032876264}
-  - component: {fileID: 1663664364032876267}
   - component: {fileID: 1663664364032876266}
+  - component: {fileID: 1663664364032876267}
   m_Layer: 8
   m_Name: NormalArrow
   m_TagString: Untagged
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1663664364032876271}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.440754, y: -5.895249, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -105,19 +105,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &1663664364032876267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1663664364032876271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23a1b9300b5a21f44938a566e5a6f01e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  arrowType: 1
 --- !u!61 &1663664364032876266
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -131,7 +118,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.09832847, y: 0.025345325}
+  m_Offset: {x: -0.06635022, y: 0.063055634}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -142,5 +129,19 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.7284615, y: 0.1378994}
+  m_Size: {x: 3.3991017, y: 0.21332002}
   m_EdgeRadius: 0
+--- !u!114 &1663664364032876267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663664364032876271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23a1b9300b5a21f44938a566e5a6f01e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrowType: 0
+  shootForce: 50

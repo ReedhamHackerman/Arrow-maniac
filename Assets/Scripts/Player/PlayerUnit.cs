@@ -5,44 +5,48 @@ using Rewired;
 
 public class PlayerUnit : MonoBehaviour
 {
-    [Header("Local Multiplayer")]
+    [Header("LOCAL MULTIPLAYER")]
     [SerializeField] private int playerId;
 
-    [Header("Movement")]
+    [Header("MOVEMENT")]
     [SerializeField] private float movementSpeed;
 
-    [Header("Jump")]
+    [Header("JUMP")]
     [SerializeField] private Vector2 downDetectPosition;
     [SerializeField] private Vector2 downDetectScale;
     [SerializeField] private float jumpForce;
 
-    [Header("Dash")]
+    [Header("DASH")]
     [SerializeField] private float maxDashTime;
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashCooldown;
 
-    [Header("Wall Sliding")]
+    [Header("WALL SLIDING")]
     [SerializeField] private float wallSlideSpeed;
     [SerializeField] private Vector2 leftDetectPosition;
     [SerializeField] private Vector2 leftDetectScale;
     [SerializeField] private Vector2 rightDetectPosition;
     [SerializeField] private Vector2 rightDetectScale;
 
-    [Header("Wall Jump")]
+    [Header("WALL JUMP")]
     [SerializeField] private float wallJumpForce;
     [SerializeField] private Vector2 wallJumpAngle;
 
-    [Header("Other Settings")]
+    [Header("AIM-SHOOT")]
+    [SerializeField] private Transform handTransform;
+    [SerializeField] private ArrowType currentEquippedArrow;
+    [SerializeField] private Transform fireFromPos;
+
+    [Header("OTHER SETTINGS")]
     [SerializeField] private bool showGizmos;
 
     private Rigidbody2D _rb;
     private Animator _animator;
     private SpriteRenderer _myCharacterSprite;
 
-    [SerializeField] private Transform handTransform;
-
     private float dashTimeCalculate;
     private float dashCooldownTimerCalculate;
+    private float angleAim;
 
     private bool isDashing;
     private bool isMoving;
@@ -50,6 +54,7 @@ public class PlayerUnit : MonoBehaviour
     private bool isAiming;
     private bool canUseDash;
     private bool canJump;
+    private bool canShoot;
 
     private Transform[] allPositions; //Temporary array to store positions
 
@@ -217,14 +222,37 @@ public class PlayerUnit : MonoBehaviour
             if (_rb.velocity.x != 0) _rb.velocity = Vector2.zero;
         }
 
-        if (inputManager.GetAimButtonUp) isAiming = false;
+        if (inputManager.GetAimButtonUp)
+        {
+            isAiming = false;
+            Shoot();
+        }
 
-        if(isAiming)
+        if (isAiming)
         {
             Vector2 aim = new Vector2(inputManager.HorizontalInput, inputManager.VerticalInput);
 
+            angleAim = Mathf.Atan2(aim.y, aim.x) * Mathf.Rad2Deg;
+            if (angleAim < 0f) angleAim += 360f;
 
+            if (aim.x < 0)
+            {
+                handTransform.localEulerAngles = new Vector3(180, 180, -angleAim);
+            }
+            else
+            {
+                handTransform.localEulerAngles = new Vector3(0f, 0f, angleAim);
+            }
         }
+        else
+            handTransform.localEulerAngles = Vector2.zero;
+    }
+
+    private void Shoot()
+    {
+        Arrow newArrow = ArrowManager.Instance.Fire(currentEquippedArrow, fireFromPos.position, Quaternion.identity);
+        newArrow.Oninitialize();
+        newArrow.AddForceInDirection(fireFromPos.right);
     }
 
     #region ON COLLISION CODE
