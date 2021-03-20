@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7171530672546721573}
   - component: {fileID: 7171530672546721572}
   - component: {fileID: 7171530672546721571}
-  - component: {fileID: 7171530672546721570}
   - component: {fileID: 7171530672546721574}
+  - component: {fileID: 7171530672546721570}
   m_Layer: 8
   m_Name: RicochetArrow
   m_TagString: Untagged
@@ -28,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7171530672546721569}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.64, y: -5.895249, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -105,20 +105,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &7171530672546721570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7171530672546721569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2273f6c1fe428a844ab109f41070bebf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  arrowType: 0
-  DestroyAfterTimer: 2
 --- !u!61 &7171530672546721574
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -132,7 +118,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.20876378, y: 0.027677536}
+  m_Offset: {x: 0.11995268, y: 0.045443296}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -143,5 +129,20 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.7297463, y: 0.1270132}
+  m_Size: {x: 3.8546886, y: 0.16254473}
   m_EdgeRadius: 0
+--- !u!114 &7171530672546721570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7171530672546721569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2273f6c1fe428a844ab109f41070bebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrowType: 2
+  shootForce: 30
+  DestroyAfterTimer: 5

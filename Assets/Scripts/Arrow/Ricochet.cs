@@ -10,13 +10,13 @@ public class Ricochet : Arrow
    
     public override void Oninitialize()
     {
-        RigidBody2D = gameObject.GetComponent<Rigidbody2D>();
-        RigidBody2D.gravityScale = 0.0f;
+        base.Oninitialize();
+        RB2D.gravityScale = 0.0f;
+        Invoke("DestroyRicochetArrow", DestroyAfterTimer);
     }
     public override void OnUpdate()
     {
-        lastVelocity = RigidBody2D.velocity;
-        Invoke("DestroyRicochetArrow", DestroyAfterTimer);
+        lastVelocity = RB2D.velocity;
     }
     public override void ArrowRotation()
     {
@@ -27,19 +27,27 @@ public class Ricochet : Arrow
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Destroy(this.gameObject);
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
+            DestroyRicochetArrow();
         }
-        float speed = lastVelocity.magnitude;
-        Vector3 direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
-        RigidBody2D.velocity = direction * speed;
-        float angle = Mathf.Atan2(RigidBody2D.velocity.y, RigidBody2D.velocity.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        else
+        {
+            float speed = lastVelocity.magnitude;
+            Vector3 direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+            RB2D.velocity = direction * speed;
+            float angle = Mathf.Atan2(RB2D.velocity.y, RB2D.velocity.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
     }
+
+    public override void DestroyArrow()
+    {
+        ArrowManager.Instance.DestroyArrow(this);
+        Destroy(gameObject);
+    }
+
     public void DestroyRicochetArrow()
     {
-        if (gameObject)
-            Destroy(this.gameObject);
-          
+        DestroyArrow();
     }
 }
