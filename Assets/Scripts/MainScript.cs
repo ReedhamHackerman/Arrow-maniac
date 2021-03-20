@@ -12,7 +12,7 @@ public class MainScript : MonoBehaviour
         GameManager.Instance.Initialize();
         UIManager.Instance.Initialize();
         CollectibleManager.Instance.Initialize();
-        
+        TimeManager.Instance.Initialize();
     }
     private void Start()
     {
@@ -25,6 +25,7 @@ public class MainScript : MonoBehaviour
         GameManager.Instance.Refresh();
         UIManager.Instance.Refresh();
         CollectibleManager.Instance.Refresh();
+        TimeManager.Instance.Refresh();
     }
     private void FixedUpdate()
     {

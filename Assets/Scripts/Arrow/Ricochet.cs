@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Rewired;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,28 +7,46 @@ public class Ricochet : Arrow
 {
     //Get The Current Velocity
     Vector3 lastVelocity;
+    //Destroy After This Time 
     public float DestroyAfterTimer;
-   
-    public override void Oninitialize()
-    {
-        base.Oninitialize();
-        RB2D.gravityScale = 0.0f;
-        Invoke("DestroyRicochetArrow", DestroyAfterTimer);
-    }
-    public override void OnUpdate()
-    {
-        lastVelocity = RB2D.velocity;
-    }
+    //reduce by the factor of given velocity
+    public float speedFactor;
     public override void ArrowRotation()
     {
         //Meant To be Empty
     }
-   
+
+    public void Awake()
+    {
+        base.Oninitialize();
+        RB2D.gravityScale = 0.0f;
+        TimeManager.Instance.AddDelegate(() => DestroyRicochetArrow(), DestroyAfterTimer, 1);
+    }
+
+    public void Update()
+    {
+
+        ArrowRotation();
+        lastVelocity = RB2D.velocity;
+
+    }
+    public override void Oninitialize()
+    {
+        base.Oninitialize();
+        RB2D.gravityScale = 0.0f;
+        TimeManager.Instance.AddDelegate(() => DestroyRicochetArrow(), DestroyAfterTimer, 1);
+    }
+    public override void OnUpdate()
+    {
+        ArrowRotation();
+        lastVelocity = RB2D.velocity;
+       
+    }
     public override void OnHit(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //Destroy(collision.gameObject);
+            PlayerManager.Instance.PlayerDied(collision.gameObject.GetComponent<PlayerUnit>().PlayerId);
             DestroyRicochetArrow();
         }
         else

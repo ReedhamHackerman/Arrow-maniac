@@ -22,6 +22,7 @@ public class PlayerManager
     #endregion
 
     private List<PlayerUnit> playerUnitList;
+    private Dictionary<int, PlayerUnit> unitDictionary = new Dictionary<int, PlayerUnit>();
 
     public void Initialize()
     {
@@ -34,20 +35,14 @@ public class PlayerManager
 
     public void Refresh()
     {
-        if(playerUnitList.Count > 0)
-        {
-            foreach (PlayerUnit player in playerUnitList)
-                player.UpdateUnit();
-        }
+        foreach (KeyValuePair<int, PlayerUnit> p in unitDictionary)
+            p.Value.UpdateUnit();
     }
 
     public void FixedRefresh()
     {
-        if (playerUnitList.Count > 0)
-        {
-            foreach (PlayerUnit player in playerUnitList)
-                player.FixedUpdateUnit();
-        }
+        foreach (KeyValuePair<int, PlayerUnit> p in unitDictionary)
+            p.Value.FixedUpdateUnit();
     }
 
     private void GetPlayerCountAndInitialize()
@@ -61,10 +56,18 @@ public class PlayerManager
             {
                 PlayerUnit playerUnit = GameObject.Instantiate<PlayerUnit>(Resources.Load<PlayerUnit>("Prefabs/Players/Player1")); //Static for now Change this later
                 playerUnit.Initialize(i);
-                playerUnitList.Add(playerUnit);
+                unitDictionary.Add(i, playerUnit);
             }
         }
         else
             Debug.LogError("Please connect a Joystick!");
+    }
+
+    public void PlayerDied(int id)
+    {
+        //Need to implement this
+        PlayerUnit unit = unitDictionary[id];
+        unitDictionary.Remove(id);
+        unit.Die();
     }
 }

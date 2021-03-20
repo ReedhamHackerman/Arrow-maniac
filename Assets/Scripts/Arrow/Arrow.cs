@@ -35,8 +35,9 @@ public class Arrow : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
+           //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
             //Destroy(collision.gameObject);
+            PlayerManager.Instance.PlayerDied(collision.gameObject.GetComponent<PlayerUnit>().PlayerId);
             //Destroying Game Object Without Any Particle Effects Later On That logic will be Changed
             DestroyArrow();
             Destroy(this.gameObject);
@@ -45,7 +46,6 @@ public class Arrow : MonoBehaviour
 
     public virtual void Oninitialize()
     {
-        TimeManager.Instance.Initialize();
         RB2D = GetComponent<Rigidbody2D>();
     }
 
@@ -55,7 +55,7 @@ public class Arrow : MonoBehaviour
         {
             ArrowRotation();
         }
-        TimeManager.Instance.Refresh();
+       
     }
     
     public void AddForceInDirection(Vector2 dir)
