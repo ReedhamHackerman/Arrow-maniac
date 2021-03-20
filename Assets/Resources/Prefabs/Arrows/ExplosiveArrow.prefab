@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 3770003073446248763}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.51, y: -5.895249, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -99,7 +99,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 15
+  m_GravityScale: 8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -118,7 +118,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.20876378, y: 0.027677536}
+  m_Offset: {x: -0.07848698, y: 0.027677536}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -129,7 +129,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.7297463, y: 0.1270132}
+  m_Size: {x: 3.3042479, y: 0.1270132}
   m_EdgeRadius: 0
 --- !u!114 &3770003073446248765
 MonoBehaviour:
@@ -143,6 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6bc91c19f0ef8a4aa8421c3244224c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrowType: 2
+  arrowType: 1
+  shootForce: 30
   explodeAfterTimer: 4
   explosionRadius: 5

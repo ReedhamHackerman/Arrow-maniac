@@ -8,6 +8,8 @@ public class InputManager
     public float VerticalInput => player?.GetAxis("Move Vertical") ?? 0f;
     public bool GetJumpButtonDown => player?.GetButtonDown("Jump") ?? false;
     public bool GetDashButtonDown => player?.GetButtonDown("Dash") ?? false;
+    public bool GetAimButton => player?.GetButton("Aim") ?? false;
+    public bool GetAimButtonUp => player?.GetButtonUp("Aim") ?? false;
 
     public InputManager(Player player)
     {
