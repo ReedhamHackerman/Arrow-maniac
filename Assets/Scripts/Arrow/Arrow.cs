@@ -9,14 +9,23 @@ public enum ArrowType
 public class Arrow : MonoBehaviour
 {
     public ArrowType arrowType;
-    [HideInInspector] protected Rigidbody2D RigidBody2D { get; set; }
+    [HideInInspector] protected Rigidbody2D RB2D { get; set; }
     [HideInInspector] protected bool HasHit { get; set; }
-  
+
+
+    public void Awake()
+    {
+        Oninitialize();
+    }
+    public void Update()
+    {
+        OnUpdate();
+    }
     public virtual void ArrowRotation()
     {
         if (HasHit==false)
         {
-            float angle = Mathf.Atan2(RigidBody2D.velocity.y, RigidBody2D.velocity.x) * Mathf.Rad2Deg;
+            float angle = Mathf.Atan2(RB2D.velocity.y, RB2D.velocity.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
        
@@ -34,15 +43,16 @@ public class Arrow : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
            //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
+            PlayerManager.Instance.PlayerDied(collision.gameObject.GetComponent<PlayerUnit>().PlayerId);
             //Destroying Game Object Without Any Particle Effects Later On That logic will be Changed
             Destroy(this.gameObject);
         }
     }
     public virtual void Oninitialize()
     {
-        TimeManager.Instance.Initialize();
-        RigidBody2D = GetComponent<Rigidbody2D>();
+       
+        RB2D = GetComponent<Rigidbody2D>();
     }
     public virtual void OnUpdate()
     {
@@ -50,7 +60,7 @@ public class Arrow : MonoBehaviour
         {
             ArrowRotation();
         }
-        TimeManager.Instance.Refresh();
+       
     }
    
    

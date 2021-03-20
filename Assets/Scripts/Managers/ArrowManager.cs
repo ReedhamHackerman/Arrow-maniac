@@ -19,26 +19,35 @@ public class ArrowManager
         }
     }
     #endregion
-    GameObject ricoChetArrow;
-    GameObject normalArrow;
-    GameObject ExplosiveArrow;
+    List<Arrow> arrows;
+
+   //GameObject ricoChetArrow;
+   //Ricochet ricochetArrow;
+   //GameObject normalArrow;
+   //GameObject ExplosiveArrow;
 
     public void Initialize()
     {
-        normalArrow = (GameObject)Resources.Load("Prefabs/Arrows/NormalArrow");
-        ricoChetArrow = (GameObject)Resources.Load("Prefabs/Arrows/RicochetArrow");
-        ExplosiveArrow = (GameObject)Resources.Load("Prefabs/Arrows/ExplosiveArrow");
+        //normalArrow = (GameObject)Resources.Load("Prefabs/Arrows/NormalArrow");
+        ////normalArrow.GetComponent<Normal>().Oninitialize();
+        //ricoChetArrow = (GameObject)Resources.Load("Prefabs/Arrows/RicochetArrow");
+        ////ricochetArrow.GetComponent<Ricochet>().Oninitialize();
+        //ExplosiveArrow = (GameObject)Resources.Load("Prefabs/Arrows/ExplosiveArrow");
+       // ExplosiveArrow.GetComponent<Explosive>().Oninitialize();
     }
     public void Start()
     {
-
+      
     }
     public void Refresh()
     {
-
+        
     }
     public void FixedRefresh()
     {
-
+       // AddArrow(new Ricochet());
     }
+
+    enum ArrowType { basic,rico,boom }
+   
 }

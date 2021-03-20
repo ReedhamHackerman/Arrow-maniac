@@ -18,7 +18,12 @@ public class TimeManager
             return instance;
         }
     }
-    public delegate string MyArgumentDelegate(string S);
+
+    private TimeManager()
+    {
+       
+    }
+   // public delegate string MyArgumentDelegate(string S);
 
 
 
@@ -43,7 +48,7 @@ public class TimeManager
                 catch (System.Exception)
                 {
 
-                    Debug.LogError("Exception Thrown");
+                    //Debug.LogError("Exception Thrown");
                 }
                 delegateTimerList.RemoveAt(i);
             }
@@ -73,7 +78,7 @@ public class TimeManager
     {
         public float timeToInvoke;
         public MyDelegate delegateToInvoke;
-        public MyArgumentDelegate MyArgumentDelegate;
+        //public MyArgumentDelegate MyArgumentDelegate;
         public int repeat;
         public DelegateTimer(float timeOfInvo, MyDelegate del)
         {
@@ -81,11 +86,11 @@ public class TimeManager
             this.delegateToInvoke = del;
 
         }
-        public DelegateTimer(float timeOfInvo, MyArgumentDelegate myArgumentDelegate)
-        {
-            this.timeToInvoke = timeOfInvo;
-            this.MyArgumentDelegate = myArgumentDelegate;
-        }
+        //public DelegateTimer(float timeOfInvo, MyArgumentDelegate myArgumentDelegate)
+        //{
+        //    this.timeToInvoke = timeOfInvo;
+        //    this.MyArgumentDelegate = myArgumentDelegate;
+        //}
         public DelegateTimer(float timeOfInvo, MyDelegate del, int repeat)
         {
             this.timeToInvoke = timeOfInvo;

@@ -119,6 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowType: 0
   DestroyAfterTimer: 2
+  speedFactor: 0.3
 --- !u!61 &7171530672546721574
 BoxCollider2D:
   m_ObjectHideFlags: 0
