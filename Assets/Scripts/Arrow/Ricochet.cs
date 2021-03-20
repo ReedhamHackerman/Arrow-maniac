@@ -58,10 +58,15 @@ public class Ricochet : Arrow
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
     }
+
+    public override void DestroyArrow()
+    {
+        ArrowManager.Instance.DestroyArrow(this);
+        Destroy(gameObject);
+    }
+
     public void DestroyRicochetArrow()
     {
-        if (gameObject)
-            Destroy(this.gameObject);
-          
+        DestroyArrow();
     }
 }

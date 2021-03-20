@@ -2,9 +2,9 @@
 using Rewired;
 public enum ArrowType
 {
-    RICOCHET,
     NORMAL,
-    EXPLOSIVE
+    EXPLOSIVE,
+    RICOCHET
 }
 public class Arrow : MonoBehaviour
 {
@@ -12,15 +12,8 @@ public class Arrow : MonoBehaviour
     [HideInInspector] protected Rigidbody2D RB2D { get; set; }
     [HideInInspector] protected bool HasHit { get; set; }
 
+    [SerializeField] private float shootForce;
 
-    public void Awake()
-    {
-        Oninitialize();
-    }
-    public void Update()
-    {
-        OnUpdate();
-    }
     public virtual void ArrowRotation()
     {
         if (HasHit==false)
@@ -46,14 +39,16 @@ public class Arrow : MonoBehaviour
             //Destroy(collision.gameObject);
             PlayerManager.Instance.PlayerDied(collision.gameObject.GetComponent<PlayerUnit>().PlayerId);
             //Destroying Game Object Without Any Particle Effects Later On That logic will be Changed
+            DestroyArrow();
             Destroy(this.gameObject);
         }
     }
+
     public virtual void Oninitialize()
     {
-       
         RB2D = GetComponent<Rigidbody2D>();
     }
+
     public virtual void OnUpdate()
     {
         if (HasHit == false)
@@ -62,6 +57,14 @@ public class Arrow : MonoBehaviour
         }
        
     }
-   
-   
+    
+    public void AddForceInDirection(Vector2 dir)
+    {
+        RB2D.velocity = dir * shootForce;
+    }
+
+    public virtual void DestroyArrow()
+    {
+        ArrowManager.Instance.DestroyArrow(this);
+    }
 }
