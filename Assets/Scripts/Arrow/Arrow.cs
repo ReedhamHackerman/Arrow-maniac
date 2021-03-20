@@ -6,11 +6,13 @@ public enum ArrowType
     NORMAL,
     EXPLOSIVE
 }
-public class Arrow : MonoBehaviour
+public class Arrow : MonoBehaviour,IFreezable
 {
     public ArrowType arrowType;
     [HideInInspector] protected Rigidbody2D RigidBody2D { get; set; }
     [HideInInspector] protected bool HasHit { get; set; }
+
+    protected Vector2 arrowValocity;
   
     public virtual void ArrowRotation()
     {
@@ -52,6 +54,17 @@ public class Arrow : MonoBehaviour
         }
         TimeManager.Instance.Refresh();
     }
-   
-   
+
+    public virtual void Freeze()
+    {
+        arrowValocity = RigidBody2D.velocity;
+        RigidBody2D.bodyType = RigidbodyType2D.Static;
+    }
+
+    public virtual void UnFreeze()
+    {
+        RigidBody2D.bodyType = RigidbodyType2D.Dynamic;
+        RigidBody2D.velocity = arrowValocity;
+        
+    }
 }

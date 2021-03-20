@@ -1,52 +1,61 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Rewired;
+using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class TimeStop : Abilities
 {
-    public GameObject mapParticles;
-    private List<ParticleSystem> worldParticles = new List<ParticleSystem>();
-    private ParticleSystem particle;
-
-
+    public bool isPlayerStopped;
+    private PlayerUnit thisPlayerUnit;
+    List< IFreezable> freezables = new List<IFreezable>();    
     protected override void Initialize()
-    {
-        //worldParticles.AddRange(mapParticles.GetComponentsInChildren<ParticleSystem>());
+    {     
+        abilityTime = 2f;
+        thisPlayerUnit = gameObject.GetComponent<PlayerUnit>();
+        
+    }
 
-        worldParticles.AddRange(FindObjectsOfType<ParticleSystem>());
+    public static List<T> Finds<T>()
+    {
+        List<T> interfaces = new List<T>();
+        GameObject[] rootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+        foreach (var rootGameObject in rootGameObjects)
+        {
+            T[] childrenInterfaces = rootGameObject.GetComponentsInChildren<T>();
+            foreach (var childInterface in childrenInterfaces)
+            {
+                interfaces.Add(childInterface);
+            }
+        }
+        return interfaces;
     }
 
     protected override void Refresh()
     {
-
-        
-        if (Input.GetKey(KeyCode.R))
+        if (inputManager.UseAbility)
         {
-            StopWorldParticles();
+            PlayerManager.Instance.playerIdUsedAbility = thisPlayerUnit.PlayerId;
+            StartCoroutine(TimeStopAbility());
         }
-        if (Input.GetKey(KeyCode.T))
-        {
-            ResumeWorldParticles();
-        }
-
-
     }
 
-    public void StopWorldParticles()
+    IEnumerator TimeStopAbility()
     {
-        foreach (ParticleSystem particleSystem in worldParticles)
-        {
-            particleSystem.Pause();
-        }
-    }
+        freezables = Finds<IFreezable>();
 
-    public void ResumeWorldParticles()
-    {
-        foreach (ParticleSystem particleSystem in worldParticles)
+        foreach (IFreezable iFreezable in freezables)
         {
-            particleSystem.Play();
+            iFreezable.Freeze();
         }
-    }
+      
+        yield return new WaitForSeconds(abilityTime);
 
-    
+        foreach (IFreezable iFreezable in freezables)
+        {
+            iFreezable.UnFreeze();
+        }
+
+    }    
 }

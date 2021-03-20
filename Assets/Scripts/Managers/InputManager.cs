@@ -10,6 +10,9 @@ public class InputManager
     public bool GetDashButtonDown => player?.GetButtonDown("Dash") ?? false;
     public bool UseAbility => player?.GetButtonDown("Ability") ?? false;
 
+    public bool UseAbility2 => player?.GetButtonDown("Ability2") ?? false;
+
+
     public InputManager(Player player)
     {
         this.player = player;

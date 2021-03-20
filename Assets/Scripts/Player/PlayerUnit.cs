@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 
-public class PlayerUnit : MonoBehaviour
+public class PlayerUnit : MonoBehaviour,IFreezable
 {
     [Header("Local Multiplayer")]
     [SerializeField] private int playerId;
+
+    public int PlayerId => playerId;
 
     [Header("Movement")]
     [SerializeField] private float movementSpeed;
@@ -33,9 +35,11 @@ public class PlayerUnit : MonoBehaviour
     [SerializeField] private Vector2 wallJumpAngle;
 
     [Header("References")]
-    [SerializeField] private Rigidbody2D _rb;
-    [SerializeField] private Animator _animator;
-    [SerializeField] private SpriteRenderer _myCharacterSprite;
+    private Rigidbody2D _rb;
+    private Animator _animator;
+    private SpriteRenderer _myCharacterSprite;
+
+    public Vector2 facingDirection;
 
     [Header("Other Settings")]
     [SerializeField] private bool showGizmos;
@@ -48,30 +52,34 @@ public class PlayerUnit : MonoBehaviour
     private bool isWallSliding;
     private bool canUseDash;
     private bool canJump;
+    private bool canRotate = true;
 
     private Transform[] allPositions;
+    private Vector2 storedPlayerVelocity;
 
     private Player player;
     private InputManager inputManager;
     private Invisible invisibleScript;
+    private TimeStop timeStopScript;
     public TimeManager timeManager;
     private LayerMask groundLayerMask;
+
+    private Dictionary<int, Vector2> playersVelocity = new Dictionary<int, Vector2>();
 
     public bool Grounded { get; set; } = true;
     public bool LeftHit { get; set; } = true;
     public bool RightHit { get; set; } = true;
-
     public void Initialize(int playerId)
     {
         this.playerId = playerId;
         InitializePlayersById();
 
-        _rb = GetComponent<Rigidbody2D>();
+        _rb = gameObject.GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
         invisibleScript = GetComponent<Invisible>();
+        timeStopScript = GetComponent<TimeStop>();
         invisibleScript.inputManager = this.inputManager;
-
-        timeManager = GameObject.FindGameObjectWithTag("TimeManager").GetComponent<TimeManager>();
+        timeStopScript.inputManager = this.inputManager;
 
         dashTimeCalculate = maxDashTime;
         dashCooldownTimerCalculate = dashCooldown;
@@ -86,10 +94,11 @@ public class PlayerUnit : MonoBehaviour
         LeftHit = isLeftHit();
         RightHit = isRightHit();
 
+
         Jump();
         Rotate();
         Dash();
-        UseAbility();
+       // UseAbility();
         WallSlide();
     }
 
@@ -113,6 +122,7 @@ public class PlayerUnit : MonoBehaviour
 
     private void Rotate()
     {
+        if (!canRotate) return;
         if (inputManager.HorizontalInput != 0)
         {
             transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
@@ -268,21 +278,36 @@ public class PlayerUnit : MonoBehaviour
 
     private void UseAbility()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            timeManager.TimeIsStopped = true;
-            Debug.Log("Called it");
-
-        }
+       
 
         if (inputManager.UseAbility)
         {
 
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && timeManager.TimeIsStopped)
+     
+    }
+
+    public void Freeze()
+    {
+        if (this.playerId != PlayerManager.Instance.playerIdUsedAbility)
         {
-            timeManager.ContinueTime();
+            storedPlayerVelocity = _rb.velocity;
+            _rb.bodyType = RigidbodyType2D.Static;
+            canRotate = false;
+        }       
+    }
+
+    public void UnFreeze()
+    {
+        if (playerId != PlayerManager.Instance.playerIdUsedAbility)
+        {
+            _rb.bodyType = RigidbodyType2D.Dynamic;
+            _rb.velocity = storedPlayerVelocity ;            
+            canRotate = true;
+            
         }
     }
+
+   
 }
