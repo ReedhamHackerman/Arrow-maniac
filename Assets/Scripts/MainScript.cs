@@ -12,6 +12,7 @@ public class MainScript : MonoBehaviour
         GameManager.Instance.Initialize();
         UIManager.Instance.Initialize();
         CollectibleManager.Instance.Initialize();
+        
     }
     private void Start()
     {

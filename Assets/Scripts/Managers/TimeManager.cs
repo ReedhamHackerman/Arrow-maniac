@@ -2,23 +2,96 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimeManager : MonoBehaviour
+public class TimeManager
 {
-    public bool TimeIsStopped;
-    public void ContinueTime()
+    public delegate void MyDelegate();
+   
+    private static TimeManager instance;
+    public static TimeManager Instance
     {
-        TimeIsStopped = false;
-
-        var objects = FindObjectsOfType<TimeBody>(); // Find Every object with the Timebody script
-        for (int i = 0; i < objects.Length ; i++)
+        get
         {
-            objects[i].GetComponent<TimeBody>().ContinueTime();
+            if (instance == null)
+            {
+                instance = new TimeManager();
+            }
+            return instance;
         }
+    }
+    public delegate string MyArgumentDelegate(string S);
+
+
+
+
+     List<DelegateTimer> delegateTimerList;
+    public void Initialize()
+    {
+        
+        delegateTimerList = new List<DelegateTimer>();
+    }
+    public void Refresh()
+    {
+        for (int i = delegateTimerList.Count - 1; i >= 0; i--)
+        {
+            if (delegateTimerList[i].timeToInvoke <= Time.time)
+            {
+               
+                try
+                {
+                    delegateTimerList[i].delegateToInvoke();
+                }
+                catch (System.Exception)
+                {
+
+                    Debug.LogError("Exception Thrown");
+                }
+                delegateTimerList.RemoveAt(i);
+            }
+        }
+    }
+    public void EndGame()
+    {
+        delegateTimerList.Clear();
     }
 
 
-    public void StopTime()
+    public void AddDelegate(MyDelegate del, float time, int repeat)
     {
-        TimeIsStopped = true;
+        for (int i = 1; i <= repeat; i++)
+        {
+            DelegateTimer toADD = new DelegateTimer(Time.time + (time * i), del);
+            delegateTimerList.Add(toADD);
+        }
+
+
+    }
+
+
+
+
+    private class DelegateTimer
+    {
+        public float timeToInvoke;
+        public MyDelegate delegateToInvoke;
+        public MyArgumentDelegate MyArgumentDelegate;
+        public int repeat;
+        public DelegateTimer(float timeOfInvo, MyDelegate del)
+        {
+            this.timeToInvoke = timeOfInvo;
+            this.delegateToInvoke = del;
+
+        }
+        public DelegateTimer(float timeOfInvo, MyArgumentDelegate myArgumentDelegate)
+        {
+            this.timeToInvoke = timeOfInvo;
+            this.MyArgumentDelegate = myArgumentDelegate;
+        }
+        public DelegateTimer(float timeOfInvo, MyDelegate del, int repeat)
+        {
+            this.timeToInvoke = timeOfInvo;
+            this.delegateToInvoke = del;
+            this.repeat = repeat;
+        }
+
     }
 }

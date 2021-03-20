@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Wall
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -13,6 +15,7 @@ TagManager:
   - UI
   - 
   - 
+  - Arrow
   - Ground
   - Player
   - 
