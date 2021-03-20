@@ -27,15 +27,17 @@ public class Ricochet : Arrow
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            //Destroy(collision.gameObject);
             DestroyRicochetArrow();
-            Destroy(collision.gameObject);
         }
-
-        float speed = lastVelocity.magnitude;
-        Vector3 direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
-        RB2D.velocity = direction * speed;
-        float angle = Mathf.Atan2(RB2D.velocity.y, RB2D.velocity.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        else
+        {
+            float speed = lastVelocity.magnitude;
+            Vector3 direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+            RB2D.velocity = direction * speed;
+            float angle = Mathf.Atan2(RB2D.velocity.y, RB2D.velocity.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
     }
 
     public override void DestroyArrow()

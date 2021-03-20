@@ -35,9 +35,10 @@ public class Arrow : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-           //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
-            Destroy(collision.gameObject);
+            //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
+            //Destroy(collision.gameObject);
             //Destroying Game Object Without Any Particle Effects Later On That logic will be Changed
+            DestroyArrow();
             Destroy(this.gameObject);
         }
     }

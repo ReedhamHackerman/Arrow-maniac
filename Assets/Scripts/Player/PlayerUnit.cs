@@ -250,7 +250,7 @@ public class PlayerUnit : MonoBehaviour
 
     private void Shoot()
     {
-        Arrow newArrow = ArrowManager.Instance.Fire(currentEquippedArrow, fireFromPos.position, Quaternion.identity);
+        Arrow newArrow = ArrowManager.Instance.Fire(currentEquippedArrow, fireFromPos.position, fireFromPos.rotation);
         newArrow.Oninitialize();
         newArrow.AddForceInDirection(fireFromPos.right);
     }
