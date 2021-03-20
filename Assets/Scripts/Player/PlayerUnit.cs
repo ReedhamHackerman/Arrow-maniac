@@ -8,6 +8,8 @@ public class PlayerUnit : MonoBehaviour
     [Header("LOCAL MULTIPLAYER")]
     [SerializeField] private int playerId;
 
+    public int PlayerId => playerId;
+
     [Header("MOVEMENT")]
     [SerializeField] private float movementSpeed;
 
