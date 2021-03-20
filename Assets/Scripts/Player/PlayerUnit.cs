@@ -32,13 +32,14 @@ public class PlayerUnit : MonoBehaviour
     [SerializeField] private float wallJumpForce;
     [SerializeField] private Vector2 wallJumpAngle;
 
-    [Header("References")]
-    [SerializeField] private Rigidbody2D _rb;
-    [SerializeField] private Animator _animator;
-    [SerializeField] private SpriteRenderer _myCharacterSprite;
-
     [Header("Other Settings")]
     [SerializeField] private bool showGizmos;
+
+    private Rigidbody2D _rb;
+    private Animator _animator;
+    private SpriteRenderer _myCharacterSprite;
+
+    [SerializeField] private Transform handTransform;
 
     private float dashTimeCalculate;
     private float dashCooldownTimerCalculate;
@@ -46,13 +47,14 @@ public class PlayerUnit : MonoBehaviour
     private bool isDashing;
     private bool isMoving;
     private bool isWallSliding;
+    private bool isAiming;
     private bool canUseDash;
     private bool canJump;
 
-    private Transform[] allPositions;
+    private Transform[] allPositions; //Temporary array to store positions
 
     private Player player;
-    private InputManager inputManager;
+    protected InputManager inputManager;
     private LayerMask groundLayerMask;
 
     public bool Grounded { get; set; } = true;
@@ -84,6 +86,7 @@ public class PlayerUnit : MonoBehaviour
         Rotate();
         Dash();
         WallSlide();
+        Aim();
     }
 
     public void FixedUpdateUnit()
@@ -91,16 +94,21 @@ public class PlayerUnit : MonoBehaviour
         Move();
     }
 
+
+    #region MOVEMENT MECHANICS
     private void Move()
     {
-        if (isMoving)
+        if(!isAiming)
         {
-            _rb.velocity = new Vector2(inputManager.HorizontalInput * movementSpeed, _rb.velocity.y);
-        }
-        
-        if (isDashing)
-        {
-            _rb.velocity = new Vector2(inputManager.HorizontalInput * dashSpeed, _rb.velocity.y);
+            if (isMoving)
+            {
+                _rb.velocity = new Vector2(inputManager.HorizontalInput * movementSpeed, _rb.velocity.y);
+            }
+
+            if (isDashing)
+            {
+                _rb.velocity = new Vector2(inputManager.HorizontalInput * dashSpeed, _rb.velocity.y);
+            }
         }
     }
 
@@ -196,6 +204,27 @@ public class PlayerUnit : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f); //DON'T change the time
         isMoving = true;
+    }
+
+    #endregion
+
+    private void Aim()
+    {
+        if (inputManager.GetAimButton)
+        {
+            isAiming = true;
+
+            if (_rb.velocity.x != 0) _rb.velocity = Vector2.zero;
+        }
+
+        if (inputManager.GetAimButtonUp) isAiming = false;
+
+        if(isAiming)
+        {
+            Vector2 aim = new Vector2(inputManager.HorizontalInput, inputManager.VerticalInput);
+
+
+        }
     }
 
     #region ON COLLISION CODE

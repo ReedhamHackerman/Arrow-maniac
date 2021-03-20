@@ -59,7 +59,7 @@ public class PlayerManager
         {
             for (int i = 0; i < connectedPlayerCount; i++)
             {
-                PlayerUnit playerUnit = GameObject.Instantiate<PlayerUnit>(Resources.Load<PlayerUnit>("Prefabs/Player1")); //Static for now Change this later
+                PlayerUnit playerUnit = GameObject.Instantiate<PlayerUnit>(Resources.Load<PlayerUnit>("Prefabs/Players/Player1")); //Static for now Change this later
                 playerUnit.Initialize(i);
                 playerUnitList.Add(playerUnit);
             }
