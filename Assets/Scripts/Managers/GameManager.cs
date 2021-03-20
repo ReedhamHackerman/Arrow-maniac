@@ -24,7 +24,7 @@ public class GameManager
     {
         PlayerManager.Instance.Initialize();
         ArrowManager.Instance.Initialize();
-
+        
     }
     public void Start()
     {

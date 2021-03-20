@@ -28,7 +28,7 @@ public class ArrowManager
     }
     public void Start()
     {
-
+      
     }
 
     public void Refresh()
@@ -38,7 +38,7 @@ public class ArrowManager
 
     public void FixedRefresh()
     {
-
+       // AddArrow(new Ricochet());
     }
 
     public Arrow Fire(ArrowType arrowType, Vector2 pos, Quaternion rot)

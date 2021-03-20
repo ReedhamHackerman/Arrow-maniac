@@ -8,6 +8,8 @@ public class PlayerUnit : MonoBehaviour
     [Header("LOCAL MULTIPLAYER")]
     [SerializeField] private int playerId;
 
+    public int PlayerId => playerId;
+
     [Header("MOVEMENT")]
     [SerializeField] private float movementSpeed;
 
@@ -314,5 +316,11 @@ public class PlayerUnit : MonoBehaviour
         player = ReInput.players.GetPlayer(playerId);
         inputManager = new InputManager(this.player);
         transform.position = allPositions[playerId].position;
+    }
+
+    public void Die()
+    {
+        print("player id " + playerId);
+        Destroy(gameObject);
     }
 }
