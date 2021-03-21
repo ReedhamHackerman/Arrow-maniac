@@ -6,12 +6,14 @@ public enum ArrowType
     EXPLOSIVE,
     RICOCHET
 }
-public class Arrow : MonoBehaviour
+public class Arrow : MonoBehaviour,IFreezable
 {
     public ArrowType arrowType;
     [HideInInspector] protected Rigidbody2D RB2D { get; set; }
     [HideInInspector] protected bool HasHit { get; set; }
 
+    protected Vector2 arrowValocity;
+  
     [SerializeField] private float shootForce;
 
     public virtual void ArrowRotation()
@@ -66,5 +68,18 @@ public class Arrow : MonoBehaviour
     public virtual void DestroyArrow()
     {
         ArrowManager.Instance.DestroyArrow(this);
+    }
+
+    public virtual void Freeze()
+    {
+        arrowValocity = RB2D.velocity;
+        RB2D.bodyType = RigidbodyType2D.Static;
+    }
+
+    public virtual void UnFreeze()
+    {
+        RB2D.bodyType = RigidbodyType2D.Dynamic;
+        RB2D.velocity = arrowValocity;
+        
     }
 }
