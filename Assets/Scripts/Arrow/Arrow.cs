@@ -72,14 +72,14 @@ public class Arrow : MonoBehaviour,IFreezable
 
     public virtual void Freeze()
     {
-        arrowValocity = RigidBody2D.velocity;
-        RigidBody2D.bodyType = RigidbodyType2D.Static;
+        arrowValocity = RB2D.velocity;
+        RB2D.bodyType = RigidbodyType2D.Static;
     }
 
     public virtual void UnFreeze()
     {
-        RigidBody2D.bodyType = RigidbodyType2D.Dynamic;
-        RigidBody2D.velocity = arrowValocity;
+        RB2D.bodyType = RigidbodyType2D.Dynamic;
+        RB2D.velocity = arrowValocity;
         
     }
 }

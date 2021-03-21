@@ -58,21 +58,17 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private bool canJump;
     private bool canRotate = true;
 
-    private Transform[] allPositions;
     private Vector2 storedPlayerVelocity;
+
+    private LayerMask groundLayerMask;
 
     private Player player;
     private InputManager inputManager;
     private Invisible invisibleScript;
     private TimeStop timeStopScript;
     public TimeManager timeManager;
-    private bool canShoot;
 
     private Transform[] allPositions; //Temporary array to store positions
-
-    private Player player;
-    protected InputManager inputManager;
-    private LayerMask groundLayerMask;
 
     private Dictionary<int, Vector2> playersVelocity = new Dictionary<int, Vector2>();
 

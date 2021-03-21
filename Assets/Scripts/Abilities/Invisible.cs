@@ -38,9 +38,7 @@ public class Invisible : Abilities,IFreezable
                 yield return null;
             }
         
-
-        yield return new WaitForSeconds(abilityTime);
-   
+        yield return new WaitForSeconds(abilityTime);   
        
             while(fade <= 1)
             {
