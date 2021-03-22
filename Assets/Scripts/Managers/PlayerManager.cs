@@ -21,6 +21,8 @@ public class PlayerManager
     }
     #endregion
 
+    public List<PlayerUnit> PlayerUnitList { get; private set; }
+    public int playerIdUsedAbility;
     private List<PlayerUnit> playerUnitList;
     private Dictionary<int, PlayerUnit> unitDictionary = new Dictionary<int, PlayerUnit>();
 
@@ -48,7 +50,6 @@ public class PlayerManager
     private void GetPlayerCountAndInitialize()
     {
         int connectedPlayerCount = ReInput.controllers.joystickCount;
-        playerUnitList = new List<PlayerUnit>();
 
         if (connectedPlayerCount > 0)
         {

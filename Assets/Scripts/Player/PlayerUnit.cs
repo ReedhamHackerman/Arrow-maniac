@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 
-public class PlayerUnit : MonoBehaviour
+public class PlayerUnit : MonoBehaviour,IFreezable
 {
     [Header("LOCAL MULTIPLAYER")]
     [SerializeField] private int playerId;
@@ -56,25 +56,36 @@ public class PlayerUnit : MonoBehaviour
     private bool isAiming;
     private bool canUseDash;
     private bool canJump;
-    private bool canShoot;
+    private bool canRotate = true;
+
+    private Vector2 storedPlayerVelocity;
+
+    private LayerMask groundLayerMask;
+
+    private Player player;
+    private InputManager inputManager;
+    private Invisible invisibleScript;
+    private TimeStop timeStopScript;
+    public TimeManager timeManager;
 
     private Transform[] allPositions; //Temporary array to store positions
 
-    private Player player;
-    protected InputManager inputManager;
-    private LayerMask groundLayerMask;
+    private Dictionary<int, Vector2> playersVelocity = new Dictionary<int, Vector2>();
 
     public bool Grounded { get; set; } = true;
     public bool LeftHit { get; set; } = true;
     public bool RightHit { get; set; } = true;
-
     public void Initialize(int playerId)
     {
         this.playerId = playerId;
         InitializePlayersById();
 
-        _rb = GetComponent<Rigidbody2D>();
+        _rb = gameObject.GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
+        invisibleScript = GetComponent<Invisible>();
+        timeStopScript = GetComponent<TimeStop>();
+        invisibleScript.inputManager = this.inputManager;
+        timeStopScript.inputManager = this.inputManager;
 
         dashTimeCalculate = maxDashTime;
         dashCooldownTimerCalculate = dashCooldown;
@@ -88,6 +99,7 @@ public class PlayerUnit : MonoBehaviour
         Grounded = isGrounded();
         LeftHit = isLeftHit();
         RightHit = isRightHit();
+
 
         Jump();
         Rotate();
@@ -121,6 +133,7 @@ public class PlayerUnit : MonoBehaviour
 
     private void Rotate()
     {
+        if (!canRotate) return;
         if (inputManager.HorizontalInput != 0)
         {
             transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
@@ -316,6 +329,27 @@ public class PlayerUnit : MonoBehaviour
         player = ReInput.players.GetPlayer(playerId);
         inputManager = new InputManager(this.player);
         transform.position = allPositions[playerId].position;
+    }
+
+    public void Freeze()
+    {
+        if (this.playerId != PlayerManager.Instance.playerIdUsedAbility)
+        {
+            storedPlayerVelocity = _rb.velocity;
+            _rb.bodyType = RigidbodyType2D.Static;
+            canRotate = false;
+        }       
+    }
+
+    public void UnFreeze()
+    {
+        if (playerId != PlayerManager.Instance.playerIdUsedAbility)
+        {
+            _rb.bodyType = RigidbodyType2D.Dynamic;
+            _rb.velocity = storedPlayerVelocity ;            
+            canRotate = true;
+            
+        }
     }
 
     public void Die()

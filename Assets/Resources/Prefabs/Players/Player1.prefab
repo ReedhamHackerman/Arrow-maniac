@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2670805510485863802}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: firePosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3114757681011909695}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: AimLook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8476890786520218255}
   - component: {fileID: 8476890786520218254}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9199cb8b42a71be449d296b67448e546, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -153,7 +153,9 @@ GameObject:
   - component: {fileID: -8652061852337927798}
   - component: {fileID: -6049954687701120001}
   - component: {fileID: 7215418971267612503}
-  m_Layer: 0
+  - component: {fileID: 385631639}
+  - component: {fileID: 6092602023212908800}
+  m_Layer: 10
   m_Name: Player1
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -244,6 +246,35 @@ MonoBehaviour:
   currentEquippedArrow: 0
   fireFromPos: {fileID: 2670805510485863802}
   showGizmos: 0
+--- !u!114 &385631639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8476890786577798659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af4e438eaa654f4fa529b6e7b1a3281, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canUseAbility: 1
+  abilityTime: 0
+--- !u!114 &6092602023212908800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8476890786577798659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01ef1d49f33566f40b04a36b598dacea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canUseAbility: 1
+  abilityTime: 0
+  isPlayerStopped: 0
 --- !u!1 &8476890786672357667
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,7 +284,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8476890786672357666}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ArrowBow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8476890786904143217}
   - component: {fileID: 8476890786904143216}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +358,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9199cb8b42a71be449d296b67448e546, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -369,7 +400,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8476890786974017340}
   - component: {fileID: 8476890786974017343}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Right leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,7 +439,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9199cb8b42a71be449d296b67448e546, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -450,7 +481,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8476890787093892672}
   - component: {fileID: 8476890787093892675}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: bow_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -491,7 +522,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9199cb8b42a71be449d296b67448e546, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -533,7 +564,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8476890787192764717}
   - component: {fileID: 8476890787192764716}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: 3_right arm_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -573,7 +604,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9199cb8b42a71be449d296b67448e546, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -614,7 +645,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8476890787203648269}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Legs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -646,7 +677,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8476890787329361779}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -678,7 +709,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8476890787422944678}
   - component: {fileID: 8476890787422944665}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: "a\xACrow"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -717,7 +748,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9199cb8b42a71be449d296b67448e546, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -758,7 +789,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8476890787468060010}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HandPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -790,7 +821,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8476890787514138142}
   - component: {fileID: 8476890787514138129}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: hend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -829,7 +860,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9199cb8b42a71be449d296b67448e546, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -871,7 +902,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8476890787664074321}
   - component: {fileID: 8476890787664074320}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: 3_left arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -911,7 +942,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9199cb8b42a71be449d296b67448e546, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -952,7 +983,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8476890787833100153}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -984,7 +1015,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8476890788061377899}
   - component: {fileID: 8476890788061377898}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Left leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1023,7 +1054,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9199cb8b42a71be449d296b67448e546, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1064,7 +1095,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8476890788092067520}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ArrowBowAndHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1098,7 +1129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8476890788334407911}
   - component: {fileID: 8476890788334407910}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: 3_right arm_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1137,7 +1168,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9199cb8b42a71be449d296b67448e546, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
