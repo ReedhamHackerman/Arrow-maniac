@@ -39,7 +39,6 @@ TagManager:
   - 
   - 
   - 
-  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
@@ -52,4 +51,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3222986631
+    locked: 0
+  - name: Arrow
+    uniqueID: 3552683839
     locked: 0
