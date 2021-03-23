@@ -77,15 +77,20 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         this.playerId = playerId;
         InitializePlayersById();
 
+        InitializeReferences();
+
+        isMoving = true;
+        canUseDash = true;
+    }
+
+    private void InitializeReferences()
+    {
         _rb = gameObject.GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
         invisibleScript = GetComponent<Invisible>();
         timeStopScript = GetComponent<TimeStop>();
         invisibleScript.inputManager = this.inputManager;
         timeStopScript.inputManager = this.inputManager;
-
-        isMoving = true;
-        canUseDash = true;
     }
 
     public void UpdateUnit()
@@ -302,7 +307,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         player = ReInput.players.GetPlayer(playerId);
         inputManager = new InputManager(this.player);
 
-        Transform[] spawnPositions = MapManager.Instance.GetCurrentMapsSpawnPositions();
+        Transform[] spawnPositions = MapManager.Instance.GetCurrentMapsSpawnPositions;
         transform.position = spawnPositions[playerId].position;
     }
 

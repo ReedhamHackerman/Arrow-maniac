@@ -30,7 +30,7 @@ public class GameManager
     {
         PlayerManager.Instance.Start();
         ArrowManager.Instance.Start();
-
+        MapManager.Instance.Start();
     }
     public void Refresh()
     {
