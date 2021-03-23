@@ -46,12 +46,12 @@ TagManager:
   - name: Decorations
     uniqueID: 3720654979
     locked: 0
+  - name: Arrow
+    uniqueID: 3552683839
+    locked: 0
   - name: Ground
     uniqueID: 1517973149
     locked: 0
   - name: Player
     uniqueID: 3222986631
-    locked: 0
-  - name: Arrow
-    uniqueID: 3552683839
     locked: 0
