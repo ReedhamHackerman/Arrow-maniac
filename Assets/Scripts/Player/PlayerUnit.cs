@@ -46,8 +46,6 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private Animator _animator;
     private SpriteRenderer _myCharacterSprite;
 
-    private float dashTimeCalculate;
-    private float dashCooldownTimerCalculate;
     private float angleAim;
 
     private bool isDashing;
@@ -66,9 +64,10 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private InputManager inputManager;
     private Invisible invisibleScript;
     private TimeStop timeStopScript;
-    public TimeManager timeManager;
 
     private Dictionary<int, Vector2> playersVelocity = new Dictionary<int, Vector2>();
+
+    readonly float MOVEMENT_ENABLE_TIME = 0.2f;
 
     public bool Grounded { get; set; } = true;
     public bool LeftHit { get; set; } = true;
@@ -84,9 +83,6 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         timeStopScript = GetComponent<TimeStop>();
         invisibleScript.inputManager = this.inputManager;
         timeStopScript.inputManager = this.inputManager;
-
-        dashTimeCalculate = maxDashTime;
-        dashCooldownTimerCalculate = dashCooldown;
 
         isMoving = true;
         canUseDash = true;
@@ -163,36 +159,26 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     private void Dash()
     {
-        if(!canUseDash)
-        {
-            dashCooldownTimerCalculate -= Time.deltaTime;
-
-            if (dashCooldownTimerCalculate <= 0)
-            {
-                dashCooldownTimerCalculate = dashCooldown;
-                canUseDash = true;
-            }
-        }
-
         if (inputManager.GetDashButtonDown && canUseDash && !isDashing && !isWallSliding)
         {
-            isDashing = true;
-            isMoving = false;
-            canUseDash = false;
+            StartDash();
         }
+    }
 
-        if (isDashing)
-        {
-            dashTimeCalculate -= Time.deltaTime;
+    private void StartDash()
+    {
+        isDashing = true;
+        isMoving = false;
 
-            if (dashTimeCalculate < 0)
-            {
-                isDashing = false;
-                isMoving = true;
+        TimeManager.Instance.AddDelegate(() => StopDash(), maxDashTime, 1);
+    }
 
-                dashTimeCalculate = maxDashTime;
-            }
-        }
+    private void StopDash()
+    {
+        isDashing = false;
+        isMoving = true;
+        canUseDash = false;
+        TimeManager.Instance.AddDelegate(() => canUseDash = true, dashCooldown, 1);
     }
 
     private void WallSlide()
@@ -216,12 +202,6 @@ public class PlayerUnit : MonoBehaviour,IFreezable
             if(Grounded && _rb.velocity.y == 0 && !isMoving)
                 isMoving = true;
         }
-    }
-
-    IEnumerator EnableMovement()
-    {
-        yield return new WaitForSeconds(0.2f); //DON'T change the time
-        isMoving = true;
     }
 
     #endregion
@@ -272,7 +252,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private void OnCollisionExit2D(Collision2D collision)
     {
         if ((groundLayerMask | 1 << collision.gameObject.layer) == groundLayerMask)
-            StartCoroutine(EnableMovement());
+            TimeManager.Instance.AddDelegate(() => isMoving = true, MOVEMENT_ENABLE_TIME, 1);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
