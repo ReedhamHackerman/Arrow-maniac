@@ -22,15 +22,15 @@ public class GameManager
 
     public void Initialize()
     {
+        MapManager.Instance.Initialize();
         PlayerManager.Instance.Initialize();
         ArrowManager.Instance.Initialize();
-        
     }
     public void Start()
     {
         PlayerManager.Instance.Start();
         ArrowManager.Instance.Start();
-
+        MapManager.Instance.Start();
     }
     public void Refresh()
     {

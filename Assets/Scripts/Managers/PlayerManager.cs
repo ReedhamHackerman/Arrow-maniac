@@ -23,8 +23,11 @@ public class PlayerManager
 
     public List<PlayerUnit> PlayerUnitList { get; private set; }
     public int playerIdUsedAbility;
+
     private List<PlayerUnit> playerUnitList;
     private Dictionary<int, PlayerUnit> unitDictionary = new Dictionary<int, PlayerUnit>();
+
+    private GameObject playerSpawnParent;
 
     public void Initialize()
     {
@@ -51,6 +54,8 @@ public class PlayerManager
     {
         int connectedPlayerCount = ReInput.controllers.joystickCount;
 
+        playerSpawnParent = new GameObject("Players Parent");
+
         if (connectedPlayerCount > 0)
         {
             for (int i = 0; i < connectedPlayerCount; i++)
@@ -58,6 +63,8 @@ public class PlayerManager
                 PlayerUnit playerUnit = GameObject.Instantiate<PlayerUnit>(Resources.Load<PlayerUnit>("Prefabs/Players/Player1")); //Static for now Change this later
                 playerUnit.Initialize(i);
                 unitDictionary.Add(i, playerUnit);
+
+                playerUnit.transform.SetParent(playerSpawnParent.transform);
             }
         }
         else
