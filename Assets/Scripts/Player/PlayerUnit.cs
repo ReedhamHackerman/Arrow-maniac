@@ -68,8 +68,6 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private TimeStop timeStopScript;
     public TimeManager timeManager;
 
-    private Transform[] allPositions; //Temporary array to store positions
-
     private Dictionary<int, Vector2> playersVelocity = new Dictionary<int, Vector2>();
 
     public bool Grounded { get; set; } = true;
@@ -230,14 +228,14 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     private void Aim()
     {
-        if (inputManager.GetAimButton)
+        if (inputManager.GetAimButton && !isWallSliding)
         {
             isAiming = true;
 
             if (_rb.velocity.x != 0) _rb.velocity = Vector2.zero;
         }
 
-        if (inputManager.GetAimButtonUp)
+        if (inputManager.GetAimButtonUp && !isWallSliding)
         {
             isAiming = false;
             Shoot();
@@ -321,14 +319,11 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     private void InitializePlayersById()
     {
-        //Temporary spawn position code
-        allPositions = new Transform[2];
-        allPositions[0] = GameObject.Find("PosOne").transform;
-        allPositions[1] = GameObject.Find("PosTwo").transform;
-
         player = ReInput.players.GetPlayer(playerId);
         inputManager = new InputManager(this.player);
-        transform.position = allPositions[playerId].position;
+
+        Transform[] spawnPositions = MapManager.Instance.GetCurrentMapsSpawnPositions();
+        transform.position = spawnPositions[playerId].position;
     }
 
     public void Freeze()

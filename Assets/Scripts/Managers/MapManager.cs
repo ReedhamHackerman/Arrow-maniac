@@ -19,20 +19,40 @@ public class MapManager
         }
     }
     #endregion
+
+    private MainMap[] loadedMaps;
+    private MainMap currentMainMap;
+
     public void Initialize()
     {
-
+        InitializeAndLoadMaps();
     }
+
     public void Start()
     {
 
     }
+
     public void Refresh()
     {
 
     }
+
     public void FixedRefresh()
     {
 
+    }
+
+    private void InitializeAndLoadMaps()
+    {
+        loadedMaps = Resources.LoadAll<MainMap>("Prefabs/Maps/");
+
+        int _random = Random.Range(0, loadedMaps.Length);
+        currentMainMap = GameObject.Instantiate(loadedMaps[_random]);
+    }
+
+    public Transform[] GetCurrentMapsSpawnPositions()
+    {
+        return currentMainMap.PlayersPositions;
     }
 }
