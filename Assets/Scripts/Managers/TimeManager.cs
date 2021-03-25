@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TimeManager
-{
+{   
+    public bool IsTimeStopped { get; set; }
+
     public delegate void MyDelegate();
    
     private static TimeManager instance;
@@ -38,19 +40,37 @@ public class TimeManager
     {
         for (int i = delegateTimerList.Count - 1; i >= 0; i--)
         {
-            if (delegateTimerList[i].timeToInvoke <= Time.time)
+            if(IsTimeStopped)
             {
-               
-                try
+                if (delegateTimerList[i].timeToInvoke <= Time.time && delegateTimerList[i].isRelatedToTime)
                 {
-                    delegateTimerList[i].delegateToInvoke();
-                }
-                catch (System.Exception)
-                {
+                    try
+                    {
+                        delegateTimerList[i].delegateToInvoke();
+                    }
+                    catch (System.Exception)
+                    {
 
-                    //Debug.LogError("Exception Thrown");
+                        //Debug.LogError("Exception Thrown");
+                    }
+                    delegateTimerList.RemoveAt(i);
                 }
-                delegateTimerList.RemoveAt(i);
+            }
+            else
+            {
+                if (delegateTimerList[i].timeToInvoke <= Time.time)
+                {
+                    try
+                    {
+                        delegateTimerList[i].delegateToInvoke();
+                    }
+                    catch (System.Exception)
+                    {
+
+                        //Debug.LogError("Exception Thrown");
+                    }
+                    delegateTimerList.RemoveAt(i);
+                }
             }
         }
     }
@@ -67,12 +87,16 @@ public class TimeManager
             DelegateTimer toADD = new DelegateTimer(Time.time + (time * i), del);
             delegateTimerList.Add(toADD);
         }
-
-
     }
 
-
-
+    public void AddDelegateRelatedToTime(MyDelegate del, float time, int repeat, bool isRelatedToTime)
+    {
+        for (int i = 1; i <= repeat; i++)
+        {
+            DelegateTimer toADD = new DelegateTimer(Time.time + (time * i), del, isRelatedToTime);
+            delegateTimerList.Add(toADD);
+        }
+    }
 
     private class DelegateTimer
     {
@@ -80,12 +104,22 @@ public class TimeManager
         public MyDelegate delegateToInvoke;
         //public MyArgumentDelegate MyArgumentDelegate;
         public int repeat;
+        public bool isRelatedToTime;
+
         public DelegateTimer(float timeOfInvo, MyDelegate del)
         {
             this.timeToInvoke = timeOfInvo;
             this.delegateToInvoke = del;
 
         }
+
+        public DelegateTimer(float timeOfInvo, MyDelegate del, bool isRelatedToTime)
+        {
+            this.timeToInvoke = timeOfInvo;
+            this.delegateToInvoke = del;
+            this.isRelatedToTime = isRelatedToTime;
+        }
+
         //public DelegateTimer(float timeOfInvo, MyArgumentDelegate myArgumentDelegate)
         //{
         //    this.timeToInvoke = timeOfInvo;

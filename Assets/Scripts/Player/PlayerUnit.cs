@@ -52,9 +52,9 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private bool isMoving;
     private bool isWallSliding;
     private bool isAiming;
-    private bool canUseDash;
+    public bool canUseDash;
     private bool canJump;
-    private bool canRotate = true;
+    private bool isTimeStop = false;
 
     private Vector2 storedPlayerVelocity;
 
@@ -95,11 +95,13 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     public void UpdateUnit()
     {
+        if (isTimeStop) return;
+
         Grounded = isGrounded();
         LeftHit = isLeftHit();
         RightHit = isRightHit();
 
-
+           
         Jump();
         Rotate();
         Dash();
@@ -132,7 +134,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     private void Rotate()
     {
-        if (!canRotate) return;
+        if (isTimeStop) return;
         if (inputManager.HorizontalInput != 0)
         {
             transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
@@ -183,7 +185,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         isDashing = false;
         isMoving = true;
         canUseDash = false;
-        TimeManager.Instance.AddDelegate(() => canUseDash = true, dashCooldown, 1);
+        TimeManager.Instance.AddDelegateRelatedToTime(() => canUseDash = true, dashCooldown, 1, false);
     }
 
     private void WallSlide()
@@ -317,7 +319,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         {
             storedPlayerVelocity = _rb.velocity;
             _rb.bodyType = RigidbodyType2D.Static;
-            canRotate = false;
+            isTimeStop = true;
         }       
     }
 
@@ -327,7 +329,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         {
             _rb.bodyType = RigidbodyType2D.Dynamic;
             _rb.velocity = storedPlayerVelocity ;            
-            canRotate = true;
+            isTimeStop = false;
             
         }
     }
