@@ -6,19 +6,23 @@ public enum ArrowType
     EXPLOSIVE,
     RICOCHET
 }
-public class Arrow : MonoBehaviour,IFreezable
+public class Arrow : MonoBehaviour
 {
     public ArrowType arrowType;
     [HideInInspector] protected Rigidbody2D RB2D { get; set; }
     [HideInInspector] protected bool HasHit { get; set; }
 
     protected Vector2 arrowValocity;
+    
+    protected float arrowSpeed;
+
+    protected bool isTimeStopped;
   
     [SerializeField] private float shootForce;
 
     public virtual void ArrowRotation()
     {
-        if (HasHit==false)
+        if (HasHit==false && !isTimeStopped)
         {
             float angle = Mathf.Atan2(RB2D.velocity.y, RB2D.velocity.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -70,16 +74,5 @@ public class Arrow : MonoBehaviour,IFreezable
         ArrowManager.Instance.DestroyArrow(this);
     }
 
-    public virtual void Freeze()
-    {
-        arrowValocity = RB2D.velocity;
-        RB2D.bodyType = RigidbodyType2D.Static;
-    }
-
-    public virtual void UnFreeze()
-    {
-        RB2D.bodyType = RigidbodyType2D.Dynamic;
-        RB2D.velocity = arrowValocity;
-        
-    }
+   
 }
