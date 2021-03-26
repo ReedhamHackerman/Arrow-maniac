@@ -35,7 +35,6 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     [SerializeField] private Vector2 wallJumpAngle;
 
     [Header("AIM-SHOOT")]
-    [SerializeField] private ArrowType currentEquippedArrow;
     [SerializeField] private Transform handTransform;
     [SerializeField] private Transform fireFromPos;
 
@@ -291,10 +290,6 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if ((arrowLayerMask | 1 << collision.gameObject.layer) == arrowLayerMask)
-        {
-            Debug.Log("Player,PickedUP An arrow");
-        }
         if ((groundLayerMask | 1 << collision.gameObject.layer) == groundLayerMask)
             isMoving = true;
        
@@ -340,7 +335,6 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     {
         for (int i = 0; i < equipCount; i++)
             arrowStack.Push(toEquip);
-
     }
    
    

@@ -39,15 +39,32 @@ public class Arrow : MonoBehaviour,IFreezable
         if (collision.gameObject.CompareTag("Player"))
         {
             //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
-            //Destroy(collision.gameObject);
+            
             if (!IsPickable)
             {
                 PlayerManager.Instance.PlayerDied(collision.gameObject.GetComponent<PlayerUnit>().PlayerId);
                 //Destroying Game Object Without Any Particle Effects Later On That logic will be Changed
-                DestroyArrow();
             }
-          
-          
+            else
+            {
+                PlayerUnit player = collision.gameObject.GetComponent<PlayerUnit>();
+
+                switch (arrowType)
+                {
+                    case ArrowType.NORMAL:
+                        player.EquipArrow(arrowType, 1);
+                        break;
+
+                    default:
+                        player.EquipArrow(arrowType, 2);
+                        break;
+                }
+                
+                Debug.Log("EquipArrow");
+            }
+
+            DestroyArrow();
+            Destroy(gameObject);
         }
     }
 
