@@ -290,10 +290,6 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if ((arrowLayerMask | 1 << collision.gameObject.layer) == arrowLayerMask)
-        {
-            Debug.Log("Player,PickedUP An arrow");
-        }
         if ((groundLayerMask | 1 << collision.gameObject.layer) == groundLayerMask)
             isMoving = true;
        
