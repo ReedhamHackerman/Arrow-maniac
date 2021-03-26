@@ -42,5 +42,6 @@ public class ArrowFactory
     public void RemoveFromList(Arrow toDest)
     {
         arrowList.Remove(toDest);
+        GameObject.Destroy(toDest.gameObject);
     }
 }

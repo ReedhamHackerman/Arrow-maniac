@@ -28,6 +28,7 @@ public class Normal : Arrow
     {
         if (HasHit) return; // so that stuck normal arrows do not get affected 
         base.Freeze();
+        IsPickable = true;
     }
 
     public override void UnFreeze()

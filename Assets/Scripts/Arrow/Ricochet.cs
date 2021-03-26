@@ -62,7 +62,6 @@ public class Ricochet : Arrow
     public override void DestroyArrow()
     {
         ArrowManager.Instance.DestroyArrow(this);
-        Destroy(gameObject);
     }
 
     public void DestroyRicochetArrow()

@@ -28,9 +28,9 @@ public class Explosive : Arrow
         Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(transform.position, explosionRadius, LayerMask.GetMask("Player"));
         for (int i = 0; i < collider2Ds.Length; i++)
         {
-            Destroy(collider2Ds[i].gameObject);
+            PlayerManager.Instance.PlayerDied(collider2Ds[i].gameObject.GetComponent<PlayerUnit>().PlayerId);
         }
-        Destroy(this.gameObject);
+        ArrowManager.Instance.DestroyArrow(this);
     }
 
     public override void Freeze()

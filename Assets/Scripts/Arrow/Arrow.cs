@@ -18,6 +18,7 @@ public class Arrow : MonoBehaviour,IFreezable
 
     protected bool isTimeStopped;
   
+    protected bool IsPickable { get; set; }
     [SerializeField] private float shootForce;
 
     public virtual void ArrowRotation()
@@ -41,18 +42,40 @@ public class Arrow : MonoBehaviour,IFreezable
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-           //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
-            //Destroy(collision.gameObject);
-            PlayerManager.Instance.PlayerDied(collision.gameObject.GetComponent<PlayerUnit>().PlayerId);
-            //Destroying Game Object Without Any Particle Effects Later On That logic will be Changed
+            //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
+            
+            if (!IsPickable)
+            {
+                PlayerManager.Instance.PlayerDied(collision.gameObject.GetComponent<PlayerUnit>().PlayerId);
+                //Destroying Game Object Without Any Particle Effects Later On That logic will be Changed
+            }
+            else
+            {
+                PlayerUnit player = collision.gameObject.GetComponent<PlayerUnit>();
+
+                switch (arrowType)
+                {
+                    case ArrowType.NORMAL:
+                        player.EquipArrow(arrowType, 1);
+                        break;
+
+                    default:
+                        player.EquipArrow(arrowType, 2);
+                        break;
+                }
+                
+                Debug.Log("EquipArrow");
+            }
+
             DestroyArrow();
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 
     public virtual void Oninitialize()
     {
         RB2D = GetComponent<Rigidbody2D>();
+        IsPickable = false;
     }
 
     public virtual void OnUpdate()
