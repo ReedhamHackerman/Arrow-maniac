@@ -6,7 +6,7 @@ public class Normal : Arrow
 {
     public override void OnHit(Collision2D collision)
     {
-        base.OnHit(collision);
+       
         if (collision.gameObject.CompareTag("Ground"))
         {
             

@@ -262,6 +262,10 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.layer.Equals(8))
+        {
+            Debug.Log("Player,PickedUP An arrow");
+        }
         if ((groundLayerMask | 1 << collision.gameObject.layer) == groundLayerMask)
             isMoving = true;
     }
@@ -310,6 +314,8 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         Transform[] spawnPositions = MapManager.Instance.GetCurrentMapsSpawnPositions;
         transform.position = spawnPositions[playerId].position;
     }
+   
+   
 
     public void Freeze()
     {
