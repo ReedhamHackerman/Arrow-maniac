@@ -27,7 +27,7 @@ public class CollectibleChest : MonoBehaviour
     {
         if(!isOpened)
         {
-            if ((playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask)
+            if ((playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask && !TimeManager.Instance.IsTimeStopped)
             {
                 playerUnit = collision.gameObject.GetComponent<PlayerUnit>();
 
