@@ -9,6 +9,8 @@ public class TimeManager
     public delegate void MyDelegate();
    
     private static TimeManager instance;
+    TimeStop timeStop;
+
     public static TimeManager Instance
     {
         get
@@ -42,23 +44,27 @@ public class TimeManager
         {
             if(IsTimeStopped)
             {
-                if (delegateTimerList[i].timeToInvoke <= Time.time && delegateTimerList[i].isRelatedToTime)
+                if (delegateTimerList[i].isRelatedToTime)
                 {
-                    try
-                    {
-                        delegateTimerList[i].delegateToInvoke();
-                    }
-                    catch (System.Exception)
+                    if (delegateTimerList[i].timeToInvoke <= Time.time && delegateTimerList[i].isRelatedToTime)
                     {
 
-                        //Debug.LogError("Exception Thrown");
+                        try
+                        {
+                            delegateTimerList[i].delegateToInvoke();
+                        }
+                        catch (System.Exception)
+                        {
+
+                            //Debug.LogError("Exception Thrown");
+                        }
+                        delegateTimerList.RemoveAt(i);
                     }
-                    delegateTimerList.RemoveAt(i);
                 }
             }
             else
             {
-                if (delegateTimerList[i].timeToInvoke <= Time.time)
+                if (delegateTimerList[i].timeToInvoke <= Time.time ) 
                 {
                     try
                     {
@@ -98,6 +104,17 @@ public class TimeManager
         }
     }
 
+    public void AddTimeToDelegateMethods(float abilityTime)
+    {
+        for (int i = 0; i < delegateTimerList.Count; i++)
+        {
+            if (!delegateTimerList[i].isRelatedToTime)
+            {
+                delegateTimerList[i].timeToInvoke += abilityTime;
+            }
+        }
+    }
+
     private class DelegateTimer
     {
         public float timeToInvoke;
@@ -119,6 +136,7 @@ public class TimeManager
             this.delegateToInvoke = del;
             this.isRelatedToTime = isRelatedToTime;
         }
+
 
         //public DelegateTimer(float timeOfInvo, MyArgumentDelegate myArgumentDelegate)
         //{

@@ -11,7 +11,7 @@ public class TimeStop : Abilities
     private PlayerUnit thisPlayerUnit;
     List< IFreezable> freezables = new List<IFreezable>();    
     protected override void Initialize()
-    {     
+    {
         abilityTime = 2f;
         thisPlayerUnit = gameObject.GetComponent<PlayerUnit>();
         
@@ -54,6 +54,8 @@ public class TimeStop : Abilities
         }
 
         TimeManager.Instance.AddDelegateRelatedToTime(() => Deactivate(), abilityTime, 1, true);
+        TimeManager.Instance.AddTimeToDelegateMethods(abilityTime);
+
     }
 
     private void Deactivate()

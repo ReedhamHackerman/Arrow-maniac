@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Explosive : Arrow
+public class Explosive : Arrow,IFreezable
 {
    
     //Specify the time That Arrow Should Stuck in the Object
@@ -32,6 +32,20 @@ public class Explosive : Arrow
         }
         Destroy(this.gameObject);
     }
-   
-   
+
+    public void Freeze()
+    {
+        arrowValocity = RB2D.velocity;
+
+        RB2D.velocity = Vector3.zero;
+        RB2D.isKinematic = true;
+    }
+
+    public void UnFreeze()
+    {
+        RB2D.velocity = arrowValocity;
+        RB2D.isKinematic = false;
+        isTimeStopped = false;
+
+    }
 }
