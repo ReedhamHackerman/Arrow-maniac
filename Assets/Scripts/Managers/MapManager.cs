@@ -23,7 +23,7 @@ public class MapManager
     private MainMap[] loadedMaps;
     private MainMap currentMainMap;
 
-    private GameObject chestPrefab;
+    private CollectibleChest chestPrefab;
     private GameObject chestSpawnParent;
 
     public Transform[] GetCurrentMapsSpawnPositions => currentMainMap.PlayersPositions;
@@ -52,11 +52,12 @@ public class MapManager
     private void InitializeMaps()
     {
         loadedMaps = Resources.LoadAll<MainMap>("Prefabs/Maps/");
-        chestPrefab = Resources.Load<GameObject>("Prefabs/CollectibleChests/ChestPrefab");
+        chestPrefab = Resources.Load<CollectibleChest>("Prefabs/CollectibleChests/ChestPrefab");
 
         chestSpawnParent = new GameObject("Collectible Chests");
 
         int _random = Random.Range(0, loadedMaps.Length);
+        _random = 0; ////
         currentMainMap = GameObject.Instantiate(loadedMaps[_random]);
     }
 
@@ -64,8 +65,9 @@ public class MapManager
     {
         for (int i = 0; i < currentMainMap.ChestPositions.Length; i++)
         {
-            GameObject chest = GameObject.Instantiate(chestPrefab, currentMainMap.ChestPositions[i].position, Quaternion.identity);
+            CollectibleChest chest = GameObject.Instantiate(chestPrefab, currentMainMap.ChestPositions[i].position, Quaternion.identity);
             chest.transform.SetParent(chestSpawnParent.transform);
+            chest.Initialize();
         }
     }
 }
