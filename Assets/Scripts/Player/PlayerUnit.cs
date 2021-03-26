@@ -59,6 +59,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private Vector2 storedPlayerVelocity;
 
     private LayerMask groundLayerMask;
+    private LayerMask arrowLayerMask;
 
     private Player player;
     private InputManager inputManager;
@@ -91,6 +92,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
+        arrowLayerMask = LayerMask.GetMask("Arrow");
         invisibleScript = GetComponent<Invisible>();
         timeStopScript = GetComponent<TimeStop>();
         invisibleScript.inputManager = this.inputManager;
@@ -289,8 +291,13 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if ((arrowLayerMask | 1 << collision.gameObject.layer) == arrowLayerMask)
+        {
+            Debug.Log("Player,PickedUP An arrow");
+        }
         if ((groundLayerMask | 1 << collision.gameObject.layer) == groundLayerMask)
             isMoving = true;
+       
     }
     #endregion
 
@@ -335,6 +342,8 @@ public class PlayerUnit : MonoBehaviour,IFreezable
             arrowStack.Push(toEquip);
 
     }
+   
+   
 
     public void Freeze()
     {
