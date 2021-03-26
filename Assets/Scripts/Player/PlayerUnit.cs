@@ -51,7 +51,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private bool isMoving;
     private bool isWallSliding;
     private bool isAiming;
-    public bool canUseDash;
+    private bool canUseDash;
     private bool canJump;
     private bool isTimeStop = false;
     private bool stopShoot = false;

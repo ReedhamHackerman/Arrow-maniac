@@ -9,8 +9,7 @@ public class TimeManager
     public delegate void MyDelegate();
    
     private static TimeManager instance;
-    TimeStop timeStop;
-
+    
     public static TimeManager Instance
     {
         get
