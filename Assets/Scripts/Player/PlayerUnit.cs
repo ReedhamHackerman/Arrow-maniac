@@ -55,6 +55,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     public bool canUseDash;
     private bool canJump;
     private bool isTimeStop = false;
+    private bool stopShoot = false;
 
     private Vector2 storedPlayerVelocity;
 
@@ -236,6 +237,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     private void Aim()
     {
+        if (stopShoot) return;
         if (inputManager.GetAimButton && !isWallSliding)
         {
             isAiming = true;
@@ -339,6 +341,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     public void Freeze()
     {
+        stopShoot = true;
         if (this.playerId != PlayerManager.Instance.playerIdUsedAbility)
         {
             storedPlayerVelocity = _rb.velocity;
@@ -349,6 +352,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     public void UnFreeze()
     {
+        stopShoot = false;
         if (playerId != PlayerManager.Instance.playerIdUsedAbility)
         {
             _rb.bodyType = RigidbodyType2D.Dynamic;
