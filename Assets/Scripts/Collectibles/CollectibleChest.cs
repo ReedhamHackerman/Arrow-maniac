@@ -97,4 +97,16 @@ public class CollectibleChest : MonoBehaviour
         else Debug.LogError("PlayerUnit is empty!");
     }
     #endregion
+
+    #region ABILITY
+    private void AbilityGenerate()
+    {
+
+    }
+
+    private void AbilityEquip()
+    {
+
+    }
+    #endregion
 }

@@ -35,7 +35,6 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     [SerializeField] private Vector2 wallJumpAngle;
 
     [Header("AIM-SHOOT")]
-    [SerializeField] private ArrowType currentEquippedArrow;
     [SerializeField] private Transform handTransform;
     [SerializeField] private Transform fireFromPos;
 
@@ -333,7 +332,6 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     {
         for (int i = 0; i < equipCount; i++)
             arrowStack.Push(toEquip);
-
     }
 
     public void Freeze()
