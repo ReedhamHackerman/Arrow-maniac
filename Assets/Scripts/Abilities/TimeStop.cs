@@ -11,7 +11,7 @@ public class TimeStop : Abilities
     private PlayerUnit thisPlayerUnit;
     List< IFreezable> freezables = new List<IFreezable>();    
     protected override void Initialize()
-    {     
+    {
         abilityTime = 2f;
         thisPlayerUnit = gameObject.GetComponent<PlayerUnit>();
         
@@ -37,25 +37,34 @@ public class TimeStop : Abilities
         if (inputManager.UseAbility)
         {
             PlayerManager.Instance.playerIdUsedAbility = thisPlayerUnit.PlayerId;
-            StartCoroutine(TimeStopAbility());
+            //StartCoroutine(TimeStopAbility());
+
+            TimeManager.Instance.AddDelegate(() => Activate(), 0, 1);
         }
     }
 
-    IEnumerator TimeStopAbility()
+    private void Activate()
     {
         freezables = Finds<IFreezable>();
+        TimeManager.Instance.IsTimeStopped = true;
 
         foreach (IFreezable iFreezable in freezables)
         {
             iFreezable.Freeze();
         }
-      
-        yield return new WaitForSeconds(abilityTime);
 
+        TimeManager.Instance.AddDelegateRelatedToTime(() => Deactivate(), abilityTime, 1, true);
+        TimeManager.Instance.AddTimeToDelegateMethods(abilityTime);
+
+    }
+
+    private void Deactivate()
+    {
         foreach (IFreezable iFreezable in freezables)
         {
             iFreezable.UnFreeze();
         }
 
-    }    
+        TimeManager.Instance.IsTimeStopped = false;
+    }
 }

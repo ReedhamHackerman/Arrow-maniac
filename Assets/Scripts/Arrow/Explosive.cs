@@ -32,6 +32,16 @@ public class Explosive : Arrow
         }
         ArrowManager.Instance.DestroyArrow(this);
     }
-   
-   
+
+    public override void Freeze()
+    {
+        if (HasHit) return; // so that stuck explosive arrows do not get affected 
+        base.Freeze();
+    }
+
+    public override void UnFreeze()
+    {
+        if (HasHit) return; // so that stuck explosive arrows do not get affected 
+        base.UnFreeze();
+    }
 }
