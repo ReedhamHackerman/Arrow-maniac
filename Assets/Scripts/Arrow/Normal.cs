@@ -21,6 +21,6 @@ public class Normal : Arrow
         HasHit = true;
         RB2D.velocity = Vector3.zero;
         RB2D.isKinematic = true;
-        HasFriendly = true;
+        IsPickable = true;
     }
 }

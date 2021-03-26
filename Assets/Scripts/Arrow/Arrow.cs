@@ -14,7 +14,7 @@ public class Arrow : MonoBehaviour,IFreezable
 
     protected Vector2 arrowValocity;
   
-    protected bool HasFriendly { get; set; }
+    protected bool IsPickable { get; set; }
     [SerializeField] private float shootForce;
 
     public virtual void ArrowRotation()
@@ -40,7 +40,7 @@ public class Arrow : MonoBehaviour,IFreezable
         {
             //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
             //Destroy(collision.gameObject);
-            if (!HasFriendly)
+            if (!IsPickable)
             {
                 PlayerManager.Instance.PlayerDied(collision.gameObject.GetComponent<PlayerUnit>().PlayerId);
                 //Destroying Game Object Without Any Particle Effects Later On That logic will be Changed
@@ -54,7 +54,7 @@ public class Arrow : MonoBehaviour,IFreezable
     public virtual void Oninitialize()
     {
         RB2D = GetComponent<Rigidbody2D>();
-        HasFriendly = false;
+        IsPickable = false;
     }
 
     public virtual void OnUpdate()
