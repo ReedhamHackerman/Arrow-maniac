@@ -44,6 +44,9 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     [Header("Particle Effects")]
     [SerializeField] private ParticleSystem walkParticle;
     [SerializeField] private ParticleSystem jumpParticle;
+    [SerializeField] private ParticleSystem dashParticle;
+
+
 
     private Rigidbody2D _rb;
     private Animator _animator;
@@ -208,6 +211,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         if (inputManager.GetDashButtonDown && canUseDash && !isDashing && !isWallSliding)
         {
             StartDash();
+            PlayParticle(dashParticle);
         }
     }
 
@@ -215,6 +219,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     {
         isDashing = true;
         isMoving = false;
+        Debug.LogError("");
 
         TimeManager.Instance.AddDelegate(() => StopDash(), maxDashTime, 1);
     }

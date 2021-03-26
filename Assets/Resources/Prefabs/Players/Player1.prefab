@@ -268,7 +268,7 @@ MonoBehaviour:
   jumpForce: 30
   maxDashTime: 0.1
   dashSpeed: 40
-  dashCooldown: 5
+  dashCooldown: 1
   wallSlideSpeed: 1.5
   leftDetectPosition: {x: -0.5, y: 0.26}
   leftDetectScale: {x: 0.2, y: 1.34}
@@ -281,6 +281,7 @@ MonoBehaviour:
   showGizmos: 0
   walkParticle: {fileID: 5912162363126356365}
   jumpParticle: {fileID: 5359939819249098132}
+  dashParticle: {fileID: 7447432988468917207}
 --- !u!114 &385631639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1426,7 +1427,7 @@ PrefabInstance:
     - target: {fileID: 620934027456896687, guid: 9b14b1a99df2bd248b874240a285b856,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.66
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 620934027456896687, guid: 9b14b1a99df2bd248b874240a285b856,
         type: 3}
@@ -1475,7 +1476,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
         type: 3}
+      propertyPath: lengthInSec
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
       propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
+      propertyPath: ColorModule.enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
@@ -1483,10 +1494,65 @@ PrefabInstance:
       propertyPath: VelocityModule.inWorldSpace
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 900
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7490937543900999579, guid: 9b14b1a99df2bd248b874240a285b856,
         type: 3}
       propertyPath: m_Name
       value: DashParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823243264291564581, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823243264291564581, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823243264291564581, guid: 9b14b1a99df2bd248b874240a285b856,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1071980665
       objectReference: {fileID: 0}
     - target: {fileID: 7823243264291564581, guid: 9b14b1a99df2bd248b874240a285b856,
         type: 3}
@@ -1498,6 +1564,12 @@ PrefabInstance:
 --- !u!4 &6589989075662070331 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 620934027456896687, guid: 9b14b1a99df2bd248b874240a285b856,
+    type: 3}
+  m_PrefabInstance: {fileID: 6046742290189237396}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &7447432988468917207 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3796746464675794755, guid: 9b14b1a99df2bd248b874240a285b856,
     type: 3}
   m_PrefabInstance: {fileID: 6046742290189237396}
   m_PrefabAsset: {fileID: 0}
