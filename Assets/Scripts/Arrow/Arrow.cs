@@ -12,17 +12,21 @@ public class Arrow : MonoBehaviour,IFreezable
     [HideInInspector] protected Rigidbody2D RB2D { get; set; }
     [HideInInspector] protected bool HasHit { get; set; }
 
+    protected Vector2 arrowValocity;
+    
+    protected float arrowSpeed;
+
+    protected bool isTimeStopped;
+  
     [SerializeField] private float shootForce;
 
     protected bool IsPickable { get; set; }
 
     protected Collider2D selfCollider2D;
-
-    protected Vector2 arrowValocity;
   
     public virtual void ArrowRotation()
     {
-        if (HasHit==false)
+        if (HasHit==false && !isTimeStopped)
         {
             float angle = Mathf.Atan2(RB2D.velocity.y, RB2D.velocity.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -80,14 +84,17 @@ public class Arrow : MonoBehaviour,IFreezable
 
     public virtual void Freeze()
     {
+        isTimeStopped = true;
         arrowValocity = RB2D.velocity;
-        RB2D.bodyType = RigidbodyType2D.Static;
+        RB2D.velocity = Vector3.zero;
+        RB2D.isKinematic = true;
     }
 
     public virtual void UnFreeze()
     {
-        RB2D.bodyType = RigidbodyType2D.Dynamic;
+        isTimeStopped = false;      
         RB2D.velocity = arrowValocity;
-        
+        RB2D.isKinematic = false;
+        isTimeStopped = false;
     }
 }
