@@ -35,8 +35,8 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     [SerializeField] private Vector2 wallJumpAngle;
 
     [Header("AIM-SHOOT")]
-    [SerializeField] private Transform handTransform;
     [SerializeField] private ArrowType currentEquippedArrow;
+    [SerializeField] private Transform handTransform;
     [SerializeField] private Transform fireFromPos;
 
     [Header("OTHER SETTINGS")]
@@ -68,6 +68,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private Stack<ArrowType> arrowStack;
 
     readonly float MOVEMENT_ENABLE_TIME = 0.2f;
+    readonly int START_ARROW_COUNT = 3;
 
     public bool Grounded { get; set; } = true;
     public bool LeftHit { get; set; } = true;
@@ -77,12 +78,14 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         this.playerId = playerId;
         InitializePlayersById();
 
+        InitializeArrowStack();
         InitializeReferences();
 
         isMoving = true;
         canUseDash = true;
     }
 
+    #region INITIALIZATION CODE
     private void InitializeReferences()
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
@@ -92,6 +95,24 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         invisibleScript.inputManager = this.inputManager;
         timeStopScript.inputManager = this.inputManager;
     }
+    
+    private void InitializeArrowStack()
+    {
+        arrowStack = new Stack<ArrowType>();
+
+        for (int i = 0; i < START_ARROW_COUNT; i++)
+            arrowStack.Push(ArrowType.NORMAL);
+    }
+
+    private void InitializePlayersById()
+    {
+        player = ReInput.players.GetPlayer(playerId);
+        inputManager = new InputManager(this.player);
+
+        Transform[] spawnPositions = MapManager.Instance.GetCurrentMapsSpawnPositions;
+        transform.position = spawnPositions[playerId].position;
+    }
+    #endregion
 
     public void UpdateUnit()
     {
@@ -250,9 +271,14 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     private void Shoot()
     {
-        Arrow newArrow = ArrowManager.Instance.Fire(currentEquippedArrow, fireFromPos.position, fireFromPos.rotation);
-        newArrow.Oninitialize();
-        newArrow.AddForceInDirection(fireFromPos.right);
+        if(arrowStack.Count > 0)
+        {
+            ArrowType arrowType = arrowStack.Pop();
+            Arrow newArrow = ArrowManager.Instance.Fire(arrowType, fireFromPos.position, fireFromPos.rotation);
+            newArrow.Oninitialize();
+            newArrow.AddForceInDirection(fireFromPos.right);
+        }
+        else Debug.Log("no arrows!");
     }
 
     #region ON COLLISION CODE
@@ -304,13 +330,11 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         }
     }
 
-    private void InitializePlayersById()
+    public void EquipArrow(ArrowType toEquip, int equipCount)
     {
-        player = ReInput.players.GetPlayer(playerId);
-        inputManager = new InputManager(this.player);
+        for (int i = 0; i < equipCount; i++)
+            arrowStack.Push(toEquip);
 
-        Transform[] spawnPositions = MapManager.Instance.GetCurrentMapsSpawnPositions;
-        transform.position = spawnPositions[playerId].position;
     }
 
     public void Freeze()
