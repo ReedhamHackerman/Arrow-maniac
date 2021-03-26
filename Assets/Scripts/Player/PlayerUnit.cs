@@ -65,7 +65,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private Invisible invisibleScript;
     private TimeStop timeStopScript;
 
-    private Dictionary<int, Vector2> playersVelocity = new Dictionary<int, Vector2>();
+    private Stack<ArrowType> arrowStack;
 
     readonly float MOVEMENT_ENABLE_TIME = 0.2f;
 
@@ -185,7 +185,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         isDashing = false;
         isMoving = true;
         canUseDash = false;
-        TimeManager.Instance.AddDelegateRelatedToTime(() => canUseDash = true, dashCooldown, 1, false);
+        TimeManager.Instance.AddDelegate(() => canUseDash = true, dashCooldown, 1);
     }
 
     private void WallSlide()

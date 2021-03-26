@@ -24,14 +24,8 @@ public abstract class Abilities : MonoBehaviour
         Refresh();
     }
 
-
-
     protected abstract void Refresh();
 
     protected abstract void Initialize();
 
-
-
-
-   
 }

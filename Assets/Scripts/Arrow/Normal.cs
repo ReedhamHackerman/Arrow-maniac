@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Normal : Arrow, IFreezable
+public class Normal : Arrow
 {
     public override void OnHit(Collision2D collision)
     {
@@ -22,25 +22,20 @@ public class Normal : Arrow, IFreezable
         RB2D.velocity = Vector3.zero;
         RB2D.isKinematic = true;
         
-    }
+   }
 
-
-    public virtual void Freeze()
+    public override void Freeze()
     {
-        if (HasHit) return;
-
-        arrowValocity = RB2D.velocity;
-
-        RB2D.velocity = Vector3.zero;
-        RB2D.isKinematic = true;
+        if (HasHit) return; // so that stuck normal arrows do not get affected 
+        base.Freeze();
     }
 
-    public virtual void UnFreeze()
+    public override void UnFreeze()
     {
-        if (HasHit) return;
-
-        RB2D.velocity = arrowValocity;
-        RB2D.isKinematic = false;
-        isTimeStopped = false;
+        if (HasHit) return; // so that stuck normal arrows do not get affected 
+        base.UnFreeze();
     }
+
+
+
 }
