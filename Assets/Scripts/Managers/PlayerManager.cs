@@ -24,7 +24,6 @@ public class PlayerManager
     public List<PlayerUnit> PlayerUnitList { get; private set; }
     public int playerIdUsedAbility;
 
-    private List<PlayerUnit> playerUnitList;
     private Dictionary<int, PlayerUnit> unitDictionary = new Dictionary<int, PlayerUnit>();
 
     private GameObject playerSpawnParent;

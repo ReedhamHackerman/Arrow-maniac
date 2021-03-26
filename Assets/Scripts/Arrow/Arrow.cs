@@ -12,11 +12,14 @@ public class Arrow : MonoBehaviour,IFreezable
     [HideInInspector] protected Rigidbody2D RB2D { get; set; }
     [HideInInspector] protected bool HasHit { get; set; }
 
-    protected Vector2 arrowValocity;
-  
-    protected bool IsPickable { get; set; }
     [SerializeField] private float shootForce;
 
+    protected bool IsPickable { get; set; }
+
+    protected Collider2D selfCollider2D;
+
+    protected Vector2 arrowValocity;
+  
     public virtual void ArrowRotation()
     {
         if (HasHit==false)
@@ -44,33 +47,15 @@ public class Arrow : MonoBehaviour,IFreezable
             {
                 PlayerManager.Instance.PlayerDied(collision.gameObject.GetComponent<PlayerUnit>().PlayerId);
                 //Destroying Game Object Without Any Particle Effects Later On That logic will be Changed
+                DestroyArrow();
             }
-            else
-            {
-                PlayerUnit player = collision.gameObject.GetComponent<PlayerUnit>();
-
-                switch (arrowType)
-                {
-                    case ArrowType.NORMAL:
-                        player.EquipArrow(arrowType, 1);
-                        break;
-
-                    default:
-                        player.EquipArrow(arrowType, 2);
-                        break;
-                }
-                
-                Debug.Log("EquipArrow");
-            }
-
-            DestroyArrow();
-            Destroy(gameObject);
         }
     }
 
     public virtual void Oninitialize()
     {
         RB2D = GetComponent<Rigidbody2D>();
+        selfCollider2D = GetComponent<Collider2D>();
         IsPickable = false;
     }
 
