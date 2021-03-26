@@ -124,3 +124,4 @@ MonoBehaviour:
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 1024
+  openedChestSprite: {fileID: 21300006, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
