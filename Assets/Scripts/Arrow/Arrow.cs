@@ -14,6 +14,7 @@ public class Arrow : MonoBehaviour,IFreezable
 
     protected Vector2 arrowValocity;
   
+    protected bool HasFriendly { get; set; }
     [SerializeField] private float shootForce;
 
     public virtual void ArrowRotation()
@@ -37,18 +38,23 @@ public class Arrow : MonoBehaviour,IFreezable
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-           //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
+            //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
             //Destroy(collision.gameObject);
-            PlayerManager.Instance.PlayerDied(collision.gameObject.GetComponent<PlayerUnit>().PlayerId);
-            //Destroying Game Object Without Any Particle Effects Later On That logic will be Changed
-            DestroyArrow();
-            Destroy(this.gameObject);
+            if (!HasFriendly)
+            {
+                PlayerManager.Instance.PlayerDied(collision.gameObject.GetComponent<PlayerUnit>().PlayerId);
+                //Destroying Game Object Without Any Particle Effects Later On That logic will be Changed
+                DestroyArrow();
+            }
+          
+          
         }
     }
 
     public virtual void Oninitialize()
     {
         RB2D = GetComponent<Rigidbody2D>();
+        HasFriendly = false;
     }
 
     public virtual void OnUpdate()
