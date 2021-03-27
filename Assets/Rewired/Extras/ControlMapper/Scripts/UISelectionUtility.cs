@@ -11,30 +11,34 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
+    using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.UI;
-    using System.Collections.Generic;
 
-    public static class UISelectionUtility {
+    public static class UISelectionUtility
+    {
 
 #if UNITY_2019_PLUS
         private static Selectable[] s_reusableAllSelectables = new Selectable[0];
 #endif
 
         // Find the next selectable object in the specified world-space direction.
-        public static Selectable FindNextSelectable(Selectable selectable, Transform transform, Vector3 direction) {
+        public static Selectable FindNextSelectable(Selectable selectable, Transform transform, Vector3 direction)
+        {
             RectTransform rectTransform = transform as RectTransform;
-            if(rectTransform == null) return null;
+            if (rectTransform == null) return null;
 
             IList<Selectable> allSelectables;
             int selectableCount;
 
 #if UNITY_2019_PLUS
-            
+
             // Resize array as needed to fit all Selectables
-            if (Selectable.allSelectableCount > s_reusableAllSelectables.Length) {
+            if (Selectable.allSelectableCount > s_reusableAllSelectables.Length)
+            {
                 s_reusableAllSelectables = new Selectable[Selectable.allSelectableCount];
             }
 
@@ -65,34 +69,37 @@ namespace Rewired.UI.ControlMapper {
             const float length = 999999f; // Mathf.Infinity fails
             Vector2 directLineCastEndPos = searchStartPos + localDir * length;
 
-            for(int i = 0; i < selectableCount; ++i) {
+            for (int i = 0; i < selectableCount; ++i)
+            {
                 Selectable targetSelectable = allSelectables[i];
 
-                if(targetSelectable == selectable || targetSelectable == null) continue; // skip if self or null
-                if(targetSelectable.navigation.mode == Navigation.Mode.None) continue; // skip if non-navigable
+                if (targetSelectable == selectable || targetSelectable == null) continue; // skip if self or null
+                if (targetSelectable.navigation.mode == Navigation.Mode.None) continue; // skip if non-navigable
 
                 // Allow selection of non-interactable elements because it makes navigating easier and more predictable
                 // but the CanvasGroup interactable value is private in Selectable
 #if !UNITY_WSA
                 // Reflect to get group intaractability if non-interactable
                 bool canvasGroupAllowsInteraction = targetSelectable.IsInteractable() || Rewired.Utils.ReflectionTools.GetPrivateField<Selectable, bool>(targetSelectable, "m_GroupsAllowInteraction");
-                if(!canvasGroupAllowsInteraction) continue; // skip if disabled by canvas group, otherwise allow it
+                if (!canvasGroupAllowsInteraction) continue; // skip if disabled by canvas group, otherwise allow it
 #else
                 // Can't do private field reflection in Metro
                 if(!targetSelectable.IsInteractable()) continue; // skip if disabled
 #endif
 
                 var targetSelectableRectTransform = targetSelectable.transform as RectTransform;
-                if(targetSelectableRectTransform == null) continue;
+                if (targetSelectableRectTransform == null) continue;
 
                 // Check direct line cast from center edge of object in direction pressed
                 float directLineSqMag;
                 Rect targetSelecableRect = UITools.InvertY(UITools.TransformRectTo(targetSelectableRectTransform, transform, targetSelectableRectTransform.rect));
 
                 // Check for direct line rect intersection
-                if(Rewired.Utils.MathTools.LineIntersectsRect(searchStartPos, directLineCastEndPos, targetSelecableRect, out directLineSqMag)) {
-                    if(isHoriz) directLineSqMag *= 0.25f; // give extra bonus to horizontal directions because most of the UI groups are laid out horizontally                     
-                    if(directLineSqMag < minDirectLineSqMag) {
+                if (Rewired.Utils.MathTools.LineIntersectsRect(searchStartPos, directLineCastEndPos, targetSelecableRect, out directLineSqMag))
+                {
+                    if (isHoriz) directLineSqMag *= 0.25f; // give extra bonus to horizontal directions because most of the UI groups are laid out horizontally                     
+                    if (directLineSqMag < minDirectLineSqMag)
+                    {
                         minDirectLineSqMag = directLineSqMag;
                         bestDirectLinePick = targetSelectable;
                     }
@@ -107,20 +114,23 @@ namespace Rewired.UI.ControlMapper {
                 // Get the angle the target center deviates from straight
                 float angle = Mathf.Abs(Vector2.Angle(localDir, searchPosToTargetSelectableCenter));
 
-                if(angle > maxSafeAngle) continue; // only consider if within a reasonable angle of the desired direction
+                if (angle > maxSafeAngle) continue; // only consider if within a reasonable angle of the desired direction
 
                 float score = searchPosToTargetSelectableCenter.sqrMagnitude;
 
                 // Lower score is better
-                if(score < minCenterDistSqMag) {
+                if (score < minCenterDistSqMag)
+                {
                     minCenterDistSqMag = score;
                     bestCenterDistPick = targetSelectable;
                 }
             }
 
             // Choose between direct line and center dist
-            if(bestDirectLinePick != null && bestCenterDistPick != null) {
-                if(minDirectLineSqMag > minCenterDistSqMag) {
+            if (bestDirectLinePick != null && bestCenterDistPick != null)
+            {
+                if (minDirectLineSqMag > minCenterDistSqMag)
+                {
                     return bestCenterDistPick;
                 }
                 return bestDirectLinePick;

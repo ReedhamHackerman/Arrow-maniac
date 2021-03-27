@@ -1,7 +1,4 @@
-﻿using Rewired;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Ricochet : Arrow
 {
@@ -40,7 +37,7 @@ public class Ricochet : Arrow
     {
         ArrowRotation();
         lastVelocity = RB2D.velocity;
-       
+
     }
     public override void OnHit(Collision2D collision)
     {

@@ -1,9 +1,8 @@
-﻿using System.Collections;
+﻿using Rewired;
 using System.Collections.Generic;
 using UnityEngine;
-using Rewired;
 
-public class PlayerManager 
+public class PlayerManager
 {
     #region Singleton
     private PlayerManager() { }
@@ -34,7 +33,7 @@ public class PlayerManager
     }
     public void Start()
     {
-        
+
     }
 
     public void Refresh()

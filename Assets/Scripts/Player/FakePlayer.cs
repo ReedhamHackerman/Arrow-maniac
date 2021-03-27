@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FakePlayer : MonoBehaviour
 {
-    
+
     GameObject gameob;
     public float arrowForce;
     private void Awake()

@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using Rewired;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Rewired;
 
 public class CharacterSelection : MonoBehaviour
 {

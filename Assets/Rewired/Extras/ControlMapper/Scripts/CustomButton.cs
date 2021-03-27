@@ -3,22 +3,22 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
-    using UnityEngine;
-    using UnityEngine.UI;
-    using UnityEngine.EventSystems;
-    using UnityEngine.Events;
-    using System.Collections.Generic;
     using System.Collections;
-    using Rewired;
+    using UnityEngine;
+    using UnityEngine.Events;
+    using UnityEngine.EventSystems;
+    using UnityEngine.UI;
 
     /// <summary>
     /// Overrides auto-navigation in Selectable because it's inadequate for selectables inside a scroll rect
     /// Also enables selection of disabled controls for better navigation experience.
     /// </summary>
     [AddComponentMenu("")]
-    public class CustomButton : Button, ICustomSelectable {
+    public class CustomButton : Button, ICustomSelectable
+    {
 
         [SerializeField]
         private Sprite _disabledHighlightedSprite;
@@ -55,53 +55,66 @@ namespace Rewired.UI.ControlMapper {
 
         #region Selectable Overrides
 
-        public override Selectable FindSelectableOnLeft() {
-            if((navigation.mode & Navigation.Mode.Horizontal) != 0 || _autoNavLeft) {
+        public override Selectable FindSelectableOnLeft()
+        {
+            if ((navigation.mode & Navigation.Mode.Horizontal) != 0 || _autoNavLeft)
+            {
                 return UISelectionUtility.FindNextSelectable(this, transform, Vector3.left);
             }
             return base.FindSelectableOnLeft();
         }
 
-        public override Selectable FindSelectableOnRight() {
-            if((navigation.mode & Navigation.Mode.Horizontal) != 0 || _autoNavRight) {
+        public override Selectable FindSelectableOnRight()
+        {
+            if ((navigation.mode & Navigation.Mode.Horizontal) != 0 || _autoNavRight)
+            {
                 return UISelectionUtility.FindNextSelectable(this, transform, Vector3.right);
             }
             return base.FindSelectableOnRight();
         }
 
-        public override Selectable FindSelectableOnUp() {
-            if((navigation.mode & Navigation.Mode.Vertical) != 0 || _autoNavUp) {
+        public override Selectable FindSelectableOnUp()
+        {
+            if ((navigation.mode & Navigation.Mode.Vertical) != 0 || _autoNavUp)
+            {
                 return UISelectionUtility.FindNextSelectable(this, transform, Vector3.up);
             }
             return base.FindSelectableOnUp();
         }
 
-        public override Selectable FindSelectableOnDown() {
-            if((navigation.mode & Navigation.Mode.Vertical) != 0 || _autoNavDown) {
+        public override Selectable FindSelectableOnDown()
+        {
+            if ((navigation.mode & Navigation.Mode.Vertical) != 0 || _autoNavDown)
+            {
                 return UISelectionUtility.FindNextSelectable(this, transform, Vector3.down);
             }
             return base.FindSelectableOnDown();
         }
 
-        protected override void OnCanvasGroupChanged() {
+        protected override void OnCanvasGroupChanged()
+        {
             base.OnCanvasGroupChanged();
 
-            if(EventSystem.current == null) return;
+            if (EventSystem.current == null) return;
 
             // Handle highlight-disabled state transition
             EvaluateHightlightDisabled(EventSystem.current.currentSelectedGameObject == gameObject);
         }
 
-        protected override void DoStateTransition(SelectionState state, bool instant) {
+        protected override void DoStateTransition(SelectionState state, bool instant)
+        {
 
-            if(isHighlightDisabled) {
+            if (isHighlightDisabled)
+            {
 
                 Color tintColor = _disabledHighlightedColor;
                 Sprite transitionSprite = _disabledHighlightedSprite;
                 string triggerName = _disabledHighlightedTrigger;
 
-                if(gameObject.activeInHierarchy) {
-                    switch(this.transition) {
+                if (gameObject.activeInHierarchy)
+                {
+                    switch (this.transition)
+                    {
                         case Transition.ColorTint:
                             StartColorTween(tintColor * colors.colorMultiplier, instant);
                             break;
@@ -114,31 +127,36 @@ namespace Rewired.UI.ControlMapper {
                     }
                 }
 
-            } else {
+            }
+            else
+            {
                 base.DoStateTransition(state, instant);
             }
         }
 
-        void StartColorTween(Color targetColor, bool instant) {
-            if(targetGraphic == null)
+        void StartColorTween(Color targetColor, bool instant)
+        {
+            if (targetGraphic == null)
                 return;
 
             targetGraphic.CrossFadeColor(targetColor, instant ? 0f : colors.fadeDuration, true, true);
         }
 
-        void DoSpriteSwap(Sprite newSprite) {
-            if(image == null)
+        void DoSpriteSwap(Sprite newSprite)
+        {
+            if (image == null)
                 return;
 
             image.overrideSprite = newSprite;
         }
 
-        void TriggerAnimation(string triggername) {
+        void TriggerAnimation(string triggername)
+        {
 #if UNITY_4_6 && (UNITY_4_6_0 || UNITY_4_6_1 || UNITY_4_6_2)
             if(animator == null || !animator.enabled || animator.runtimeAnimatorController == null || string.IsNullOrEmpty(triggername))
                 return;
 #else
-            if(animator == null || !animator.enabled || !animator.isActiveAndEnabled || animator.runtimeAnimatorController == null || string.IsNullOrEmpty(triggername))
+            if (animator == null || !animator.enabled || !animator.isActiveAndEnabled || animator.runtimeAnimatorController == null || string.IsNullOrEmpty(triggername))
                 return;
 #endif
 
@@ -146,14 +164,16 @@ namespace Rewired.UI.ControlMapper {
             animator.SetTrigger(triggername);
         }
 
-        public override void OnSelect(BaseEventData eventData) {
+        public override void OnSelect(BaseEventData eventData)
+        {
             base.OnSelect(eventData);
 
             // Handle highlight-disabled state transition
             EvaluateHightlightDisabled(true);
         }
 
-        public override void OnDeselect(BaseEventData eventData) {
+        public override void OnDeselect(BaseEventData eventData)
+        {
             base.OnDeselect(eventData);
 
             // Handle highlight-disabled state transition
@@ -164,35 +184,40 @@ namespace Rewired.UI.ControlMapper {
 
         #region Button Overrides
 
-        private void Press() {
-            if(!IsActive() || !IsInteractable())
+        private void Press()
+        {
+            if (!IsActive() || !IsInteractable())
                 return;
 
             onClick.Invoke();
         }
 
         // Trigger all registered callbacks.
-        public override void OnPointerClick(PointerEventData eventData) {
-            if(!IsActive() || !IsInteractable()) return; // ignore click entirely if button is already disabled
+        public override void OnPointerClick(PointerEventData eventData)
+        {
+            if (!IsActive() || !IsInteractable()) return; // ignore click entirely if button is already disabled
 
-            if(eventData.button != PointerEventData.InputButton.Left)
+            if (eventData.button != PointerEventData.InputButton.Left)
                 return;
 
             Press();
 
             // Transition to highlight-disabled state if disabled
-            if(!IsActive() || !IsInteractable()) {
+            if (!IsActive() || !IsInteractable())
+            {
                 isHighlightDisabled = true;
                 DoStateTransition(SelectionState.Disabled, false);
             }
         }
 
-        public override void OnSubmit(BaseEventData eventData) {
+        public override void OnSubmit(BaseEventData eventData)
+        {
             Press();
 
             // if we get set disabled during the press
             // don't run the coroutine.
-            if(!IsActive() || !IsInteractable()) {
+            if (!IsActive() || !IsInteractable())
+            {
                 // Transition to highlight-disabled state
                 isHighlightDisabled = true;
                 DoStateTransition(SelectionState.Disabled, false);
@@ -203,11 +228,13 @@ namespace Rewired.UI.ControlMapper {
             StartCoroutine(OnFinishSubmit());
         }
 
-        private IEnumerator OnFinishSubmit() {
+        private IEnumerator OnFinishSubmit()
+        {
             var fadeTime = colors.fadeDuration;
             var elapsedTime = 0f;
 
-            while(elapsedTime < fadeTime) {
+            while (elapsedTime < fadeTime)
+            {
                 elapsedTime += Time.unscaledDeltaTime;
                 yield return null;
             }
@@ -217,19 +244,24 @@ namespace Rewired.UI.ControlMapper {
 
         #endregion
 
-        private void EvaluateHightlightDisabled(bool isSelected) {
-            
-            if(!isSelected) { // Deselection
-                
-                if(isHighlightDisabled) {
+        private void EvaluateHightlightDisabled(bool isSelected)
+        {
+
+            if (!isSelected)
+            { // Deselection
+
+                if (isHighlightDisabled)
+                {
                     isHighlightDisabled = false;
                     SelectionState state = isDisabled ? SelectionState.Disabled : currentSelectionState;
                     DoStateTransition(state, false);
                 }
 
-            } else { // Selection
-                
-                if(!isDisabled) return;
+            }
+            else
+            { // Selection
+
+                if (!isDisabled) return;
                 isHighlightDisabled = true;
                 DoStateTransition(SelectionState.Disabled, false);
             }
@@ -237,8 +269,9 @@ namespace Rewired.UI.ControlMapper {
 
         #region ICancelHandler Implementation
 
-        public void OnCancel(BaseEventData eventData) {
-            if(_CancelEvent != null) _CancelEvent();
+        public void OnCancel(BaseEventData eventData)
+        {
+            if (_CancelEvent != null) _CancelEvent();
         }
 
         #endregion

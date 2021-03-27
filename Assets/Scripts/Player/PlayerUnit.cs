@@ -1,7 +1,6 @@
-﻿using System.Collections;
+﻿using Rewired;
 using System.Collections.Generic;
 using UnityEngine;
-using Rewired;
 
 public class PlayerUnit : MonoBehaviour, IFreezable
 {
@@ -37,6 +36,13 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     [Header("AIM-SHOOT")]
     [SerializeField] private Transform handTransform;
     [SerializeField] private Transform fireFromPos;
+
+    [Header("ARROW HUD")]
+    [SerializeField] private GameObject arrowHudParent;
+    private Dictionary<ArrowType, GameObject> AllArrowHUDSDictionary = new Dictionary<ArrowType, GameObject>();
+    [SerializeField]private float arrowHudHeight;
+    [SerializeField]private float arrowHudSpacing;
+    Quaternion HudRotation;
 
     [Header("OTHER SETTINGS")]
     [SerializeField] private bool showGizmos;
@@ -75,6 +81,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     private Stack<ArrowType> arrowStack;
 
+
     readonly float MOVEMENT_ENABLE_TIME = 0.2f;
     readonly int START_ARROW_COUNT = 3;
 
@@ -83,14 +90,16 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     public bool RightHit { get; set; } = true;
     public void Initialize(int playerId)
     {
+        LoadAlltheArrowHUD();
         this.playerId = playerId;
         InitializePlayersById();
 
         InitializeArrowStack();
         InitializeReferences();
-
+        // LoadAlltheArrowHUD();
         isMoving = true;
         canUseDash = true;
+        HudRotation = arrowHudParent.transform.rotation;
     }
 
     #region INITIALIZATION CODE
@@ -105,13 +114,30 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         invisibleScript.inputManager = this.inputManager;
         timeStopScript.inputManager = this.inputManager;
     }
-    
+
+    private void LoadAlltheArrowHUD()
+    {
+        ArrowType[] alltypes = (ArrowType[])System.Enum.GetValues(typeof(ArrowType));
+      
+        for (int i = 0; i < alltypes.Length; i++)
+        {
+            AllArrowHUDSDictionary.Add(alltypes[i], Resources.Load<GameObject>("Prefabs/ArrowHUDS/" + alltypes[i].ToString() + "ArrowHUD"));
+        }
+       
+
+    }
+
     private void InitializeArrowStack()
     {
         arrowStack = new Stack<ArrowType>();
 
         for (int i = 0; i < START_ARROW_COUNT; i++)
+        {
             arrowStack.Push(ArrowType.NORMAL);
+            AddNewArrowTOHUD(ArrowType.NORMAL);
+        }
+
+
     }
 
     private void InitializePlayersById()
@@ -132,14 +158,17 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         LeftHit = isLeftHit();
         RightHit = isRightHit();
 
-           
+
         Jump();
         Rotate();
         Dash();
         WallSlide();
         Aim();
     }
-
+    private void LateUpdate()
+    {
+        arrowHudParent.transform.rotation = HudRotation;
+    }
     public void FixedUpdateUnit()
     {
         Move();
@@ -149,12 +178,12 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     #region MOVEMENT MECHANICS
     private void Move()
     {
-        if(!isAiming)
+        if (!isAiming)
         {
             if (isMoving)
             {
                 _rb.velocity = new Vector2(inputManager.HorizontalInput * movementSpeed, _rb.velocity.y);
-                if(inputManager.HorizontalInput != 0 && isGrounded())
+                if (inputManager.HorizontalInput != 0 && isGrounded())
                 {
                     PlayParticle(walkParticle);
                 }
@@ -177,8 +206,8 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     {
         if (isTimeStop) return;
         if (inputManager.HorizontalInput != 0)
-        {          
-            transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);                  
+        {
+            transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
         }
     }
 
@@ -191,11 +220,11 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
         if (canJump)
         {
-            if(isWallSliding)
+            if (isWallSliding)
             {
-                if(LeftHit)
+                if (LeftHit)
                     _rb.AddForce(new Vector2(wallJumpForce * wallJumpAngle.x, wallJumpForce * wallJumpAngle.y), ForceMode2D.Impulse);
-                else if(RightHit)
+                else if (RightHit)
                     _rb.AddForce(new Vector2(wallJumpForce * -wallJumpAngle.x, wallJumpForce * wallJumpAngle.y), ForceMode2D.Impulse);
             }
             else
@@ -250,7 +279,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         }
         else
         {
-            if(Grounded && _rb.velocity.y == 0 && !isMoving)
+            if (Grounded && _rb.velocity.y == 0 && !isMoving)
                 isMoving = true;
         }
     }
@@ -293,11 +322,27 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             handTransform.localEulerAngles = Vector2.zero;
     }
 
+    private void AddNewArrowTOHUD(ArrowType ourArrowTYPE)
+    {
+        float countArrowSpacing = ((arrowStack.Count - 1) * arrowHudSpacing);
+        GameObject arrowHud = Instantiate(AllArrowHUDSDictionary[ourArrowTYPE], new Vector2(arrowHudParent.transform.position.x + (countArrowSpacing), arrowHudParent.transform.position.y + arrowHudHeight), Quaternion.identity, arrowHudParent.transform);
+
+        //GameObject arrowHud = Instantiate(AllArrowHUDS[ourArrowTYPE], new Vector2(0f, 0), Quaternion.identity, arrowHudParent.transform);
+    }
+    private void RemoveArrowFromHUD(ArrowType ourArowType)
+    {
+        if (arrowHudParent.transform.childCount != 0)
+        {
+            Destroy(arrowHudParent.transform.GetChild(arrowHudParent.transform.childCount - 1).gameObject);
+        }
+
+    }
     private void Shoot()
     {
-        if(arrowStack.Count > 0)
+        if (arrowStack.Count > 0)
         {
             ArrowType arrowType = arrowStack.Pop();
+            RemoveArrowFromHUD(arrowType);
             Arrow newArrow = ArrowManager.Instance.Fire(arrowType, fireFromPos.position, fireFromPos.rotation);
             newArrow.Oninitialize();
             newArrow.AddForceInDirection(fireFromPos.right);
@@ -316,7 +361,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     {
         if ((groundLayerMask | 1 << collision.gameObject.layer) == groundLayerMask)
             isMoving = true;
-       
+
     }
     #endregion
 
@@ -358,10 +403,15 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     public void EquipArrow(ArrowType toEquip, int equipCount)
     {
         for (int i = 0; i < equipCount; i++)
+        {
             arrowStack.Push(toEquip);
+            AddNewArrowTOHUD(toEquip);
+        }
+
+
     }
-   
-   
+
+
 
     public void Freeze()
     {
@@ -371,7 +421,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             storedPlayerVelocity = _rb.velocity;
             _rb.bodyType = RigidbodyType2D.Static;
             isTimeStop = true;
-        }       
+        }
     }
 
     public void UnFreeze()
@@ -380,9 +430,9 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         if (playerId != PlayerManager.Instance.playerIdUsedAbility)
         {
             _rb.bodyType = RigidbodyType2D.Dynamic;
-            _rb.velocity = storedPlayerVelocity ;            
+            _rb.velocity = storedPlayerVelocity;
             isTimeStop = false;
-            
+
         }
     }
 

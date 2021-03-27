@@ -1,11 +1,11 @@
 ﻿// Copyright (c) 2014 Augie R. Maddox, Guavaman Enterprises. All rights reserved.
 
-namespace Rewired.Demos {
+namespace Rewired.Demos
+{
 
-    using UnityEngine;
-    using System;
-    using System.Collections.Generic;
     using Rewired;
+    using System;
+    using UnityEngine;
 
     /* IMPORTANT NOTE: Touch control is now available through using the Touch Controller components. Please see
      * the documentation on Touch Controls for more information: http://guavaman.com/rewired/docs/TouchControls.html
@@ -19,7 +19,8 @@ namespace Rewired.Demos {
     */
 
     [AddComponentMenu("")]
-    public class CustomControllerDemo : MonoBehaviour {
+    public class CustomControllerDemo : MonoBehaviour
+    {
 
         public int playerId;
         public string controllerTag;
@@ -37,14 +38,17 @@ namespace Rewired.Demos {
         [NonSerialized] // Don't serialize this so the value is lost on an editor script recompile.
         private bool initialized;
 
-        private void Awake() {
-            if(SystemInfo.deviceType == DeviceType.Handheld && Screen.orientation != ScreenOrientation.Landscape) { // set screen to landscape mode
+        private void Awake()
+        {
+            if (SystemInfo.deviceType == DeviceType.Handheld && Screen.orientation != ScreenOrientation.Landscape)
+            { // set screen to landscape mode
                 Screen.orientation = ScreenOrientation.Landscape;
             }
             Initialize();
         }
 
-        private void Initialize() {
+        private void Initialize()
+        {
             // Subscribe to the input source update event so we can update our source element data before controllers are updated
             ReInput.InputSourceUpdateEvent += OnInputSourceUpdate;
 
@@ -64,12 +68,14 @@ namespace Rewired.Demos {
             Player player = ReInput.players.GetPlayer(playerId); // get the player
             controller = player.controllers.GetControllerWithTag<CustomController>(controllerTag); // get the controller
 
-            if(controller == null) {
+            if (controller == null)
+            {
                 Debug.LogError("A matching controller was not found for tag \"" + controllerTag + "\"");
             }
 
             // Verify controller has the number of elements we're expecting
-            if(controller.buttonCount != buttonValues.Length || controller.axisCount != axisValues.Length) { // controller has wrong number of elements
+            if (controller.buttonCount != buttonValues.Length || controller.axisCount != axisValues.Length)
+            { // controller has wrong number of elements
                 Debug.LogError("Controller has wrong number of elements!");
             }
 
@@ -78,7 +84,8 @@ namespace Rewired.Demos {
             // This is a different way of updating the element values in the controller.
             // You set an update function for axes and buttons and these functions will be called
             // to retrieve the current source element values on every update loop in which input is updated.
-            if(useUpdateCallbacks && controller != null) {
+            if (useUpdateCallbacks && controller != null)
+            {
                 controller.SetAxisUpdateCallback(GetAxisValueCallback);
                 controller.SetButtonUpdateCallback(GetButtonValueCallback);
             }
@@ -86,12 +93,14 @@ namespace Rewired.Demos {
             initialized = true;
         }
 
-        private void Update() {
-            if(!ReInput.isReady) return; // Exit if Rewired isn't ready. This would only happen during a script recompile in the editor.
-            if(!initialized) Initialize(); // Reinitialize after a recompile in the editor
+        private void Update()
+        {
+            if (!ReInput.isReady) return; // Exit if Rewired isn't ready. This would only happen during a script recompile in the editor.
+            if (!initialized) Initialize(); // Reinitialize after a recompile in the editor
         }
 
-        private void OnInputSourceUpdate() {
+        private void OnInputSourceUpdate()
+        {
             // This will be called every time the input sources are updated
             // It may be called in Update, Fixed Update, and/or OnGUI depending on the UpdateLoop setting in InputManager
             // If you need to know what update loop this was called in, check currentUpdateLoop
@@ -101,7 +110,8 @@ namespace Rewired.Demos {
             GetSourceButtonValues();
 
             // Set the current values directly in the controller
-            if(!useUpdateCallbacks) { // if not using update callbacks, set the values directly, otherwise controller values will be updated via callbacks
+            if (!useUpdateCallbacks)
+            { // if not using update callbacks, set the values directly, otherwise controller values will be updated via callbacks
                 SetControllerAxisValues();
                 SetControllerButtonValues();
             }
@@ -109,20 +119,27 @@ namespace Rewired.Demos {
 
         // Get the current values from the source elements. 
 
-        private void GetSourceAxisValues() {
+        private void GetSourceAxisValues()
+        {
             // Get the current element values from our source and store them
-            for(int i = 0; i < axisValues.Length; i++) {
-                if(i % 2 != 0) {// odd
-                    axisValues[i] = joysticks[i/2].position.y;
-                } else { // even
+            for (int i = 0; i < axisValues.Length; i++)
+            {
+                if (i % 2 != 0)
+                {// odd
+                    axisValues[i] = joysticks[i / 2].position.y;
+                }
+                else
+                { // even
                     axisValues[i] = joysticks[i / 2].position.x;
                 }
             }
         }
 
-        private void GetSourceButtonValues() {
+        private void GetSourceButtonValues()
+        {
             // Get the current element values from our source and store them
-            for(int i = 0; i < buttonValues.Length; i++) {
+            for (int i = 0; i < buttonValues.Length; i++)
+            {
                 buttonValues[i] = buttons[i].isPressed;
             }
         }
@@ -131,33 +148,39 @@ namespace Rewired.Demos {
         // If you use this method, you should make sure you call it from the InputSourceUpdateEvent because this
         // event will be called once for every update loop in which input is updated.
 
-        private void SetControllerAxisValues() {
+        private void SetControllerAxisValues()
+        {
             // Set the element values directly in the controller
-            for(int i = 0; i < axisValues.Length; i++) {
+            for (int i = 0; i < axisValues.Length; i++)
+            {
                 controller.SetAxisValue(i, axisValues[i]);
             }
         }
 
-        private void SetControllerButtonValues() {
+        private void SetControllerButtonValues()
+        {
             // Set the element values directly in the controller
-            for(int i = 0; i < buttonValues.Length; i++) {
+            for (int i = 0; i < buttonValues.Length; i++)
+            {
                 controller.SetButtonValue(i, buttonValues[i]);
             }
         }
 
         // Callbacks
 
-        private float GetAxisValueCallback(int index) {
+        private float GetAxisValueCallback(int index)
+        {
             // This will be called by each axis element in the Custom Controller when updating its raw value
             // Get the current value from the source axis at index
-            if(index >= axisValues.Length) return 0.0f;
+            if (index >= axisValues.Length) return 0.0f;
             return axisValues[index];
         }
 
-        private bool GetButtonValueCallback(int index) {
+        private bool GetButtonValueCallback(int index)
+        {
             // This will be called by each button element in the Custom Controller when updating its raw value
             // Get the current value from the source button at index
-            if(index >= buttonValues.Length) return false;
+            if (index >= buttonValues.Length) return false;
             return buttonValues[index];
         }
 

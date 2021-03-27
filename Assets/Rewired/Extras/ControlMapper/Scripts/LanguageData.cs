@@ -3,17 +3,17 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
-    using System;
-    using UnityEngine;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Text.RegularExpressions;
     using Rewired;
+    using System;
+    using System.Collections.Generic;
+    using UnityEngine;
 
     [Serializable]
-    public class LanguageData : LanguageDataBase {
+    public class LanguageData : LanguageDataBase
+    {
         [SerializeField]
         private string _yes = "Yes";
         [SerializeField]
@@ -151,21 +151,24 @@ namespace Rewired.UI.ControlMapper {
 
         // Public Methods / Properties
 
-        public override void Initialize() {
-            if(_initialized) return;
+        public override void Initialize()
+        {
+            if (_initialized) return;
             customDict = CustomEntry.ToDictionary(_customEntries);
             _initialized = true;
         }
 
-        public override string GetCustomEntry(string key) {
-            if(string.IsNullOrEmpty(key)) return string.Empty;
+        public override string GetCustomEntry(string key)
+        {
+            if (string.IsNullOrEmpty(key)) return string.Empty;
             string value;
-            if(!customDict.TryGetValue(key, out value)) return string.Empty;
+            if (!customDict.TryGetValue(key, out value)) return string.Empty;
             return value;
         }
 
-        public override bool ContainsCustomEntryKey(string key) {
-            if(string.IsNullOrEmpty(key)) return false;
+        public override bool ContainsCustomEntryKey(string key)
+        {
+            if (string.IsNullOrEmpty(key)) return false;
             return customDict.ContainsKey(key);
         }
 
@@ -206,9 +209,11 @@ namespace Rewired.UI.ControlMapper {
         public override string assignedControllersGroupLabel { get { return _assignedControllersGroupLabel; } }
         public override string settingsGroupLabel { get { return _settingsGroupLabel; } }
         public override string mapCategoriesGroupLabel { get { return _mapCategoriesGroupLabel; } }
-        public override string restoreDefaultsWindowMessage {
-            get {
-                if(Rewired.ReInput.players.playerCount > 1) return _restoreDefaultsWindowMessage_multiPlayer;
+        public override string restoreDefaultsWindowMessage
+        {
+            get
+            {
+                if (Rewired.ReInput.players.playerCount > 1) return _restoreDefaultsWindowMessage_multiPlayer;
                 else return _restoreDefaultsWindowMessage_onePlayer;
             }
         }
@@ -218,65 +223,81 @@ namespace Rewired.UI.ControlMapper {
         public override string calibrateWindow_invertToggleLabel { get { return _calibrateWindow_invertToggleLabel; } }
         public override string calibrateWindow_calibrateButtonLabel { get { return _calibrateWindow_calibrateButtonLabel; } }
 
-        public override string GetControllerAssignmentConflictWindowMessage(string joystickName, string otherPlayerName, string currentPlayerName) {
+        public override string GetControllerAssignmentConflictWindowMessage(string joystickName, string otherPlayerName, string currentPlayerName)
+        {
             return string.Format(_controllerAssignmentConflictWindowMessage, joystickName, otherPlayerName, currentPlayerName);
         }
-        public override string GetJoystickElementAssignmentPollingWindowMessage(string actionName) {
+        public override string GetJoystickElementAssignmentPollingWindowMessage(string actionName)
+        {
             return string.Format(_joystickElementAssignmentPollingWindowMessage, actionName);
         }
-        public override string GetJoystickElementAssignmentPollingWindowMessage_FullAxisFieldOnly(string actionName) {
+        public override string GetJoystickElementAssignmentPollingWindowMessage_FullAxisFieldOnly(string actionName)
+        {
             return string.Format(_joystickElementAssignmentPollingWindowMessage_fullAxisFieldOnly, actionName);
         }
-        public override string GetKeyboardElementAssignmentPollingWindowMessage(string actionName) {
+        public override string GetKeyboardElementAssignmentPollingWindowMessage(string actionName)
+        {
             return string.Format(_keyboardElementAssignmentPollingWindowMessage, actionName);
         }
-        public override string GetMouseElementAssignmentPollingWindowMessage(string actionName) {
+        public override string GetMouseElementAssignmentPollingWindowMessage(string actionName)
+        {
             return string.Format(_mouseElementAssignmentPollingWindowMessage, actionName);
         }
-        public override string GetMouseElementAssignmentPollingWindowMessage_FullAxisFieldOnly(string actionName) {
+        public override string GetMouseElementAssignmentPollingWindowMessage_FullAxisFieldOnly(string actionName)
+        {
             return string.Format(_mouseElementAssignmentPollingWindowMessage_fullAxisFieldOnly, actionName);
         }
-        public override string GetElementAlreadyInUseBlocked(string elementName) {
+        public override string GetElementAlreadyInUseBlocked(string elementName)
+        {
             return string.Format(_elementAlreadyInUseBlocked, elementName);
         }
-        public override string GetElementAlreadyInUseCanReplace(string elementName, bool allowConflicts) {
-            if(!allowConflicts) return string.Format(_elementAlreadyInUseCanReplace, elementName);
+        public override string GetElementAlreadyInUseCanReplace(string elementName, bool allowConflicts)
+        {
+            if (!allowConflicts) return string.Format(_elementAlreadyInUseCanReplace, elementName);
             return string.Format(_elementAlreadyInUseCanReplace_conflictAllowed, elementName);
         }
-        public override string GetMouseAssignmentConflictWindowMessage(string otherPlayerName, string thisPlayerName) {
+        public override string GetMouseAssignmentConflictWindowMessage(string otherPlayerName, string thisPlayerName)
+        {
             return string.Format(_mouseAssignmentConflictWindowMessage, otherPlayerName, thisPlayerName);
         }
-        public override string GetCalibrateAxisStep1WindowMessage(string axisName) {
+        public override string GetCalibrateAxisStep1WindowMessage(string axisName)
+        {
             return string.Format(_calibrateAxisStep1WindowMessage, axisName);
         }
-        public override string GetCalibrateAxisStep2WindowMessage(string axisName) {
+        public override string GetCalibrateAxisStep2WindowMessage(string axisName)
+        {
             return string.Format(_calibrateAxisStep2WindowMessage, axisName);
         }
 
         // Translation of Rewired core items
 
-        public override string GetPlayerName(int playerId) {
+        public override string GetPlayerName(int playerId)
+        {
             Player player = ReInput.players.GetPlayer(playerId);
-            if(player == null) throw new ArgumentException("Invalid player id: " + playerId);
+            if (player == null) throw new ArgumentException("Invalid player id: " + playerId);
             return player.descriptiveName;
         }
 
-        public override string GetControllerName(Controller controller) {
-            if(controller == null) throw new ArgumentNullException("controller");
+        public override string GetControllerName(Controller controller)
+        {
+            if (controller == null) throw new ArgumentNullException("controller");
             return controller.name;
         }
 
-        public override string GetElementIdentifierName(ActionElementMap actionElementMap) {
-            if(actionElementMap == null) throw new ArgumentNullException("actionElementMap");
-            if(actionElementMap.controllerMap.controllerType == ControllerType.Keyboard) return GetElementIdentifierName(actionElementMap.keyCode, actionElementMap.modifierKeyFlags);
+        public override string GetElementIdentifierName(ActionElementMap actionElementMap)
+        {
+            if (actionElementMap == null) throw new ArgumentNullException("actionElementMap");
+            if (actionElementMap.controllerMap.controllerType == ControllerType.Keyboard) return GetElementIdentifierName(actionElementMap.keyCode, actionElementMap.modifierKeyFlags);
             return GetElementIdentifierName(actionElementMap.controllerMap.controller, actionElementMap.elementIdentifierId, actionElementMap.axisRange);
         }
-        public override string GetElementIdentifierName(Controller controller, int elementIdentifierId, AxisRange axisRange) {
-            if(controller == null) throw new ArgumentNullException("controller");
+        public override string GetElementIdentifierName(Controller controller, int elementIdentifierId, AxisRange axisRange)
+        {
+            if (controller == null) throw new ArgumentNullException("controller");
             ControllerElementIdentifier eid = controller.GetElementIdentifierById(elementIdentifierId);
-            if(eid == null) throw new ArgumentException("Invalid element identifier id: " + elementIdentifierId);
+            if (eid == null) throw new ArgumentException("Invalid element identifier id: " + elementIdentifierId);
             Controller.Element element = controller.GetElementById(elementIdentifierId);
-            switch(element.type) {
+            switch (element.type)
+            {
                 case ControllerElementType.Axis:
                     return eid.GetDisplayName(element.type, axisRange);
                 case ControllerElementType.Button:
@@ -285,28 +306,35 @@ namespace Rewired.UI.ControlMapper {
                     return eid.name;
             }
         }
-        public override string GetElementIdentifierName(KeyCode keyCode, ModifierKeyFlags modifierKeyFlags) {
-            if(modifierKeyFlags != ModifierKeyFlags.None) {
+        public override string GetElementIdentifierName(KeyCode keyCode, ModifierKeyFlags modifierKeyFlags)
+        {
+            if (modifierKeyFlags != ModifierKeyFlags.None)
+            {
                 return string.Format(
                     "{0}{1}{2}",
                     ModifierKeyFlagsToString(modifierKeyFlags),
                     _modifierKeys.separator,
                     Keyboard.GetKeyName(keyCode)
                 );
-            } else {
+            }
+            else
+            {
                 return Keyboard.GetKeyName(keyCode);
             }
         }
 
-        public override string GetActionName(int actionId) {
+        public override string GetActionName(int actionId)
+        {
             InputAction action = ReInput.mapping.GetAction(actionId);
-            if(action == null) throw new ArgumentException("Invalid action id: " + actionId);
+            if (action == null) throw new ArgumentException("Invalid action id: " + actionId);
             return action.descriptiveName;
         }
-        public override string GetActionName(int actionId, AxisRange axisRange) {
+        public override string GetActionName(int actionId, AxisRange axisRange)
+        {
             InputAction action = ReInput.mapping.GetAction(actionId);
-            if(action == null) throw new ArgumentException("Invalid action id: " + actionId);
-            switch(axisRange) {
+            if (action == null) throw new ArgumentException("Invalid action id: " + actionId);
+            switch (axisRange)
+            {
                 case AxisRange.Full:
                     return action.descriptiveName;
                 case AxisRange.Positive:
@@ -318,50 +346,58 @@ namespace Rewired.UI.ControlMapper {
             }
         }
 
-        public override string GetMapCategoryName(int id) {
+        public override string GetMapCategoryName(int id)
+        {
             InputMapCategory category = ReInput.mapping.GetMapCategory(id);
-            if(category == null) throw new ArgumentException("Invalid map category id: " + id);
+            if (category == null) throw new ArgumentException("Invalid map category id: " + id);
             return category.descriptiveName;
         }
 
-        public override string GetActionCategoryName(int id) {
+        public override string GetActionCategoryName(int id)
+        {
             InputCategory category = ReInput.mapping.GetActionCategory(id);
-            if(category == null) throw new ArgumentException("Invalid action category id: " + id);
+            if (category == null) throw new ArgumentException("Invalid action category id: " + id);
             return category.descriptiveName;
         }
 
-        public override string GetLayoutName(ControllerType controllerType, int id) {
+        public override string GetLayoutName(ControllerType controllerType, int id)
+        {
             InputLayout layout = ReInput.mapping.GetLayout(controllerType, id);
-            if(layout == null) throw new ArgumentException("Invalid " + controllerType + " layout id: " + id);
+            if (layout == null) throw new ArgumentException("Invalid " + controllerType + " layout id: " + id);
             return layout.descriptiveName;
         }
 
-        public override string ModifierKeyFlagsToString(ModifierKeyFlags flags) {
+        public override string ModifierKeyFlagsToString(ModifierKeyFlags flags)
+        {
             int count = 0;
             string label = string.Empty;
 
             // TODO: Make this use the HardwareMap so languages can be supported
 
-            if(Keyboard.ModifierKeyFlagsContain(flags, ModifierKey.Control)) {
+            if (Keyboard.ModifierKeyFlagsContain(flags, ModifierKey.Control))
+            {
                 label += _modifierKeys.control;
                 count++;
             }
 
-            if(Keyboard.ModifierKeyFlagsContain(flags, ModifierKey.Command)) {
-                if(count > 0 && !string.IsNullOrEmpty(_modifierKeys.separator)) label += _modifierKeys.separator;
+            if (Keyboard.ModifierKeyFlagsContain(flags, ModifierKey.Command))
+            {
+                if (count > 0 && !string.IsNullOrEmpty(_modifierKeys.separator)) label += _modifierKeys.separator;
                 label += _modifierKeys.command;
                 count++;
             }
 
-            if(Keyboard.ModifierKeyFlagsContain(flags, ModifierKey.Alt)) {
-                if(count > 0 && !string.IsNullOrEmpty(_modifierKeys.separator)) label += _modifierKeys.separator;
+            if (Keyboard.ModifierKeyFlagsContain(flags, ModifierKey.Alt))
+            {
+                if (count > 0 && !string.IsNullOrEmpty(_modifierKeys.separator)) label += _modifierKeys.separator;
                 label += _modifierKeys.alt;
                 count++;
             }
-            if(count >= 3) return label; // hit the limit of 3 modifiers
+            if (count >= 3) return label; // hit the limit of 3 modifiers
 
-            if(Keyboard.ModifierKeyFlagsContain(flags, ModifierKey.Shift)) {
-                if(count > 0 && !string.IsNullOrEmpty(_modifierKeys.separator)) label += _modifierKeys.separator;
+            if (Keyboard.ModifierKeyFlagsContain(flags, ModifierKey.Shift))
+            {
+                if (count > 0 && !string.IsNullOrEmpty(_modifierKeys.separator)) label += _modifierKeys.separator;
                 label += _modifierKeys.shift;
                 count++;
             }
@@ -372,25 +408,31 @@ namespace Rewired.UI.ControlMapper {
         // Classes
 
         [System.Serializable]
-        protected class CustomEntry {
+        protected class CustomEntry
+        {
             public string key;
             public string value;
 
-            public CustomEntry() {
+            public CustomEntry()
+            {
             }
 
-            public CustomEntry(string key, string value) {
+            public CustomEntry(string key, string value)
+            {
                 this.key = key;
                 this.value = value;
             }
 
-            public static Dictionary<string, string> ToDictionary(CustomEntry[] array) {
-                if(array == null) return new Dictionary<string, string>();
+            public static Dictionary<string, string> ToDictionary(CustomEntry[] array)
+            {
+                if (array == null) return new Dictionary<string, string>();
                 Dictionary<string, string> dict = new Dictionary<string, string>();
-                for(int i = 0; i < array.Length; i++) {
-                    if(array[i] == null) continue;
-                    if(string.IsNullOrEmpty(array[i].key) || string.IsNullOrEmpty(array[i].value)) continue;
-                    if(dict.ContainsKey(array[i].key)) {
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (array[i] == null) continue;
+                    if (string.IsNullOrEmpty(array[i].key) || string.IsNullOrEmpty(array[i].value)) continue;
+                    if (dict.ContainsKey(array[i].key))
+                    {
                         Debug.LogError("Key \"" + array[i].key + "\" is already in dictionary!");
                         continue;
                     }
@@ -401,7 +443,8 @@ namespace Rewired.UI.ControlMapper {
         }
 
         [System.Serializable]
-        protected class ModifierKeys {
+        protected class ModifierKeys
+        {
             public string control = "Control";
             public string alt = "Alt";
             public string shift = "Shift";

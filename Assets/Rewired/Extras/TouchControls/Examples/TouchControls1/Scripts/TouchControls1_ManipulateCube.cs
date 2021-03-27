@@ -1,12 +1,13 @@
 ﻿// Copyright (c) 2017 Augie R. Maddox, Guavaman Enterprises. All rights reserved.
 
 using UnityEngine;
-using System.Collections.Generic;
 
-namespace Rewired.Demos {
+namespace Rewired.Demos
+{
 
     [AddComponentMenu("")]
-    public class TouchControls1_ManipulateCube: MonoBehaviour {
+    public class TouchControls1_ManipulateCube : MonoBehaviour
+    {
 
         public float rotateSpeed = 1f;
         public float moveSpeed = 1f;
@@ -19,11 +20,12 @@ namespace Rewired.Demos {
             Color.blue
         };
 
-        private void OnEnable() {
-            if(!ReInput.isReady) return;
+        private void OnEnable()
+        {
+            if (!ReInput.isReady) return;
 
             Player player = ReInput.players.GetPlayer(0);
-            if(player == null) return;
+            if (player == null) return;
 
             // Subscribe to input events
             player.AddInputEventDelegate(OnMoveReceivedX, UpdateLoopType.Update, InputActionEventType.AxisActive, "Horizontal");
@@ -38,11 +40,12 @@ namespace Rewired.Demos {
             player.AddInputEventDelegate(OnRotationReceivedY, UpdateLoopType.Update, InputActionEventType.AxisInactive, "RotateVertical");
         }
 
-        private void OnDisable() {
-            if(!ReInput.isReady) return;
+        private void OnDisable()
+        {
+            if (!ReInput.isReady) return;
 
             Player player = ReInput.players.GetPlayer(0);
-            if(player == null) return;
+            if (player == null) return;
 
             // Unsubscribe from input events
             player.RemoveInputEventDelegate(OnMoveReceivedX);
@@ -53,51 +56,61 @@ namespace Rewired.Demos {
             player.RemoveInputEventDelegate(OnRotationReceivedY);
         }
 
-        private void OnMoveReceivedX(InputActionEventData data) {
+        private void OnMoveReceivedX(InputActionEventData data)
+        {
             OnMoveReceived(new Vector2(data.GetAxis(), 0f));
         }
 
-        private void OnMoveReceivedY(InputActionEventData data) {
+        private void OnMoveReceivedY(InputActionEventData data)
+        {
             OnMoveReceived(new Vector2(0f, data.GetAxis()));
         }
 
-        private void OnRotationReceivedX(InputActionEventData data) {
+        private void OnRotationReceivedX(InputActionEventData data)
+        {
             OnRotationReceived(new Vector2(data.GetAxis(), 0f));
         }
 
-        private void OnRotationReceivedY(InputActionEventData data) {
+        private void OnRotationReceivedY(InputActionEventData data)
+        {
             OnRotationReceived(new Vector2(0f, data.GetAxis()));
         }
 
-        private void OnCycleColor(InputActionEventData data) {
+        private void OnCycleColor(InputActionEventData data)
+        {
             OnCycleColor();
         }
 
-        private void OnCycleColorReverse(InputActionEventData data) {
+        private void OnCycleColorReverse(InputActionEventData data)
+        {
             OnCycleColorReverse();
         }
 
-        private void OnMoveReceived(Vector2 move) {
+        private void OnMoveReceived(Vector2 move)
+        {
             transform.Translate((Vector3)move * Time.deltaTime * moveSpeed, Space.World);
         }
 
-        private void OnRotationReceived(Vector2 rotate) {
+        private void OnRotationReceived(Vector2 rotate)
+        {
             rotate *= rotateSpeed;
             transform.Rotate(Vector3.up, -rotate.x, Space.World);
             transform.Rotate(Vector3.right, rotate.y, Space.World);
         }
 
-        private void OnCycleColor() {
-            if(colors.Length == 0) return;
+        private void OnCycleColor()
+        {
+            if (colors.Length == 0) return;
             currentColorIndex++;
-            if(currentColorIndex >= colors.Length) currentColorIndex = 0;
+            if (currentColorIndex >= colors.Length) currentColorIndex = 0;
             GetComponent<Renderer>().material.color = colors[currentColorIndex];
         }
 
-        private void OnCycleColorReverse() {
-            if(colors.Length == 0) return;
+        private void OnCycleColorReverse()
+        {
+            if (colors.Length == 0) return;
             currentColorIndex--;
-            if(currentColorIndex < 0) currentColorIndex = colors.Length - 1;
+            if (currentColorIndex < 0) currentColorIndex = colors.Length - 1;
             GetComponent<Renderer>().material.color = colors[currentColorIndex];
         }
     }

@@ -16,13 +16,13 @@
  * It is only intended to teach the API.
  */
 
-namespace Rewired.Demos.GamepadTemplateUI {
-    using UnityEngine;
-    using UnityEngine.UI;
-    using System;
+namespace Rewired.Demos.GamepadTemplateUI
+{
     using System.Collections.Generic;
+    using UnityEngine;
 
-    public class GamepadTemplateUI : MonoBehaviour {
+    public class GamepadTemplateUI : MonoBehaviour
+    {
 
         private const float stickRadius = 20f;
 
@@ -89,7 +89,8 @@ namespace Rewired.Demos.GamepadTemplateUI {
 
         private Player player { get { return ReInput.players.GetPlayer(playerId); } }
 
-        private void Awake() {
+        private void Awake()
+        {
 
             // Create an array of all UI elements so we can iterate this later
             _uiElementsArray = new UIElement[] {
@@ -119,7 +120,8 @@ namespace Rewired.Demos.GamepadTemplateUI {
             };
 
             // Add UI elements to the dictionary so we can look them up by Element Identifier Id
-            for(int i = 0; i < _uiElementsArray.Length; i++) {
+            for (int i = 0; i < _uiElementsArray.Length; i++)
+            {
                 _uiElements.Add(_uiElementsArray[i].id, _uiElementsArray[i].element);
             }
 
@@ -134,112 +136,130 @@ namespace Rewired.Demos.GamepadTemplateUI {
             ReInput.ControllerDisconnectedEvent += OnControllerDisconnected;
         }
 
-        private void Start() {
-            if(!ReInput.isReady) return;
+        private void Start()
+        {
+            if (!ReInput.isReady) return;
             DrawLabels();
         }
 
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             // Unsubscribe from events
             ReInput.ControllerConnectedEvent -= OnControllerConnected;
             ReInput.ControllerDisconnectedEvent -= OnControllerDisconnected;
         }
 
-        private void Update() {
-            if(!ReInput.isReady) return;
+        private void Update()
+        {
+            if (!ReInput.isReady) return;
             DrawActiveElements();
         }
 
-        private void DrawActiveElements() {
+        private void DrawActiveElements()
+        {
 
             // Deactivate all elements first
-            for(int i = 0; i < _uiElementsArray.Length; i++) {
+            for (int i = 0; i < _uiElementsArray.Length; i++)
+            {
                 _uiElementsArray[i].element.Deactivate();
             }
 
             // Reset stick positions
-            for(int i = 0; i < _sticks.Length; i++) {
+            for (int i = 0; i < _sticks.Length; i++)
+            {
                 _sticks[i].Reset();
             }
 
             // Activate elements currently active based on the Action
             IList<InputAction> actions = ReInput.mapping.Actions;
-            for(int i = 0; i < actions.Count; i++) {
+            for (int i = 0; i < actions.Count; i++)
+            {
                 ActivateElements(player, actions[i].id);
             }
         }
 
-        private void ActivateElements(Player player, int actionId) {
+        private void ActivateElements(Player player, int actionId)
+        {
 
             // Get the Axis value of the Action from the Player
             float axisValue = player.GetAxis(actionId);
-            if(axisValue == 0f) return; // not active
+            if (axisValue == 0f) return; // not active
 
             // Get all the sources contributing to the Action
             IList<InputActionSourceData> sources = player.GetCurrentInputSources(actionId);
 
             // Check each source and activate the elements they map to
-            for(int i = 0; i < sources.Count; i++) {
+            for (int i = 0; i < sources.Count; i++)
+            {
                 InputActionSourceData source = sources[i];
 
                 // Try to get the GamepadTemplate from the Controller
                 IGamepadTemplate gamepad = source.controller.GetTemplate<IGamepadTemplate>();
-                if(gamepad == null) continue; // does not implement the Dual Analog Gamepad Template
+                if (gamepad == null) continue; // does not implement the Dual Analog Gamepad Template
 
                 // Get all element targets on the template by passing in the Action Element Map
                 // This gives you the Template element targets that are mapped to the Controller element target.
                 gamepad.GetElementTargets(source.actionElementMap, _tempTargetList);
 
                 // Activate Template element targets
-                for(int j = 0; j < _tempTargetList.Count; j++) {
+                for (int j = 0; j < _tempTargetList.Count; j++)
+                {
                     ControllerTemplateElementTarget target = _tempTargetList[j];
                     int templateElementId = target.element.id;
                     ControllerUIElement uiElement = _uiElements[templateElementId];
 
-                    if(target.elementType == ControllerTemplateElementType.Axis) {
+                    if (target.elementType == ControllerTemplateElementType.Axis)
+                    {
                         uiElement.Activate(axisValue);
-                    } else if(target.elementType == ControllerTemplateElementType.Button) {
+                    }
+                    else if (target.elementType == ControllerTemplateElementType.Button)
+                    {
                         // If the target element is a Button, make sure the Button value of the Action is true before activating
-                        if(player.GetButton(actionId) || player.GetNegativeButton(actionId)) uiElement.Activate(1f);
+                        if (player.GetButton(actionId) || player.GetNegativeButton(actionId)) uiElement.Activate(1f);
                     }
 
                     // Move the stick for stick axes
                     Stick stick = GetStick(templateElementId);
-                    if(stick != null) stick.SetAxisPosition(templateElementId, axisValue * stickRadius);
+                    if (stick != null) stick.SetAxisPosition(templateElementId, axisValue * stickRadius);
                 }
             }
         }
 
-        private void DrawLabels() {
+        private void DrawLabels()
+        {
             // Clear UI labels first
-            for(int i = 0; i < _uiElementsArray.Length; i++) {
+            for (int i = 0; i < _uiElementsArray.Length; i++)
+            {
                 _uiElementsArray[i].element.ClearLabels();
             }
 
             // Draw the label for each Action
             IList<InputAction> actions = ReInput.mapping.Actions;
-            for(int i = 0; i < actions.Count; i++) {
+            for (int i = 0; i < actions.Count; i++)
+            {
                 DrawLabels(player, actions[i]);
             }
         }
 
-        private void DrawLabels(Player player, InputAction action) {
+        private void DrawLabels(Player player, InputAction action)
+        {
 
             // Lists first Action bound to each Dual Analog Gamepad Template element
 
             // Get the first Controller that implements the Dual Analog Gamepad Template from the Player
             Controller controller = player.controllers.GetFirstControllerWithTemplate<IGamepadTemplate>();
-            if(controller == null) return;
+            if (controller == null) return;
 
             // Get the first gamepad assigned to the Player
             IGamepadTemplate gamepad = controller.GetTemplate<IGamepadTemplate>();
 
             // Get the Controller Map in the Default category and layout for this Controller from the Player
             ControllerMap controllerMap = player.controllers.maps.GetMap(controller, "Default", "Default");
-            if(controllerMap == null) return;
+            if (controllerMap == null) return;
 
             // Go through each Controller Template element displayed in the UI
-            for(int i = 0; i < _uiElementsArray.Length; i++) {
+            for (int i = 0; i < _uiElementsArray.Length; i++)
+            {
                 ControllerUIElement uiElement = _uiElementsArray[i].element;
                 int elementId = _uiElementsArray[i].id;
 
@@ -251,8 +271,9 @@ namespace Rewired.Demos.GamepadTemplateUI {
             }
         }
 
-        private void DrawLabel(ControllerUIElement uiElement, InputAction action, ControllerMap controllerMap, IControllerTemplate template, IControllerTemplateElement element) {
-            if(element.source == null) return; // this element cannot map to a source
+        private void DrawLabel(ControllerUIElement uiElement, InputAction action, ControllerMap controllerMap, IControllerTemplate template, IControllerTemplateElement element)
+        {
+            if (element.source == null) return; // this element cannot map to a source
 
             ActionElementMap aem;
 
@@ -260,40 +281,48 @@ namespace Rewired.Demos.GamepadTemplateUI {
             // a Controller.Element or part of a Controller.Element (such as one pole of an Axis).
 
             // Handle Axis-type Template Element
-            if(element.source.type == ControllerTemplateElementSourceType.Axis) {
-                
+            if (element.source.type == ControllerTemplateElementSourceType.Axis)
+            {
+
                 // Cast the source to an Axis source so we can access the 3 possible Targets
                 IControllerTemplateAxisSource source = (element.source as IControllerTemplateAxisSource);
 
                 // A Template axis source can be either a full-axis binding or a split-axis binding
 
                 // Handle split-axis source
-                if(source.splitAxis) {
+                if (source.splitAxis)
+                {
 
                     // A split-axis source has a Positive Target and a Negative Target, one for each side of the axis.
 
                     // Positive Target
                     aem = controllerMap.GetFirstElementMapWithElementTarget(source.positiveTarget, action.id, true);
-                    if(aem != null) {
+                    if (aem != null)
+                    {
                         uiElement.SetLabel(aem.actionDescriptiveName, AxisRange.Positive);
                     }
 
                     // Negative Target
                     aem = controllerMap.GetFirstElementMapWithElementTarget(source.negativeTarget, action.id, true);
-                    if(aem != null) uiElement.SetLabel(aem.actionDescriptiveName, AxisRange.Negative);
+                    if (aem != null) uiElement.SetLabel(aem.actionDescriptiveName, AxisRange.Negative);
 
-                // Handle full-axis source
-                } else {
+                    // Handle full-axis source
+                }
+                else
+                {
 
                     // A full-axis sources has just a single full target.
 
                     // Full Target
                     aem = controllerMap.GetFirstElementMapWithElementTarget(source.fullTarget, action.id, true);
-                    if(aem != null) { // a full target was mapped
+                    if (aem != null)
+                    { // a full target was mapped
 
                         uiElement.SetLabel(aem.actionDescriptiveName, AxisRange.Full);
 
-                    } else { // no full mapping was found, look for separate positive/negative mappings
+                    }
+                    else
+                    { // no full mapping was found, look for separate positive/negative mappings
 
                         // Positive side
                         aem = controllerMap.GetFirstElementMapWithElementTarget(
@@ -301,7 +330,7 @@ namespace Rewired.Demos.GamepadTemplateUI {
                             action.id,
                             true
                         );
-                        if(aem != null) uiElement.SetLabel(aem.actionDescriptiveName, AxisRange.Positive);
+                        if (aem != null) uiElement.SetLabel(aem.actionDescriptiveName, AxisRange.Positive);
 
                         // Negative side
                         aem = controllerMap.GetFirstElementMapWithElementTarget(
@@ -309,86 +338,102 @@ namespace Rewired.Demos.GamepadTemplateUI {
                             action.id,
                             true
                         );
-                        if(aem != null) uiElement.SetLabel(aem.actionDescriptiveName, AxisRange.Negative);
+                        if (aem != null) uiElement.SetLabel(aem.actionDescriptiveName, AxisRange.Negative);
                     }
                 }
 
-            // Handle Button-type Template Element
-            } else if(element.source.type == ControllerTemplateElementSourceType.Button) {
+                // Handle Button-type Template Element
+            }
+            else if (element.source.type == ControllerTemplateElementSourceType.Button)
+            {
 
                 // Cast the source to an button source
                 IControllerTemplateButtonSource source = (element.source as IControllerTemplateButtonSource);
 
                 // Target
                 aem = controllerMap.GetFirstElementMapWithElementTarget(source.target, action.id, true);
-                if(aem != null) uiElement.SetLabel(aem.actionDescriptiveName, AxisRange.Full);
+                if (aem != null) uiElement.SetLabel(aem.actionDescriptiveName, AxisRange.Full);
             }
         }
 
-        private Stick GetStick(int elementId) {
-            for(int i = 0; i < _sticks.Length; i++) {
-                if(_sticks[i].ContainsElement(elementId)) return _sticks[i];
+        private Stick GetStick(int elementId)
+        {
+            for (int i = 0; i < _sticks.Length; i++)
+            {
+                if (_sticks[i].ContainsElement(elementId)) return _sticks[i];
             }
             return null;
         }
 
-        private void OnControllerConnected(ControllerStatusChangedEventArgs args) {
+        private void OnControllerConnected(ControllerStatusChangedEventArgs args)
+        {
             DrawLabels();
         }
 
-        private void OnControllerDisconnected(ControllerStatusChangedEventArgs args) {
+        private void OnControllerDisconnected(ControllerStatusChangedEventArgs args)
+        {
             DrawLabels();
         }
 
-        private class Stick {
+        private class Stick
+        {
 
             private RectTransform _transform;
             private Vector2 _origPosition;
             private int _xAxisElementId = -1;
             private int _yAxisElementId = -1;
 
-            public Vector2 position {
-                get {
+            public Vector2 position
+            {
+                get
+                {
                     return _transform != null ? _transform.anchoredPosition - _origPosition : Vector2.zero;
                 }
-                set {
-                    if(_transform == null) return;
+                set
+                {
+                    if (_transform == null) return;
                     _transform.anchoredPosition = _origPosition + value;
                 }
             }
 
-            public Stick(RectTransform transform, int xAxisElementId, int yAxisElementId) {
-                if(transform == null) return;
+            public Stick(RectTransform transform, int xAxisElementId, int yAxisElementId)
+            {
+                if (transform == null) return;
                 _transform = transform;
                 _origPosition = _transform.anchoredPosition;
                 _xAxisElementId = xAxisElementId;
                 _yAxisElementId = yAxisElementId;
             }
 
-            public void Reset() {
-                if(_transform == null) return;
+            public void Reset()
+            {
+                if (_transform == null) return;
                 _transform.anchoredPosition = _origPosition;
             }
 
-            public bool ContainsElement(int elementId) {
-                if(_transform == null) return false;
+            public bool ContainsElement(int elementId)
+            {
+                if (_transform == null) return false;
                 return elementId == _xAxisElementId || elementId == _yAxisElementId;
             }
 
-            public void SetAxisPosition(int elementId, float value) {
-                if(_transform == null) return;
+            public void SetAxisPosition(int elementId, float value)
+            {
+                if (_transform == null) return;
                 Vector2 position = this.position;
-                if(elementId == _xAxisElementId) position.x = value;
-                else if(elementId == _yAxisElementId) position.y = value;
+                if (elementId == _xAxisElementId) position.x = value;
+                else if (elementId == _yAxisElementId) position.y = value;
                 this.position = position;
             }
         }
 
-        private class UIElement {
+        private class UIElement
+        {
             public int id;
             public ControllerUIElement element;
 
-            public UIElement(int id, ControllerUIElement element) {
+            public UIElement(int id, ControllerUIElement element)
+            {
                 this.id = id;
                 this.element = element;
             }

@@ -3,19 +3,19 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
-    using UnityEngine;
-    using UnityEditor;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Text.RegularExpressions;
     using Rewired;
     using Rewired.Data;
     using Rewired.Utils;
+    using System.Collections.Generic;
+    using UnityEditor;
+    using UnityEngine;
 
     [CustomEditor(typeof(ControlMapper))]
-    public class ControlMapperInspector : UnityEditor.Editor {
+    public class ControlMapperInspector : UnityEditor.Editor
+    {
 
         #region Inspector Variable Name Consts
 
@@ -127,7 +127,8 @@ namespace Rewired.UI.ControlMapper {
 
         #region MonoBehaviour Events
 
-        protected virtual void OnEnable() {
+        protected virtual void OnEnable()
+        {
             properties = new Dictionary<string, SerializedProperty>();
 
             AddProperty(c_rewiredInputManager);
@@ -217,18 +218,21 @@ namespace Rewired.UI.ControlMapper {
             AddProperty(c_onInputPollingEnded);
         }
 
-        public override void OnInspectorGUI() {
-            if(Application.isPlaying) {
+        public override void OnInspectorGUI()
+        {
+            if (Application.isPlaying)
+            {
                 EditorGUILayout.HelpBox("Settings cannot be edited in Play mode.", MessageType.Info);
                 return;
             }
-            
-            if(!stylesCreated) CreateStyles();
+
+            if (!stylesCreated) CreateStyles();
 
             serializedObject.Update();
 
             EditorGUILayout.Space();
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.PropertyField(properties[c_rewiredInputManager]);
                 EditorGUILayout.PropertyField(properties[c_dontDestroyOnLoad]);
             }
@@ -246,50 +250,59 @@ namespace Rewired.UI.ControlMapper {
 
         #region Layout
 
-        private void DrawLayout() {
+        private void DrawLayout()
+        {
 
             // Check for Rewired Input Manager reference
-            if(userData == null) {
+            if (userData == null)
+            {
                 EditorGUILayout.HelpBox("A Rewired Input Manager must be linked in the inspector.", MessageType.Error);
                 return;
             }
 
             // Screen options
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Screen Options:", "Various options for the control mapper screen."), style_sectionLabel);
                 EditorGUILayout.PropertyField(properties[c_openOnStart]);
             }
 
             // Player options
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Player Options:", "Various options for Players."), style_sectionLabel);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(properties[c_showPlayers]);
-                if(properties[c_showPlayers].boolValue) {
+                if (properties[c_showPlayers].boolValue)
+                {
                     EditorGUILayout.PropertyField(properties[c_showPlayersGroupLabel]);
                 }
             }
 
             // Controller options
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Controller Options:", "Various options for controllers."), style_sectionLabel);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(properties[c_showControllers]);
-                if(properties[c_showControllers].boolValue) {
+                if (properties[c_showControllers].boolValue)
+                {
 
-                    if(!userData.ConfigVars.autoAssignJoysticks) { // only show max controllers per player if auto-assignment is disabled, otherwise it will be driven by auto-assignment settings
+                    if (!userData.ConfigVars.autoAssignJoysticks)
+                    { // only show max controllers per player if auto-assignment is disabled, otherwise it will be driven by auto-assignment settings
                         DrawIntProperty(properties[c_maxControllersPerPlayer], 0, 1000);
                     }
                     DrawIntProperty(properties[c_controllerInputFieldCount], 1, 5);
-                    
+
                     // Show assigned controllers group and label
                     bool forceEnable = userData.ConfigVars.autoAssignJoysticks && userData.ConfigVars.maxJoysticksPerPlayer != 1;
-                    if(forceEnable && !properties[c_showAssignedControllers].boolValue) properties[c_showAssignedControllers].boolValue = true;
+                    if (forceEnable && !properties[c_showAssignedControllers].boolValue) properties[c_showAssignedControllers].boolValue = true;
                     bool guiEnabledPrev = GUI.enabled;
-                    if(guiEnabledPrev && forceEnable) GUI.enabled = false;
+                    if (guiEnabledPrev && forceEnable) GUI.enabled = false;
                     EditorGUILayout.PropertyField(properties[c_showAssignedControllers]);
-                    if(GUI.enabled != guiEnabledPrev) GUI.enabled = guiEnabledPrev;
-                    if(properties[c_showAssignedControllers].boolValue) {
+                    if (GUI.enabled != guiEnabledPrev) GUI.enabled = guiEnabledPrev;
+                    if (properties[c_showAssignedControllers].boolValue)
+                    {
                         EditorGUILayout.PropertyField(properties[c_showAssignedControllersGroupLabel]);
                     }
 
@@ -300,46 +313,57 @@ namespace Rewired.UI.ControlMapper {
             }
 
             // Keyboard options
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Keyboard Options:", "Various options for the Keyboard."), style_sectionLabel);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(properties[c_showKeyboard]);
-                if(properties[c_showKeyboard].boolValue) {
+                if (properties[c_showKeyboard].boolValue)
+                {
                     DrawIntProperty(properties[c_keyboardInputFieldCount], 1, 5);
                 }
             }
 
             // Mouse options
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Mouse Options:", "Various options for the Mouse."), style_sectionLabel);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(properties[c_showMouse]);
-                if(properties[c_showMouse].boolValue) {
+                if (properties[c_showMouse].boolValue)
+                {
                     DrawIntProperty(properties[c_mouseInputFieldCount], 1, 5);
                     EditorGUILayout.PropertyField(properties[c_ignoreMouseX]);
                     EditorGUILayout.PropertyField(properties[c_ignoreMouseY]);
                 }
-            }        
+            }
 
             // Input field options
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Input Field Options:", "Various options for the input field grid."), style_sectionLabel);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(properties[c_showFullAxisInputFields]);
                 EditorGUILayout.PropertyField(properties[c_showSplitAxisInputFields]);
-                if(!properties[c_showFullAxisInputFields].boolValue) {
-                    if(!properties[c_showSplitAxisInputFields].boolValue) { // both are disabled
+                if (!properties[c_showFullAxisInputFields].boolValue)
+                {
+                    if (!properties[c_showSplitAxisInputFields].boolValue)
+                    { // both are disabled
                         EditorGUILayout.HelpBox("No axis input fields will be displayed! The user will be unable to make any assignments to axis-type Actions.", MessageType.Error);
-                    } else {
+                    }
+                    else
+                    {
                         EditorGUILayout.HelpBox(
                             "Full-axis input fields will not be displayed. This field is required if you have made any full-axis assignments " +
                             "in the Rewired Input Manager or in saved XML user data. Disabling this field when you have full-axis assignments will result in the " +
-                            "inability for the user to view, remove, or modify these full-axis assignments. In addition, these assignments may cause conflicts when " + 
+                            "inability for the user to view, remove, or modify these full-axis assignments. In addition, these assignments may cause conflicts when " +
                             "trying to remap the same axes to Actions.",
                             MessageType.Warning
                         );
                     }
-                } else if(!properties[c_showSplitAxisInputFields].boolValue) {
+                }
+                else if (!properties[c_showSplitAxisInputFields].boolValue)
+                {
                     EditorGUILayout.HelpBox(
                         "Split-axis input fields will not be displayed. These fields are required to assign buttons, keyboard keys, and hat or D-Pad directions to axis-type Actions. " +
                         "If you have made any split-axis assignments or button/key/D-pad assignments to axis-type Actions in the Rewired Input Manager or " +
@@ -351,18 +375,21 @@ namespace Rewired.UI.ControlMapper {
             }
 
             // Mapping sets
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Map Categories and Actions:", "Options for the Map Categories and Actions displayed to the user for input mapping."), style_sectionLabel);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(properties[c_showActionCategoryLabels]);
-                if(properties[c_mappingSets].arraySize > 1) {
-                    EditorGUILayout.PropertyField(properties[c_showMapCategoriesGroupLabel]);    
+                if (properties[c_mappingSets].arraySize > 1)
+                {
+                    EditorGUILayout.PropertyField(properties[c_showMapCategoriesGroupLabel]);
                 }
                 DrawMappingSet(properties[c_mappingSets]);
             }
 
             // Layouts
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Default Layouts:", "The controller map Layout that will be shown to the user. This remapping system only supports a single fixed Layout per controller type."), style_sectionLabel);
                 EditorGUILayout.Space();
                 EditorGUILayout.HelpBox("This Layout defined here is only a suggestion. If a ControllerMap with this Layout is found in the Player, it will be used. Otherwise, the first ControllerMap in the correct category found will be used regardless of the Layout id.", MessageType.Info);
@@ -373,17 +400,20 @@ namespace Rewired.UI.ControlMapper {
             }
 
             // Input Behaviors
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Input Behaviors:", "Settings for user-modifiable Input Behaviors. Only certain properties are supported."), style_sectionLabel);
                 EditorGUILayout.PropertyField(properties[c_showInputBehaviorSettings]);
-                if(properties[c_showInputBehaviorSettings].boolValue) {
+                if (properties[c_showInputBehaviorSettings].boolValue)
+                {
                     EditorGUILayout.PropertyField(properties[c_showSettingsGroupLabel]);
                     DrawInputBehaviorSettings(properties[c_inputBehaviorSettings]);
                 }
             }
 
             // Element Assignment options
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Element Assignment Options:", "Various options for the element assignment."), style_sectionLabel);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(properties[c_allowElementAssignmentConflicts]);
@@ -391,7 +421,8 @@ namespace Rewired.UI.ControlMapper {
             }
 
             // Timer options
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Timer Options:", "Various timer options."), style_sectionLabel);
                 EditorGUILayout.Space();
                 DrawFloatProperty(properties[c_preInputAssignmentTimeout], 0.0f, 1000.0f);
@@ -401,7 +432,8 @@ namespace Rewired.UI.ControlMapper {
             }
 
             // Input grid layout options
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Input Grid Layout Options:", "Dimensions for various elements in the input grid."), style_sectionLabel);
                 EditorGUILayout.Space();
                 DrawIntProperty(properties[c_actionLabelWidth], 0, 10000);
@@ -417,7 +449,8 @@ namespace Rewired.UI.ControlMapper {
             }
 
             // Popup window options
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Popup Window Options:", "Various options for popup windows."), style_sectionLabel);
                 EditorGUILayout.Space();
                 DrawIntProperty(properties[c_defaultWindowWidth], 0, 10000);
@@ -425,7 +458,8 @@ namespace Rewired.UI.ControlMapper {
             }
 
             // Menu control Actions
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Screen Control Actions:", "Actions that control the mapping screen."), style_sectionLabel);
                 EditorGUILayout.Space();
                 DrawRewiredActionProperty(properties[c_screenOpenAction]);
@@ -436,22 +470,25 @@ namespace Rewired.UI.ControlMapper {
             }
 
             // Theme options
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Theme Options:", "UI theme options."), style_sectionLabel);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(properties[c_useThemeSettings]);
-                if(properties[c_useThemeSettings].boolValue) EditorGUILayout.PropertyField(properties[c_themeSettings], true);
+                if (properties[c_useThemeSettings].boolValue) EditorGUILayout.PropertyField(properties[c_themeSettings], true);
             }
 
             // Language options
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Language Options:", "Language options."), style_sectionLabel);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(properties[c_language]);
             }
 
             // Unity Events
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Events:", "Events."), style_sectionLabel);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(properties[c_onScreenOpened]);
@@ -463,10 +500,12 @@ namespace Rewired.UI.ControlMapper {
             }
 
             // Advanced settings
-            using(new EditorGUILayoutSection(true, style_sectionBkg)) {
+            using (new EditorGUILayoutSection(true, style_sectionBkg))
+            {
                 EditorGUILayout.LabelField(new GUIContent("Advanced Settings:", "These are internal settings like references to GameObject and Prefabs. You should not have to change these."), style_sectionLabel);
                 foldout_internalData = EditorGUILayout.Foldout(foldout_internalData, "Internal Data");
-                if(foldout_internalData) {
+                if (foldout_internalData)
+                {
                     EditorGUILayout.PropertyField(properties[c_prefabs], true);
                     EditorGUILayout.PropertyField(properties[c_references], true);
                 }
@@ -477,7 +516,8 @@ namespace Rewired.UI.ControlMapper {
 
         #region Draw Specific Properties
 
-        private void DrawKeyboardMapDefaultLayoutProperty() {
+        private void DrawKeyboardMapDefaultLayoutProperty()
+        {
             DrawPopupProperty(
                 userData.GetKeyboardLayoutIds(),
                 userData.GetKeyboardLayoutNames(),
@@ -485,7 +525,8 @@ namespace Rewired.UI.ControlMapper {
             );
         }
 
-        private void DrawMouseMapDefaultLayoutProperty() {
+        private void DrawMouseMapDefaultLayoutProperty()
+        {
             DrawPopupProperty(
                 userData.GetMouseLayoutIds(),
                 userData.GetMouseLayoutNames(),
@@ -493,7 +534,8 @@ namespace Rewired.UI.ControlMapper {
             );
         }
 
-        private void DrawJoystickMapDefaultLayoutProperty() {
+        private void DrawJoystickMapDefaultLayoutProperty()
+        {
             DrawPopupProperty(
                 userData.GetJoystickLayoutIds(),
                 userData.GetJoystickLayoutNames(),
@@ -501,8 +543,9 @@ namespace Rewired.UI.ControlMapper {
             );
         }
 
-        private void DrawMappingSet(SerializedProperty mapSetsArray) {
-            if(mapSetsArray == null || !mapSetsArray.isArray) return;
+        private void DrawMappingSet(SerializedProperty mapSetsArray)
+        {
+            if (mapSetsArray == null || !mapSetsArray.isArray) return;
 
             int[] mapCategoryIds = userData.GetMapCategoryIds();
             string[] mapCategoryNames = userData.GetMapCategoryNames();
@@ -524,12 +567,15 @@ namespace Rewired.UI.ControlMapper {
             EditorGUILayout.Space();
 
             int count = mapSetsArray.arraySize;
-            if(count == 0) {
+            if (count == 0)
+            {
                 EditorGUILayout.HelpBox("You must have at least one map category!", MessageType.Error);
             }
-            for(int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
 
-                using(new EditorGUILayoutSection(true, style_mapSetBkg)) {
+                using (new EditorGUILayoutSection(true, style_mapSetBkg))
+                {
 
                     SerializedProperty mapSet = mapSetsArray.GetArrayElementAtIndex(i);
 
@@ -537,14 +583,15 @@ namespace Rewired.UI.ControlMapper {
                     SerializedProperty mapCategoryId = mapSet.FindPropertyRelative("_mapCategoryId");
                     DrawPopupProperty(new GUIContent("Map Category", "The Map Category that will be displayed to the user for mapping."), mapCategoryIds, mapCategoryNames, mapCategoryId); // NOTE: mapCategoryId tool tip from Attribute is always NULL!
                     int selectedMapCategoryIndex = System.Array.IndexOf<int>(mapCategoryIds, mapCategoryId.intValue);
-                    if(selectedMapCategoryIndex < 0) continue;
+                    if (selectedMapCategoryIndex < 0) continue;
 
                     SerializedProperty actionListMode = mapSet.FindPropertyRelative("_actionListMode");
                     EditorGUILayout.PropertyField(actionListMode);
 
                     EditorGUILayout.Space();
 
-                    if((ControlMapper.MappingSet.ActionListMode)actionListMode.intValue == ControlMapper.MappingSet.ActionListMode.ActionCategory) {
+                    if ((ControlMapper.MappingSet.ActionListMode)actionListMode.intValue == ControlMapper.MappingSet.ActionListMode.ActionCategory)
+                    {
 
                         EditorGUILayout.LabelField(new GUIContent("Action Categories:", "List each Action Category you want to be displayed for this map category. This will list all user-assignable Actions in that category allowing the user to make assignments for each of these Actions."));
                         EditorGUILayout.Space();
@@ -552,7 +599,9 @@ namespace Rewired.UI.ControlMapper {
                         SerializedProperty actionCategoryIdsArray = mapSet.FindPropertyRelative("_actionCategoryIds");
                         DrawEditableSerializedPropertyArray(actionCategoryIdsArray, "Action Category", actionCategoryIds, actionCategoryNames);
 
-                    } else {
+                    }
+                    else
+                    {
 
                         EditorGUILayout.LabelField(new GUIContent("Actions:", "List each Action you want to be displayed for this map category. This will allow the user to make assignments for each of these Actions."));
                         EditorGUILayout.Space();
@@ -563,15 +612,17 @@ namespace Rewired.UI.ControlMapper {
 
                     // Array control butons
                     GUILayout.Space(20f);
-                    using(new EditorGUILayoutSection(false)) {
+                    using (new EditorGUILayoutSection(false))
+                    {
                         GUILayout.FlexibleSpace();
                         bool guiEnabled = GUI.enabled;
-                        if(i == 0) GUI.enabled = false; // don't allow deleting the first entry
-                        if(GUILayout.Button("Delete", GUILayout.ExpandWidth(false), GUILayout.Width(100f))) {
+                        if (i == 0) GUI.enabled = false; // don't allow deleting the first entry
+                        if (GUILayout.Button("Delete", GUILayout.ExpandWidth(false), GUILayout.Width(100f)))
+                        {
                             mapSetsArray.DeleteArrayElementAtIndex(i);
                             break; // exit now to avoid issues
                         }
-                        if(i == 0) GUI.enabled = guiEnabled;
+                        if (i == 0) GUI.enabled = guiEnabled;
                     }
                 }
 
@@ -579,14 +630,16 @@ namespace Rewired.UI.ControlMapper {
             }
 
             EditorGUILayout.Space();
-            if(GUILayout.Button("+ Add Map Category")) {
+            if (GUILayout.Button("+ Add Map Category"))
+            {
                 mapSetsArray.InsertArrayElementAtIndex(mapSetsArray.arraySize);
             }
             EditorGUILayout.Space();
         }
 
-        private void DrawInputBehaviorSettings(SerializedProperty settingsArray) {
-            if(settingsArray == null || !settingsArray.isArray) return;
+        private void DrawInputBehaviorSettings(SerializedProperty settingsArray)
+        {
+            if (settingsArray == null || !settingsArray.isArray) return;
 
             EditorGUILayout.Space();
 
@@ -601,18 +654,20 @@ namespace Rewired.UI.ControlMapper {
             string[] inputBehaviorNames = userData.GetInputBehaviorNames();
 
             int count = settingsArray.arraySize;
-            for(int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
 
-                using(new EditorGUILayoutSection(true, style_mapSetBkg)) {
+                using (new EditorGUILayoutSection(true, style_mapSetBkg))
+                {
 
                     SerializedProperty setting = settingsArray.GetArrayElementAtIndex(i);
-                    if(setting == null) continue;
+                    if (setting == null) continue;
 
                     GUILayout.Space(20f);
                     SerializedProperty inputBehaviorId = setting.FindPropertyRelative("_inputBehaviorId");
                     DrawPopupProperty(new GUIContent("Input Behavior", "The Input Behavior that will be displayed to the user for modification."), inputBehaviorIds, inputBehaviorNames, inputBehaviorId); // NOTE: mapCategoryId tool tip from Attribute is always NULL!
                     int selectedIndex = System.Array.IndexOf<int>(inputBehaviorIds, inputBehaviorId.intValue);
-                    if(selectedIndex < 0) continue;
+                    if (selectedIndex < 0) continue;
 
                     // Display settings
 
@@ -633,9 +688,10 @@ namespace Rewired.UI.ControlMapper {
                     SerializedProperty mouseXYAxisSensitivityMax = setting.FindPropertyRelative("_mouseXYAxisSensitivityMax");
 
                     EditorGUILayout.PropertyField(labelLanguageKey);
-                    
+
                     EditorGUILayout.PropertyField(showJoystickAxisSensitivity);
-                    if(showJoystickAxisSensitivity.boolValue) {
+                    if (showJoystickAxisSensitivity.boolValue)
+                    {
                         EditorGUILayout.PropertyField(joystickAxisSensitivityLabelLanguageKey);
                         EditorGUILayout.PropertyField(joystickAxisSensitivityIcon);
                         DrawFloatProperty(joystickAxisSensitivityMin, 0f, 10000f);
@@ -643,20 +699,23 @@ namespace Rewired.UI.ControlMapper {
                     }
 
                     EditorGUILayout.PropertyField(showMouseXYAxisSensitivity);
-                    if(showMouseXYAxisSensitivity.boolValue) {
+                    if (showMouseXYAxisSensitivity.boolValue)
+                    {
                         EditorGUILayout.PropertyField(mouseXYAxisSensitivityLabelLanguageKey);
                         EditorGUILayout.PropertyField(mouseXYAxisSensitivityIcon);
                         DrawFloatProperty(mouseXYAxisSensitivityMin, 0f, 10000f);
                         DrawFloatProperty(mouseXYAxisSensitivityMax, 0f, 10000f);
                     }
-                    
+
                     EditorGUILayout.Space();
 
                     // Array control butons
                     GUILayout.Space(20f);
-                    using(new EditorGUILayoutSection(false)) {
+                    using (new EditorGUILayoutSection(false))
+                    {
                         GUILayout.FlexibleSpace();
-                        if(GUILayout.Button("Delete", GUILayout.ExpandWidth(false), GUILayout.Width(100f))) {
+                        if (GUILayout.Button("Delete", GUILayout.ExpandWidth(false), GUILayout.Width(100f)))
+                        {
                             settingsArray.DeleteArrayElementAtIndex(i);
                             break; // exit now to avoid issues
                         }
@@ -667,7 +726,8 @@ namespace Rewired.UI.ControlMapper {
             }
 
             EditorGUILayout.Space();
-            if(GUILayout.Button("+ Add Input Behavior")) {
+            if (GUILayout.Button("+ Add Input Behavior"))
+            {
                 settingsArray.InsertArrayElementAtIndex(settingsArray.arraySize);
                 SerializedProperty setting = settingsArray.GetArrayElementAtIndex(settingsArray.arraySize - 1);
                 // Clear to defaults
@@ -690,37 +750,43 @@ namespace Rewired.UI.ControlMapper {
         #endregion
 
         #region Draw Property Types
-        
-        private void DrawPopupProperty(int[] values, string[] names, SerializedProperty serializedProperty) {
+
+        private void DrawPopupProperty(int[] values, string[] names, SerializedProperty serializedProperty)
+        {
             DrawPopupProperty(new GUIContent(serializedProperty.displayName, serializedProperty.tooltip), values, names, serializedProperty);
         }
-        private void DrawPopupProperty(GUIContent label, int[] values, string[] names, SerializedProperty serializedProperty) {
+        private void DrawPopupProperty(GUIContent label, int[] values, string[] names, SerializedProperty serializedProperty)
+        {
             int valueCount = values != null ? values.Length : 0;
             int nameCount = names != null ? names.Length : 0;
-            if(valueCount != nameCount) throw new System.Exception("values.Length must equal names.Length!");
+            if (valueCount != nameCount) throw new System.Exception("values.Length must equal names.Length!");
 
             int selectedIndex = valueCount > 0 ? System.Array.IndexOf<int>(values, serializedProperty.intValue) : -1;
 
             int newIndex = EditorGUILayout.Popup(label, selectedIndex, ToGUIContentArray(names));
-            if(newIndex != selectedIndex) { // 
+            if (newIndex != selectedIndex)
+            { // 
                 serializedProperty.intValue = values[newIndex];
             }
         }
 
-        private void DrawIntProperty(SerializedProperty serializedProperty, int min, int max) {
-            if(serializedProperty.intValue < min) serializedProperty.intValue = min;
-            if(serializedProperty.intValue > max) serializedProperty.intValue = max;
+        private void DrawIntProperty(SerializedProperty serializedProperty, int min, int max)
+        {
+            if (serializedProperty.intValue < min) serializedProperty.intValue = min;
+            if (serializedProperty.intValue > max) serializedProperty.intValue = max;
             EditorGUILayout.PropertyField(serializedProperty);
         }
 
-        private void DrawFloatProperty(SerializedProperty serializedProperty, float min, float max) {
-            if(serializedProperty.floatValue < min) serializedProperty.floatValue = min;
-            if(serializedProperty.floatValue > max) serializedProperty.floatValue = max;
+        private void DrawFloatProperty(SerializedProperty serializedProperty, float min, float max)
+        {
+            if (serializedProperty.floatValue < min) serializedProperty.floatValue = min;
+            if (serializedProperty.floatValue > max) serializedProperty.floatValue = max;
             EditorGUILayout.PropertyField(serializedProperty);
         }
 
-        private void DrawRewiredActionProperty(SerializedProperty serializedProperty) {
-            if(serializedProperty == null) return;
+        private void DrawRewiredActionProperty(SerializedProperty serializedProperty)
+        {
+            if (serializedProperty == null) return;
             DrawPopupProperty(
                 ArrayTools.Insert(userData.GetActionIds(), 0, -1),
                 ArrayTools.Insert(userData.GetActionNames(), 0, "[None]"),
@@ -728,23 +794,28 @@ namespace Rewired.UI.ControlMapper {
             );
         }
 
-        private void DrawEditableSerializedPropertyArray(SerializedProperty serializedPropertyArray, string label, int[] values, string[] names) {
-            if(serializedPropertyArray == null || !serializedPropertyArray.isArray) return;
+        private void DrawEditableSerializedPropertyArray(SerializedProperty serializedPropertyArray, string label, int[] values, string[] names)
+        {
+            if (serializedPropertyArray == null || !serializedPropertyArray.isArray) return;
 
-            for(int i = 0; i < serializedPropertyArray.arraySize; i++) {
+            for (int i = 0; i < serializedPropertyArray.arraySize; i++)
+            {
                 SerializedProperty prop = serializedPropertyArray.GetArrayElementAtIndex(i);
 
-                using(new EditorGUILayoutSection(false)) {
+                using (new EditorGUILayoutSection(false))
+                {
                     DrawPopupProperty(new GUIContent(label + " " + i), values, names, prop);
                     GUILayout.Space(10f);
-                    if(GUILayout.Button("Del", GUILayout.Width(50f))) {
+                    if (GUILayout.Button("Del", GUILayout.Width(50f)))
+                    {
                         serializedPropertyArray.DeleteArrayElementAtIndex(i);
                     }
                 }
             }
 
             EditorGUILayout.Space();
-            if(GUILayout.Button("Add " + label)) { // insert new one at end
+            if (GUILayout.Button("Add " + label))
+            { // insert new one at end
                 serializedPropertyArray.InsertArrayElementAtIndex(serializedPropertyArray.arraySize);
             }
         }
@@ -753,21 +824,25 @@ namespace Rewired.UI.ControlMapper {
 
         #region Misc
 
-        private void AddProperty(string name) {
+        private void AddProperty(string name)
+        {
             properties.Add(name, serializedObject.FindProperty(name));
         }
 
-        private GUIContent[] ToGUIContentArray(string[] array) {
-            if(array == null) return null;
+        private GUIContent[] ToGUIContentArray(string[] array)
+        {
+            if (array == null) return null;
             GUIContent[] retVal = new GUIContent[array.Length];
-            for(int i = 0; i < array.Length; i++) {
+            for (int i = 0; i < array.Length; i++)
+            {
                 retVal[i] = new GUIContent(array[i]);
             }
             return retVal;
         }
 
-        private void CreateStyles() {
-            if(stylesCreated) return;
+        private void CreateStyles()
+        {
+            if (stylesCreated) return;
 
             style_mapSetBkg = new GUIStyle(GUI.skin.window);
             style_mapSetBkg.padding = new RectOffset(10, 10, 15, 15);
@@ -785,20 +860,26 @@ namespace Rewired.UI.ControlMapper {
 
         #region Private Classes
 
-        private class EditorGUILayoutSection : System.IDisposable {
+        private class EditorGUILayoutSection : System.IDisposable
+        {
 
             private readonly bool vertical;
 
-            public EditorGUILayoutSection(bool vertical) : this(vertical, null) {
+            public EditorGUILayoutSection(bool vertical) : this(vertical, null)
+            {
 
             }
-            public EditorGUILayoutSection(bool vertical, GUIStyle style) {
+            public EditorGUILayoutSection(bool vertical, GUIStyle style)
+            {
                 this.vertical = vertical;
-                if(vertical) {
-                    if(style != null) EditorGUILayout.BeginVertical(style);
+                if (vertical)
+                {
+                    if (style != null) EditorGUILayout.BeginVertical(style);
                     else EditorGUILayout.BeginVertical();
-                } else {
-                    if(style != null) EditorGUILayout.BeginHorizontal(style);
+                }
+                else
+                {
+                    if (style != null) EditorGUILayout.BeginHorizontal(style);
                     else EditorGUILayout.BeginHorizontal();
                 }
             }
@@ -807,21 +888,25 @@ namespace Rewired.UI.ControlMapper {
 
             private bool _disposed;
 
-            public virtual void Dispose() {
+            public virtual void Dispose()
+            {
                 Dispose(true);
                 System.GC.SuppressFinalize(this);
             }
 
-            ~EditorGUILayoutSection() {
+            ~EditorGUILayoutSection()
+            {
                 Dispose(false);
             }
 
-            protected virtual void Dispose(bool disposing) {
-                if(_disposed) return;
+            protected virtual void Dispose(bool disposing)
+            {
+                if (_disposed) return;
 
-                if(disposing) {
+                if (disposing)
+                {
                     // free other managed objects
-                    if(vertical) EditorGUILayout.EndVertical();
+                    if (vertical) EditorGUILayout.EndVertical();
                     else EditorGUILayout.EndHorizontal();
                 }
 

@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MainScript : MonoBehaviour
 {
-   
+
     [SerializeField] private Camera mainCamera;
-   
+
     private void Awake()
     {
         GameManager.Instance.Initialize();
@@ -33,6 +31,6 @@ public class MainScript : MonoBehaviour
         UIManager.Instance.FixedRefresh();
         CollectibleManager.Instance.FixedRefresh();
     }
-   
-   
+
+
 }
