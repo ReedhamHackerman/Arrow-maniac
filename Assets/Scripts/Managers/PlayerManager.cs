@@ -58,7 +58,8 @@ public class PlayerManager
         {
             for (int i = 0; i < connectedPlayerCount; i++)
             {
-                PlayerUnit playerUnit = GameObject.Instantiate<PlayerUnit>(Resources.Load<PlayerUnit>("Prefabs/Players/Player1")); //Static for now Change this later
+                int characterId = CharacterSelection.playerWithSelectedCharacter[i] + 1; //Added 1 because Player prefab names start with 1
+                PlayerUnit playerUnit = GameObject.Instantiate<PlayerUnit>(Resources.Load<PlayerUnit>("Prefabs/Players/Player"+ characterId)); //Static for now Change this later
                 playerUnit.Initialize(i);
                 unitDictionary.Add(i, playerUnit);
 
