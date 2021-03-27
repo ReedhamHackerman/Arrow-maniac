@@ -243,7 +243,6 @@ MonoBehaviour:
   wallJumpForce: 10
   wallJumpAngle: {x: 1.5, y: 2}
   handTransform: {fileID: 8476890787468060010}
-  currentEquippedArrow: 0
   fireFromPos: {fileID: 2670805510485863802}
   showGizmos: 0
 --- !u!114 &385631639
@@ -253,12 +252,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8476890786577798659}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6af4e438eaa654f4fa529b6e7b1a3281, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canUseAbility: 1
+  abilitiesType: 0
   abilityTime: 0
 --- !u!114 &6092602023212908800
 MonoBehaviour:
@@ -267,12 +266,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8476890786577798659}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01ef1d49f33566f40b04a36b598dacea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canUseAbility: 1
+  abilitiesType: 0
   abilityTime: 0
   isPlayerStopped: 0
 --- !u!1 &8476890786672357667
