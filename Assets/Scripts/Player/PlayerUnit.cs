@@ -202,6 +202,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
                 _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
 
             PlayParticle(jumpParticle);
+            StopParticle(walkParticle);
             canJump = false;
         }
     }
@@ -219,7 +220,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     {
         isDashing = true;
         isMoving = false;
-        Debug.LogError("");
 
         TimeManager.Instance.AddDelegate(() => StopDash(), maxDashTime, 1);
     }
@@ -395,6 +395,12 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     public void PlayParticle(ParticleSystem particleSystem)
     {
         particleSystem.Play();
+    }
+
+    public void StopParticle(ParticleSystem particleSystem)
+    {
+        particleSystem.Pause();
+        particleSystem.Clear();
     }
 
 }
