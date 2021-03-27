@@ -121,7 +121,7 @@ Transform:
   - {fileID: 5945078943751942086}
   - {fileID: 6589989075662070331}
   m_Father: {fileID: 8476890786577798658}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8476890786520218252
 GameObject:
@@ -239,6 +239,7 @@ Transform:
   - {fileID: 8476890786904143217}
   - {fileID: 3114757681011909695}
   - {fileID: 6404615458515617893}
+  - {fileID: 5206514443583282310}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -309,8 +310,8 @@ MonoBehaviour:
   handTransform: {fileID: 8476890787468060010}
   fireFromPos: {fileID: 2670805510485863802}
   arrowHudParent: {fileID: 4918655387147926752}
-  arrowHudHeight: 0.009
-  arrowHudSpacing: 0.5
+  arrowHudHeight: 0.31
+  arrowHudSpacing: 0.55
   showGizmos: 0
   walkParticle: {fileID: 5912162363126356365}
   jumpParticle: {fileID: 5359939819249098132}
