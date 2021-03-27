@@ -8,10 +8,12 @@ public class Invisible : Abilities,IFreezable
     private SpriteRenderer[] childSprites;
     private float fade = 1f;
     private bool canPerfomeFade;
-    
+    float abilityRunTime;
+
+
     protected override void Initialize()
     {
-        abilityTime = 2f;
+        abilityRunTime = 2f;
         childSprites = GetComponentsInChildren<SpriteRenderer>();
         canPerfomeFade = true;
 
@@ -38,7 +40,7 @@ public class Invisible : Abilities,IFreezable
                 yield return null;
             }
         
-        yield return new WaitForSeconds(abilityTime);   
+        yield return new WaitForSeconds(abilityRunTime);   
        
             while(fade <= 1)
             {
