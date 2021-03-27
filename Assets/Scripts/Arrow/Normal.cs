@@ -22,15 +22,14 @@ public class Normal : Arrow
         HasHit = true;
         RB2D.velocity = Vector3.zero;
         RB2D.isKinematic = true;
-        
-   }
+        IsPickable = true;
+        selfCollider2D.isTrigger = true;
+    }
 
     public override void Freeze()
     {
         if (HasHit) return; // so that stuck normal arrows do not get affected 
         base.Freeze();
-        IsPickable = true;
-        selfCollider2D.isTrigger = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

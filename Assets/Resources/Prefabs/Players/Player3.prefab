@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8855143500857871201}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HandPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4005010683763648634}
   - component: {fileID: 2171107318018904754}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Right leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6611210281445563834}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Legs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6496412070651697533}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ArrowBowAndHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   m_Component:
   - component: {fileID: 702987835720111623}
   - component: {fileID: 7786309368802308783}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,7 +268,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6218993410996547575}
   - component: {fileID: 7623560498805465352}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: 3_left arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -350,7 +350,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5235429942395457614}
   - component: {fileID: 8830207415928767670}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: 3_right arm_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +430,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7435368813772950499}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -462,7 +462,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1410396640423220141}
   - component: {fileID: 8239116631681054830}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: bow_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -543,7 +543,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5153979826369601770}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ArrowBow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -575,7 +575,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6921009079639404605}
   - component: {fileID: 527020549320653818}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: 3_right arm_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -657,7 +657,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1813764547200518571}
   - component: {fileID: 4945425439054993384}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Left leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -737,7 +737,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7565648119076801248}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -769,7 +769,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5424388525955764063}
   - component: {fileID: 7033211904837397764}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -852,7 +852,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3563182221262446351}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player3
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -884,7 +884,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1082040491425425502}
   - component: {fileID: 4511243816691226491}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: "a\xACrow"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -965,7 +965,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4494730720152272035}
   - component: {fileID: 3049421784517554270}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: hend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
