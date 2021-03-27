@@ -30,13 +30,17 @@ public class Normal : Arrow
     {
         if(IsPickable)
         {
-            PlayerUnit player = collision.gameObject.GetComponent<PlayerUnit>();
-            player.EquipArrow(arrowType, 1);
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                PlayerUnit player = collision.gameObject.GetComponent<PlayerUnit>();
+                player.EquipArrow(arrowType, 1);
 
-            selfCollider2D.isTrigger = false;
+                selfCollider2D.isTrigger = false;
 
-            Debug.Log("EquipArrow");
-            DestroyArrow();
+                Debug.Log("EquipArrow");
+                DestroyArrow();
+            }
+           
         }
     }
 }

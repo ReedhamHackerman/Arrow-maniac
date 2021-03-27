@@ -38,6 +38,13 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     [SerializeField] private Transform handTransform;
     [SerializeField] private Transform fireFromPos;
 
+    [Header("ARROW HUD")]
+    [SerializeField] private GameObject arrowHudParent;
+    private Dictionary<ArrowType, GameObject> AllArrowHUDSDictionary = new Dictionary<ArrowType, GameObject>();
+    public float arrowHudHeight;
+    public float arrowHudSpacing;
+    private GameObject[] AllArrowHudSArray = new GameObject[] { };
+
     [Header("OTHER SETTINGS")]
     [SerializeField] private bool showGizmos;
 
@@ -68,6 +75,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private Dictionary<int, Vector2> playersVelocity = new Dictionary<int, Vector2>();
     private Stack<ArrowType> arrowStack;
 
+
     readonly float MOVEMENT_ENABLE_TIME = 0.2f;
     readonly int START_ARROW_COUNT = 3;
 
@@ -76,16 +84,18 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     public bool RightHit { get; set; } = true;
     public void Initialize(int playerId)
     {
+        LoadAlltheArrowHUD();
         this.playerId = playerId;
         InitializePlayersById();
 
         InitializeArrowStack();
         InitializeReferences();
-
+       // LoadAlltheArrowHUD();
         isMoving = true;
         canUseDash = true;
+       
     }
-
+   
     #region INITIALIZATION CODE
     private void InitializeReferences()
     {
@@ -98,12 +108,43 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         timeStopScript.inputManager = this.inputManager;
     }
     
+    private void LoadAlltheArrowHUD()
+    {
+        ArrowType[] alltypes = (ArrowType[])System.Enum.GetValues(typeof(ArrowType));
+        //GameObject[] AllArrows = Resources.LoadAll<GameObject>("Prefabs/ArrowHUDS");
+        for (int i = 0; i < alltypes.Length; i++)
+        {
+            AllArrowHUDSDictionary.Add(alltypes[i], Resources.Load<GameObject>("Prefabs/ArrowHUDS/"+alltypes[i].ToString()+"ArrowHUD"));
+        }
+        //for (int i = 0; i < AllArrows.Length; i++)
+        //{
+            
+        //    //ArrowHud is post fix for the ArrowHud If U change Name Of Prefabs It will affect the code 
+        //    string arrowString = AllArrows[i].name.Replace("ArrowHUD", "");
+        //    for (int j = 0; j < alltypes.Length; j++)
+        //    {
+        //        if (arrowString.Equals(alltypes[j].ToString()))
+        //        {
+        //            AllArrowHUDS.Add(alltypes[j], AllArrows[i]);
+        //        }
+                
+        //    }
+           
+        //}
+
+    }
+
     private void InitializeArrowStack()
     {
         arrowStack = new Stack<ArrowType>();
 
         for (int i = 0; i < START_ARROW_COUNT; i++)
+        {
             arrowStack.Push(ArrowType.NORMAL);
+            AddNewArrowTOHUD(ArrowType.NORMAL);
+        }
+           
+
     }
 
     private void InitializePlayersById()
@@ -122,7 +163,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         LeftHit = isLeftHit();
         RightHit = isRightHit();
 
-
+       
         Jump();
         Rotate();
         Dash();
@@ -269,11 +310,27 @@ public class PlayerUnit : MonoBehaviour,IFreezable
             handTransform.localEulerAngles = Vector2.zero;
     }
 
+    private void AddNewArrowTOHUD(ArrowType ourArrowTYPE)
+    {
+        float countArrowSpacing = ((arrowStack.Count -1)*arrowHudSpacing);
+        GameObject arrowHud = Instantiate( AllArrowHUDSDictionary[ourArrowTYPE], new Vector2(arrowHudParent.transform.position.x + (countArrowSpacing), arrowHudParent.transform.position.y+arrowHudHeight), Quaternion.identity, arrowHudParent.transform);
+        
+        //GameObject arrowHud = Instantiate(AllArrowHUDS[ourArrowTYPE], new Vector2(0f, 0), Quaternion.identity, arrowHudParent.transform);
+    }
+    private void RemoveArrowFromHUD(ArrowType ourArowType)
+    {
+        if (arrowHudParent.transform.childCount!=0)
+        {
+            Destroy(arrowHudParent.transform.GetChild(arrowHudParent.transform.childCount - 1).gameObject);
+        }
+      
+    }
     private void Shoot()
     {
         if(arrowStack.Count > 0)
         {
             ArrowType arrowType = arrowStack.Pop();
+            RemoveArrowFromHUD(arrowType);
             Arrow newArrow = ArrowManager.Instance.Fire(arrowType, fireFromPos.position, fireFromPos.rotation);
             newArrow.Oninitialize();
             newArrow.AddForceInDirection(fireFromPos.right);
@@ -334,7 +391,12 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     public void EquipArrow(ArrowType toEquip, int equipCount)
     {
         for (int i = 0; i < equipCount; i++)
+        {
             arrowStack.Push(toEquip);
+            AddNewArrowTOHUD(toEquip);
+        }
+          
+
     }
    
    
