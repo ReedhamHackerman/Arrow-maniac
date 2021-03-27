@@ -15,16 +15,17 @@
  * InputMapper to keep this example small and focused.
  */
 
-namespace Rewired.Demos {
+namespace Rewired.Demos
+{
 
+    using System.Collections;
+    using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.UI;
-    using UnityEngine.EventSystems;
-    using System.Collections.Generic;
-    using System.Collections;
 
     [AddComponentMenu("")]
-    public class SimpleCombinedKeyboardMouseRemapping : MonoBehaviour {
+    public class SimpleCombinedKeyboardMouseRemapping : MonoBehaviour
+    {
 
         private const string category = "Default";
         private const string layout = "Default";
@@ -45,8 +46,9 @@ namespace Rewired.Demos {
 
         private Player player { get { return ReInput.players.GetPlayer(0); } }
 
-        private void OnEnable() {
-            if(!ReInput.isReady) return; // don't run if Rewired hasn't been initialized
+        private void OnEnable()
+        {
+            if (!ReInput.isReady) return; // don't run if Rewired hasn't been initialized
 
             // Timeout after 5 seconds of listening
             inputMapper_keyboard.options.timeout = 5f;
@@ -65,12 +67,13 @@ namespace Rewired.Demos {
             inputMapper_keyboard.StoppedEvent += OnStopped;
             inputMapper_mouse.InputMappedEvent += OnInputMapped;
             inputMapper_mouse.StoppedEvent += OnStopped;
-            
+
             // Create UI elements
             InitializeUI();
         }
 
-        private void OnDisable() {
+        private void OnDisable()
+        {
 
             // Make sure the input mapper is stopped first
             inputMapper_keyboard.Stop();
@@ -81,13 +84,15 @@ namespace Rewired.Demos {
             inputMapper_mouse.RemoveAllEventListeners();
         }
 
-        private void RedrawUI() {
-            
+        private void RedrawUI()
+        {
+
             // Update joystick name in UI
             controllerNameUIText.text = "Keyboard/Mouse";
 
             // Update each button label with the currently mapped element identifier
-            for(int i = 0; i < rows.Count; i++) {
+            for (int i = 0; i < rows.Count; i++)
+            {
                 Row row = rows[i];
                 InputAction action = rows[i].action;
 
@@ -95,12 +100,15 @@ namespace Rewired.Demos {
                 int actionElementMapId = -1;
 
                 // Find the first ActionElementMap that maps to this Action and is compatible with this field type
-                for (int j = 0; j < 2; j++) {
+                for (int j = 0; j < 2; j++)
+                {
                     // Search the Keyboard Map first, then the Mouse Map
                     ControllerType controllerType = j == 0 ? ControllerType.Keyboard : ControllerType.Mouse;
                     ControllerMap controllerMap = player.controllers.maps.GetMap(controllerType, 0, category, layout);
-                    foreach (var actionElementMap in controllerMap.ElementMapsWithAction(action.id)) {
-                        if (actionElementMap.ShowInField(row.actionRange)) {
+                    foreach (var actionElementMap in controllerMap.ElementMapsWithAction(action.id))
+                    {
+                        if (actionElementMap.ShowInField(row.actionRange))
+                        {
                             name = actionElementMap.elementIdentifierName;
                             actionElementMapId = actionElementMap.id;
                             break;
@@ -119,35 +127,44 @@ namespace Rewired.Demos {
             }
         }
 
-        private void ClearUI() {
+        private void ClearUI()
+        {
 
             // Clear the controller name
             controllerNameUIText.text = string.Empty;
 
             // Clear button labels
-            for(int i = 0; i < rows.Count; i++) {
+            for (int i = 0; i < rows.Count; i++)
+            {
                 rows[i].text.text = string.Empty;
             }
         }
 
-        private void InitializeUI() {
+        private void InitializeUI()
+        {
 
             // Delete placeholders
-            foreach(Transform t in actionGroupTransform) {
+            foreach (Transform t in actionGroupTransform)
+            {
                 Object.Destroy(t.gameObject);
             }
-            foreach(Transform t in fieldGroupTransform) {
+            foreach (Transform t in fieldGroupTransform)
+            {
                 Object.Destroy(t.gameObject);
             }
 
             // Create Action fields and input field buttons
-            foreach(var action in ReInput.mapping.ActionsInCategory(category)) {
-                if(action.type == InputActionType.Axis) {
+            foreach (var action in ReInput.mapping.ActionsInCategory(category))
+            {
+                if (action.type == InputActionType.Axis)
+                {
                     // Create a full range, one positive, and one negative field for Axis-type Actions
                     CreateUIRow(action, AxisRange.Full, action.descriptiveName);
                     CreateUIRow(action, AxisRange.Positive, !string.IsNullOrEmpty(action.positiveDescriptiveName) ? action.positiveDescriptiveName : action.descriptiveName + " +");
                     CreateUIRow(action, AxisRange.Negative, !string.IsNullOrEmpty(action.negativeDescriptiveName) ? action.negativeDescriptiveName : action.descriptiveName + " -");
-                } else if(action.type == InputActionType.Button) {
+                }
+                else if (action.type == InputActionType.Button)
+                {
                     // Just create one positive field for Button-type Actions
                     CreateUIRow(action, AxisRange.Positive, action.descriptiveName);
                 }
@@ -156,7 +173,8 @@ namespace Rewired.Demos {
             RedrawUI();
         }
 
-        private void CreateUIRow(InputAction action, AxisRange actionRange, string label) {
+        private void CreateUIRow(InputAction action, AxisRange actionRange, string label)
+        {
             // Create the Action label
             GameObject labelGo = Object.Instantiate<GameObject>(textPrefab);
             labelGo.transform.SetParent(actionGroupTransform);
@@ -170,7 +188,8 @@ namespace Rewired.Demos {
 
             // Add the row to the rows list
             rows.Add(
-                new Row() {
+                new Row()
+                {
                     action = action,
                     actionRange = actionRange,
                     button = buttonGo.GetComponent<Button>(),
@@ -182,8 +201,9 @@ namespace Rewired.Demos {
         // Event Handlers
 
         // Called by the input field UI Button when pressed
-        private void OnInputFieldClicked(int index, int actionElementMapToReplaceId) {
-            if(index < 0 || index >= rows.Count) return; // index out of range
+        private void OnInputFieldClicked(int index, int actionElementMapToReplaceId)
+        {
+            if (index < 0 || index >= rows.Count) return; // index out of range
 
             ControllerMap keyboardMap = player.controllers.maps.GetMap(ControllerType.Keyboard, 0, category, layout);
             ControllerMap mouseMap = player.controllers.maps.GetMap(ControllerType.Mouse, 0, category, layout);
@@ -200,7 +220,8 @@ namespace Rewired.Demos {
             else controllerMapWithReplacement = null; // not a replacement
 
             // Store the information about the replacement if any
-            _replaceTargetMapping = new TargetMapping() {
+            _replaceTargetMapping = new TargetMapping()
+            {
                 actionElementMapId = actionElementMapToReplaceId,
                 controllerMap = controllerMapWithReplacement
             };
@@ -210,7 +231,8 @@ namespace Rewired.Demos {
             StartCoroutine(StartListeningDelayed(index, keyboardMap, mouseMap, actionElementMapToReplaceId));
         }
 
-        private IEnumerator StartListeningDelayed(int index, ControllerMap keyboardMap, ControllerMap mouseMap, int actionElementMapToReplaceId) {
+        private IEnumerator StartListeningDelayed(int index, ControllerMap keyboardMap, ControllerMap mouseMap, int actionElementMapToReplaceId)
+        {
 
             // Don't allow a binding for a short period of time after input field is activated
             // to prevent button bound to UI Submit from binding instantly when input field is activated.
@@ -219,7 +241,8 @@ namespace Rewired.Demos {
             // Begin listening for input on both keyboard and mouse at the same time
 
             inputMapper_keyboard.Start(
-                new InputMapper.Context() {
+                new InputMapper.Context()
+                {
                     actionId = rows[index].action.id,
                     controllerMap = keyboardMap,
                     actionRange = rows[index].actionRange,
@@ -228,7 +251,8 @@ namespace Rewired.Demos {
             );
 
             inputMapper_mouse.Start(
-                new InputMapper.Context() {
+                new InputMapper.Context()
+                {
                     actionId = rows[index].action.id,
                     controllerMap = mouseMap,
                     actionRange = rows[index].actionRange,
@@ -243,17 +267,20 @@ namespace Rewired.Demos {
             statusUIText.text = "Listening...";
         }
 
-        private void OnInputMapped(InputMapper.InputMappedEventData data) {
+        private void OnInputMapped(InputMapper.InputMappedEventData data)
+        {
 
             // Stop both mappers so they're no longer listening
             inputMapper_keyboard.Stop();
             inputMapper_mouse.Stop();
 
             // Handle cross device type binding replacement
-            if(_replaceTargetMapping.controllerMap != null) { // we have a replacement
+            if (_replaceTargetMapping.controllerMap != null)
+            { // we have a replacement
 
                 // Remove the replacement from the other map if the binding was made on the opposite device type
-                if(data.actionElementMap.controllerMap != _replaceTargetMapping.controllerMap) {
+                if (data.actionElementMap.controllerMap != _replaceTargetMapping.controllerMap)
+                {
                     _replaceTargetMapping.controllerMap.DeleteElementMap(_replaceTargetMapping.actionElementMapId);
                 }
             }
@@ -261,7 +288,8 @@ namespace Rewired.Demos {
             RedrawUI();
         }
 
-        private void OnStopped(InputMapper.StoppedEventData data) {
+        private void OnStopped(InputMapper.StoppedEventData data)
+        {
             statusUIText.text = string.Empty;
 
             // Re-enable UI Controller Maps after listening is finished.
@@ -269,14 +297,16 @@ namespace Rewired.Demos {
         }
 
         // A small class to store information about the input field buttons
-        private class Row {
+        private class Row
+        {
             public InputAction action;
             public AxisRange actionRange;
             public Button button;
             public Text text;
         }
 
-        private struct TargetMapping {
+        private struct TargetMapping
+        {
             public ControllerMap controllerMap;
             public int actionElementMapId;
         }

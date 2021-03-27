@@ -3,16 +3,14 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
-
-    using UnityEngine;
+namespace Rewired.UI.ControlMapper
+{
     using UnityEditor;
-    using System.Collections;
-    using Rewired;
 
     [CustomEditor(typeof(CustomButton), true)]
     [CanEditMultipleObjects]
-    public class CustomButtonInspector : UnityEditor.UI.ButtonEditor {
+    public class CustomButtonInspector : UnityEditor.UI.ButtonEditor
+    {
 
         private SerializedProperty disabledHighlightedSprite;
         private SerializedProperty disabledHighlightedColor;
@@ -23,7 +21,8 @@ namespace Rewired.UI.ControlMapper {
         private SerializedProperty autoNavLeft;
         private SerializedProperty autoNavRight;
 
-        protected override void OnEnable() {
+        protected override void OnEnable()
+        {
             base.OnEnable();
 
             disabledHighlightedSprite = serializedObject.FindProperty("_disabledHighlightedSprite");
@@ -35,7 +34,8 @@ namespace Rewired.UI.ControlMapper {
             autoNavRight = serializedObject.FindProperty("_autoNavRight");
         }
 
-        public override void OnInspectorGUI() {
+        public override void OnInspectorGUI()
+        {
             base.OnInspectorGUI();
 
             serializedObject.Update();

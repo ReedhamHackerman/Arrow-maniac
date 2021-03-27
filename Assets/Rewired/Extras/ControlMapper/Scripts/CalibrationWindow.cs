@@ -38,14 +38,12 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
     using UnityEngine;
     using UnityEngine.UI;
-    using UnityEngine.EventSystems;
-    using UnityEngine.Events;
     using System.Collections.Generic;
-    using System.Collections;
     using Rewired;
     using Rewired.Utils;
     using Rewired.Integration.UnityUI;
@@ -56,7 +54,8 @@ namespace Rewired.UI.ControlMapper {
 #endif
 
     [AddComponentMenu("")]
-    public class CalibrationWindow : Window {
+    public class CalibrationWindow : Window
+    {
 
         private const float minSensitivityOtherAxes = 0.1f; // used for non-menu axes, min value to prevent axis from becoming useless
         private const float maxDeadzone = 0.8f; // max dead zone value user is allowed to set to prevent full axis from becoming useless
@@ -115,15 +114,19 @@ namespace Rewired.UI.ControlMapper {
         private float displayAreaWidth;
         private List<Button> axisButtons;
 
-        private bool axisSelected {
-            get {
+        private bool axisSelected
+        {
+            get
+            {
                 if (joystick == null) return false;
                 if (selectedAxis < 0 || selectedAxis >= joystick.calibrationMap.axisCount) return false;
                 return true;
             }
         }
-        private AxisCalibration axisCalibration {
-            get {
+        private AxisCalibration axisCalibration
+        {
+            get
+            {
                 if (!axisSelected) return null;
                 return joystick.calibrationMap.GetAxis(selectedAxis);
             }
@@ -144,7 +147,8 @@ namespace Rewired.UI.ControlMapper {
         private float minSensitivity;
 
 
-        public override void Initialize(int id, System.Func<int, bool> isFocusedCallback) {
+        public override void Initialize(int id, System.Func<int, bool> isFocusedCallback)
+        {
             if (
                 rightContentContainer == null ||
                 valueDisplayGroup == null ||
@@ -168,7 +172,8 @@ namespace Rewired.UI.ControlMapper {
                 sensitivitySliderLabel == null ||
                 invertToggleLabel == null ||
                 calibrateButtonLabel == null
-            ) {
+            )
+            {
                 Debug.LogError("Rewired Control Mapper: All inspector values must be assigned!");
                 return;
             }
@@ -189,20 +194,23 @@ namespace Rewired.UI.ControlMapper {
             base.Initialize(id, isFocusedCallback);
         }
 
-        public void SetJoystick(int playerId, Joystick joystick) {
+        public void SetJoystick(int playerId, Joystick joystick)
+        {
             if (!initialized) return;
 
             this.playerId = playerId;
             this.joystick = joystick;
 
-            if (joystick == null) {
+            if (joystick == null)
+            {
                 Debug.LogError("Rewired Control Mapper: Joystick cannot be null!");
                 return;
             }
 
             // Create axis list
             float buttonHeight = 0.0f;
-            for (int i = 0; i < joystick.axisCount; i++) {
+            for (int i = 0; i < joystick.axisCount; i++)
+            {
                 int index = i;
                 GameObject instance = UITools.InstantiateGUIObject<Button>(axisButtonPrefab, axisScrollAreaContent, "Axis" + i);
                 Button button = instance.GetComponent<Button>();
@@ -226,13 +234,15 @@ namespace Rewired.UI.ControlMapper {
             // Try to get the UI control axis deadzone from the RewiredStandaloneInputModule if it exists in the hierarchy
             // This is used to prevent users from rendering menu navigation axes unusable by changing the axis sensitivity
             rewiredStandaloneInputModule = gameObject.transform.root.GetComponentInChildren<RewiredStandaloneInputModule>();
-            if (rewiredStandaloneInputModule != null) {
+            if (rewiredStandaloneInputModule != null)
+            {
                 menuHorizActionId = ReInput.mapping.GetActionId(rewiredStandaloneInputModule.horizontalAxis);
                 menuVertActionId = ReInput.mapping.GetActionId(rewiredStandaloneInputModule.verticalAxis);
             }
 
             // Select first axis
-            if (joystick.axisCount > 0) {
+            if (joystick.axisCount > 0)
+            {
                 SelectAxis(0);
             }
 
@@ -244,26 +254,30 @@ namespace Rewired.UI.ControlMapper {
             Redraw();
         }
 
-        public void SetButtonCallback(ButtonIdentifier buttonIdentifier, System.Action<int> callback) {
+        public void SetButtonCallback(ButtonIdentifier buttonIdentifier, System.Action<int> callback)
+        {
             if (!initialized) return;
             if (callback == null) return;
             if (buttonCallbacks.ContainsKey((int)buttonIdentifier)) buttonCallbacks[(int)buttonIdentifier] = callback;
             else buttonCallbacks.Add((int)buttonIdentifier, callback);
         }
 
-        public override void Cancel() {
+        public override void Cancel()
+        {
             if (!initialized) return;
             // don't call on base
             if (joystick != null) joystick.ImportCalibrationMapFromXmlString(origCalibrationData); // restore old data
             System.Action<int> callback;
-            if (!buttonCallbacks.TryGetValue((int)ButtonIdentifier.Cancel, out callback)) {
+            if (!buttonCallbacks.TryGetValue((int)ButtonIdentifier.Cancel, out callback))
+            {
                 if (cancelCallback != null) cancelCallback();
                 return;
             }
             callback(id);
         }
 
-        protected override void Update() {
+        protected override void Update()
+        {
             if (!initialized) return;
 
             base.Update();
@@ -273,18 +287,21 @@ namespace Rewired.UI.ControlMapper {
 
         #region Control Event Handlers
 
-        public void OnDone() {
+        public void OnDone()
+        {
             if (!initialized) return;
             System.Action<int> callback;
             if (!buttonCallbacks.TryGetValue((int)ButtonIdentifier.Done, out callback)) return;
             callback(id);
         }
 
-        public void OnCancel() {
+        public void OnCancel()
+        {
             Cancel();
         }
 
-        public void OnRestoreDefault() {
+        public void OnRestoreDefault()
+        {
             if (!initialized) return;
             if (joystick == null) return;
             joystick.calibrationMap.Reset();
@@ -292,27 +309,31 @@ namespace Rewired.UI.ControlMapper {
             Redraw();
         }
 
-        public void OnCalibrate() {
+        public void OnCalibrate()
+        {
             if (!initialized) return;
             System.Action<int> callback;
             if (!buttonCallbacks.TryGetValue((int)ButtonIdentifier.Calibrate, out callback)) return;
             callback(selectedAxis);
         }
 
-        public void OnInvert(bool state) {
+        public void OnInvert(bool state)
+        {
             if (!initialized) return;
             if (!axisSelected) return;
             axisCalibration.invert = state;
         }
 
-        public void OnZeroValueChange(float value) {
+        public void OnZeroValueChange(float value)
+        {
             if (!initialized) return;
             if (!axisSelected) return;
             axisCalibration.calibratedZero = value;
             RedrawCalibratedZero();
         }
 
-        public void OnZeroCancel() {
+        public void OnZeroCancel()
+        {
             if (!initialized) return;
             if (!axisSelected) return;
             axisCalibration.calibratedZero = origSelectedAxisCalibrationData.zero;
@@ -320,7 +341,8 @@ namespace Rewired.UI.ControlMapper {
             RefreshControls();
         }
 
-        public void OnDeadzoneValueChange(float value) {
+        public void OnDeadzoneValueChange(float value)
+        {
             if (!initialized) return;
             if (!axisSelected) return;
             // Enforce a max dead zone to prevent axis from becoming useless
@@ -329,7 +351,8 @@ namespace Rewired.UI.ControlMapper {
             RedrawDeadzone();
         }
 
-        public void OnDeadzoneCancel() {
+        public void OnDeadzoneCancel()
+        {
             if (!initialized) return;
             if (!axisSelected) return;
             axisCalibration.deadZone = origSelectedAxisCalibrationData.deadZone;
@@ -337,24 +360,28 @@ namespace Rewired.UI.ControlMapper {
             RefreshControls();
         }
 
-        public void OnSensitivityValueChange(float value) {
+        public void OnSensitivityValueChange(float value)
+        {
             if (!initialized) return;
             if (!axisSelected) return;
             SetSensitivity(axisCalibration, value);
         }
 
-        public void OnSensitivityCancel(float value) {
+        public void OnSensitivityCancel(float value)
+        {
             if (!initialized) return;
             if (!axisSelected) return;
             axisCalibration.sensitivity = origSelectedAxisCalibrationData.sensitivity;
             RefreshControls();
         }
 
-        public void OnAxisScrollRectScroll(Vector2 pos) {
+        public void OnAxisScrollRectScroll(Vector2 pos)
+        {
             if (!initialized) return;
         }
 
-        private void OnAxisSelected(int axisIndex, Button button) {
+        private void OnAxisSelected(int axisIndex, Button button)
+        {
             if (!initialized) return;
             if (joystick == null) return;
             SelectAxis(axisIndex);
@@ -364,17 +391,21 @@ namespace Rewired.UI.ControlMapper {
 
         #endregion
 
-        private void UpdateDisplay() {
+        private void UpdateDisplay()
+        {
             RedrawValueMarkers();
         }
 
-        private void Redraw() {
+        private void Redraw()
+        {
             RedrawCalibratedZero(); // also updates deadzone
             RedrawValueMarkers();
         }
 
-        private void RefreshControls() {
-            if (!axisSelected) {
+        private void RefreshControls()
+        {
+            if (!axisSelected)
+            {
                 // Deadzone slider
                 deadzoneSlider.value = 0;
 
@@ -386,7 +417,9 @@ namespace Rewired.UI.ControlMapper {
 
                 // Invert toggle
                 invertToggle.isOn = false;
-            } else {
+            }
+            else
+            {
                 // Deadzone slider
                 deadzoneSlider.value = axisCalibration.deadZone;
 
@@ -401,21 +434,25 @@ namespace Rewired.UI.ControlMapper {
             }
         }
 
-        private void RedrawDeadzone() {
+        private void RedrawDeadzone()
+        {
             if (!axisSelected) return;
             float width = displayAreaWidth * axisCalibration.deadZone;
             deadzoneArea.sizeDelta = new Vector2(width, deadzoneArea.sizeDelta.y);
             deadzoneArea.anchoredPosition = new Vector2(axisCalibration.calibratedZero * -deadzoneArea.parent.localPosition.x, deadzoneArea.anchoredPosition.y);
         }
 
-        private void RedrawCalibratedZero() {
+        private void RedrawCalibratedZero()
+        {
             if (!axisSelected) return;
             calibratedZeroMarker.anchoredPosition = new Vector2(axisCalibration.calibratedZero * -deadzoneArea.parent.localPosition.x, calibratedZeroMarker.anchoredPosition.y);
             RedrawDeadzone();
         }
 
-        private void RedrawValueMarkers() {
-            if (!axisSelected) {
+        private void RedrawValueMarkers()
+        {
+            if (!axisSelected)
+            {
                 calibratedValueMarker.anchoredPosition = new Vector2(0, calibratedValueMarker.anchoredPosition.y);
                 rawValueMarker.anchoredPosition = new Vector2(0, rawValueMarker.anchoredPosition.y);
                 return;
@@ -428,7 +465,8 @@ namespace Rewired.UI.ControlMapper {
             rawValueMarker.anchoredPosition = new Vector2(displayAreaWidth * 0.5f * rawValue, rawValueMarker.anchoredPosition.y);
         }
 
-        private void SelectAxis(int index) {
+        private void SelectAxis(int index)
+        {
             if (index < 0 || index >= axisButtons.Count) return;
             if (axisButtons[index] == null) return;
             axisButtons[index].interactable = false; // disable this axis
@@ -438,7 +476,8 @@ namespace Rewired.UI.ControlMapper {
             axisButtons[index].Select(); // force select after Unity deselects it
 #endif
             // Enable other axes
-            for (int i = 0; i < axisButtons.Count; i++) {
+            for (int i = 0; i < axisButtons.Count; i++)
+            {
                 if (i == index) continue;
                 axisButtons[i].interactable = true;
             }
@@ -447,43 +486,53 @@ namespace Rewired.UI.ControlMapper {
             SetMinSensitivity();
         }
 
-        public override void TakeInputFocus() {
+        public override void TakeInputFocus()
+        {
             base.TakeInputFocus();
             if (selectedAxis >= 0) SelectAxis(selectedAxis); // refresh the axis selection so button interactivity matches
             RefreshControls();
             Redraw();
         }
 
-        private void SetMinSensitivity() {
+        private void SetMinSensitivity()
+        {
             if (!axisSelected) return;
 
             minSensitivity = minSensitivityOtherAxes;
 
             // Set the minimum sensitivity for this axis
-            if (rewiredStandaloneInputModule != null) {
-                if (IsMenuAxis(menuHorizActionId, selectedAxis)) {
+            if (rewiredStandaloneInputModule != null)
+            {
+                if (IsMenuAxis(menuHorizActionId, selectedAxis))
+                {
                     GetAxisButtonDeadZone(playerId, menuHorizActionId, ref minSensitivity);
-                } else if (IsMenuAxis(menuVertActionId, selectedAxis)) {
+                }
+                else if (IsMenuAxis(menuVertActionId, selectedAxis))
+                {
                     GetAxisButtonDeadZone(playerId, menuVertActionId, ref minSensitivity);
                 }
             }
         }
 
-        private bool IsMenuAxis(int actionId, int axisIndex) {
+        private bool IsMenuAxis(int actionId, int axisIndex)
+        {
             if (rewiredStandaloneInputModule == null) return false;
 
             // Determine if menu action is mapped to this axis on any player
             IList<Player> players = ReInput.players.AllPlayers;
             int playerCount = players.Count;
-            for (int i = 0; i < playerCount; i++) {
+            for (int i = 0; i < playerCount; i++)
+            {
                 IList<JoystickMap> maps = players[i].controllers.maps.GetMaps<JoystickMap>(joystick.id);
                 if (maps == null) continue;
                 int mapCount = maps.Count;
-                for (int j = 0; j < mapCount; j++) {
+                for (int j = 0; j < mapCount; j++)
+                {
                     IList<ActionElementMap> aems = maps[j].AxisMaps;
                     if (aems == null) continue;
                     int aemCount = aems.Count;
-                    for (int k = 0; k < aemCount; k++) {
+                    for (int k = 0; k < aemCount; k++)
+                    {
                         ActionElementMap aem = aems[k];
                         if (aem.actionId == actionId && aem.elementIndex == axisIndex) return true;
                     }
@@ -492,7 +541,8 @@ namespace Rewired.UI.ControlMapper {
             return false;
         }
 
-        private void GetAxisButtonDeadZone(int playerId, int actionId, ref float value) {
+        private void GetAxisButtonDeadZone(int playerId, int actionId, ref float value)
+        {
             InputAction action = ReInput.mapping.GetAction(actionId);
             if (action == null) return;
 
@@ -503,31 +553,45 @@ namespace Rewired.UI.ControlMapper {
             value = inputBehavior.buttonDeadZone + 0.1f; // add a small amount so it never reaches the deadzone
         }
 
-        private float GetSliderSensitivity(AxisCalibration axisCalibration) {
-            if (axisCalibration.sensitivityType == AxisSensitivityType.Multiplier) {
+        private float GetSliderSensitivity(AxisCalibration axisCalibration)
+        {
+            if (axisCalibration.sensitivityType == AxisSensitivityType.Multiplier)
+            {
                 return axisCalibration.sensitivity;
-            } else if (axisCalibration.sensitivityType == AxisSensitivityType.Power) {
+            }
+            else if (axisCalibration.sensitivityType == AxisSensitivityType.Power)
+            {
                 return ProcessPowerValue(axisCalibration.sensitivity, 0f, sensitivitySlider.maxValue);
-            } else {
+            }
+            else
+            {
                 return axisCalibration.sensitivity;
             }
         }
 
-        public void SetSensitivity(AxisCalibration axisCalibration, float sliderValue) {
-            if (axisCalibration.sensitivityType == AxisSensitivityType.Multiplier) {
+        public void SetSensitivity(AxisCalibration axisCalibration, float sliderValue)
+        {
+            if (axisCalibration.sensitivityType == AxisSensitivityType.Multiplier)
+            {
                 // Enforce a min sensitivity to prevent axis from becoming useless
                 axisCalibration.sensitivity = Mathf.Clamp(sliderValue, minSensitivity, Mathf.Infinity);
                 if (sliderValue < minSensitivity) sensitivitySlider.value = minSensitivity; // prevent control from going outside range
-            } else if (axisCalibration.sensitivityType == AxisSensitivityType.Power) {
+            }
+            else if (axisCalibration.sensitivityType == AxisSensitivityType.Power)
+            {
                 axisCalibration.sensitivity = ProcessPowerValue(sliderValue, 0f, sensitivitySlider.maxValue);
-            } else {
+            }
+            else
+            {
                 axisCalibration.sensitivity = sliderValue;
             }
         }
 
-        private static float ProcessPowerValue(float value, float minValue, float maxValue) {
+        private static float ProcessPowerValue(float value, float minValue, float maxValue)
+        {
             value = Mathf.Clamp(value, minValue, maxValue);
-            if (value > 1f) {
+            if (value > 1f)
+            {
                 // Remap values > 1 to 0-1 because Power > 1 == less sensitive
                 value = MathTools.ValueInNewRange(
                     value,
@@ -536,7 +600,9 @@ namespace Rewired.UI.ControlMapper {
                     1f, // invert
                     0f
                 );
-            } else if (value < 1f) {
+            }
+            else if (value < 1f)
+            {
                 // Remap values < 1 to 1-MAX because Power < 1 == more sensitive
                 value = MathTools.ValueInNewRange(
                     value,
@@ -549,7 +615,8 @@ namespace Rewired.UI.ControlMapper {
             return value;
         }
 
-        public enum ButtonIdentifier {
+        public enum ButtonIdentifier
+        {
             Done,
             Cancel,
             Default,

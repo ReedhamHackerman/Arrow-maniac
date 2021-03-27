@@ -1,6 +1,6 @@
 ﻿using Rewired;
 
-public class InputManager 
+public class InputManager
 {
     private Player player;
 

@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MapManager 
+public class MapManager
 {
     #region Singleton
     private MapManager() { }
@@ -31,7 +29,7 @@ public class MapManager
     public void Initialize()
     {
         InitializeMaps();
-        
+
     }
 
     public void Start()

@@ -1,9 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Rewired;
 
-public class Invisible : Abilities,IFreezable
+public class Invisible : Abilities, IFreezable
 {
     private SpriteRenderer[] childSprites;
     private float fade = 1f;
@@ -54,7 +52,7 @@ public class Invisible : Abilities,IFreezable
         {
             spriteRenderer.material.SetFloat("_Fade", fade);
         }
-        
+
     }
 
     void IFreezable.Freeze()

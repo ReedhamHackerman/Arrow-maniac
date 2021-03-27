@@ -3,25 +3,26 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
     using UnityEngine;
-    using UnityEngine.UI;
-    using System.Collections.Generic;
-    using Rewired;
 
     [AddComponentMenu("")]
-    public class ThemedElement : MonoBehaviour {
+    public class ThemedElement : MonoBehaviour
+    {
 
         [SerializeField]
         private ElementInfo[] _elements;
-        
-        void Start() {
+
+        void Start()
+        {
             ControlMapper.ApplyTheme(_elements);
         }
 
         [System.Serializable]
-        public class ElementInfo {
+        public class ElementInfo
+        {
             [SerializeField]
             private string _themeClass;
             [SerializeField]

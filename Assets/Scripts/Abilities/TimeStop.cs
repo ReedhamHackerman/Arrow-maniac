@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using Rewired;
-using System.Linq;
 using UnityEngine.SceneManagement;
 
 public class TimeStop : Abilities
@@ -16,7 +13,7 @@ public class TimeStop : Abilities
     {
         abilityTime = 2f;
         thisPlayerUnit = gameObject.GetComponent<PlayerUnit>();
-        
+
     }
 
     public static List<T> Finds<T>()

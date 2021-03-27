@@ -3,15 +3,14 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
     using UnityEngine;
-    using UnityEngine.UI;
-    using System.Collections;
-    using Rewired;
 
     [AddComponentMenu("")]
-    public class ButtonInfo : UIElementInfo {
-        
+    public class ButtonInfo : UIElementInfo
+    {
+
     }
 }

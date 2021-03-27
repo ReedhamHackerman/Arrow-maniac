@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class PlayerScript : PlayerUnit
+﻿public class PlayerScript : PlayerUnit
 {
-    
+
 }
