@@ -59,7 +59,8 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private bool isAiming;
     private bool canUseDash;
     private bool canJump;
-    private bool canRotate = true;
+    private bool isTimeStop = false;
+    private bool stopShoot = false;
 
     private Vector2 storedPlayerVelocity;
 
@@ -71,7 +72,6 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private Invisible invisibleScript;
     private TimeStop timeStopScript;
 
-    private Dictionary<int, Vector2> playersVelocity = new Dictionary<int, Vector2>();
     private Stack<ArrowType> arrowStack;
 
 
@@ -158,11 +158,13 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     public void UpdateUnit()
     {
-       
+        if (isTimeStop) return;
+
         Grounded = isGrounded();
         LeftHit = isLeftHit();
         RightHit = isRightHit();
-       
+
+           
         Jump();
         Rotate();
         Dash();
@@ -198,7 +200,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     private void Rotate()
     {
-        if (!canRotate) return;
+        if (isTimeStop) return;
         if (inputManager.HorizontalInput != 0)
         {
             transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
@@ -279,6 +281,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     private void Aim()
     {
+        if (stopShoot) return;
         if (inputManager.GetAimButton && !isWallSliding)
         {
             isAiming = true;
@@ -405,21 +408,23 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     public void Freeze()
     {
+        stopShoot = true;
         if (this.playerId != PlayerManager.Instance.playerIdUsedAbility)
         {
             storedPlayerVelocity = _rb.velocity;
             _rb.bodyType = RigidbodyType2D.Static;
-            canRotate = false;
+            isTimeStop = true;
         }       
     }
 
     public void UnFreeze()
     {
+        stopShoot = false;
         if (playerId != PlayerManager.Instance.playerIdUsedAbility)
         {
             _rb.bodyType = RigidbodyType2D.Dynamic;
             _rb.velocity = storedPlayerVelocity ;            
-            canRotate = true;
+            isTimeStop = false;
             
         }
     }

@@ -18,10 +18,17 @@ public class Normal : Arrow
     }
     
    private void Stuck()
-    {
+   {
         HasHit = true;
         RB2D.velocity = Vector3.zero;
         RB2D.isKinematic = true;
+        
+   }
+
+    public override void Freeze()
+    {
+        if (HasHit) return; // so that stuck normal arrows do not get affected 
+        base.Freeze();
         IsPickable = true;
         selfCollider2D.isTrigger = true;
     }
@@ -43,4 +50,13 @@ public class Normal : Arrow
            
         }
     }
+
+    public override void UnFreeze()
+    {
+        if (HasHit) return; // so that stuck normal arrows do not get affected 
+        base.UnFreeze();
+    }
+
+
+
 }
