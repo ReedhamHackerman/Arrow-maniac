@@ -45,8 +45,12 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private Animator _animator;
     private SpriteRenderer _myCharacterSprite;
 
-    private float angleAim;
 
+
+//AbilityTypes 
+    private AbilitiesType[] allAbilities;
+    private float angleAim;
+   
     private bool isDashing;
     private bool isMoving;
     private bool isWallSliding;
@@ -67,6 +71,8 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private TimeStop timeStopScript;
 
     private Stack<ArrowType> arrowStack;
+
+
 
     readonly float MOVEMENT_ENABLE_TIME = 0.2f;
     readonly int START_ARROW_COUNT = 3;
@@ -339,8 +345,28 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         for (int i = 0; i < equipCount; i++)
             arrowStack.Push(toEquip);
     }
-   
-   
+    
+   public void EquipAbility(AbilitiesType toEquip)
+   {
+        switch(toEquip)
+        {
+            case AbilitiesType.INVISIBLE:
+                invisibleScript.enabled = true;
+                break;
+
+            case AbilitiesType.TIME_STOP:
+                timeStopScript.enabled = true;
+                break;
+
+            default:
+                Debug.LogError("Something went wrong while equiping Ability!");
+                break;
+
+        }
+        
+       
+
+   }
 
     public void Freeze()
     {

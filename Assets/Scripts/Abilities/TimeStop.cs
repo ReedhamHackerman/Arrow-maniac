@@ -9,7 +9,9 @@ public class TimeStop : Abilities
 {
     public bool isPlayerStopped;
     private PlayerUnit thisPlayerUnit;
-    List< IFreezable> freezables = new List<IFreezable>();    
+    List< IFreezable> freezables = new List<IFreezable>();
+    private bool canUseTimeStop = true;
+
     protected override void Initialize()
     {
         abilityTime = 2f;
@@ -34,12 +36,12 @@ public class TimeStop : Abilities
 
     protected override void Refresh()
     {
-        if (inputManager.UseAbility)
+        if (inputManager.UseAbility && canUseTimeStop )
         {
             PlayerManager.Instance.playerIdUsedAbility = thisPlayerUnit.PlayerId;
             //StartCoroutine(TimeStopAbility());
-
             TimeManager.Instance.AddDelegate(() => Activate(), 0, 1);
+            canUseTimeStop = false;
         }
     }
 
