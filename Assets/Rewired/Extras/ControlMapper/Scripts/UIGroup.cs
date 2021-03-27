@@ -6,13 +6,10 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
     using UnityEngine;
-    using UnityEngine.UI;
-    using System.Collections.Generic;
-    using System.Collections;
-    using Rewired;
 #if REWIRED_CONTROL_MAPPER_USE_TMPRO
     using Text = TMPro.TMP_Text;
 #else
@@ -20,27 +17,32 @@ namespace Rewired.UI.ControlMapper {
 #endif
 
     [AddComponentMenu("")]
-    public class UIGroup : MonoBehaviour {
+    public class UIGroup : MonoBehaviour
+    {
 
         [SerializeField]
         private Text _label;
         [SerializeField]
         private Transform _content;
 
-        public string labelText {
-            get {
+        public string labelText
+        {
+            get
+            {
                 return _label != null ? _label.text : string.Empty;
             }
-            set {
-                if(_label == null) return;
+            set
+            {
+                if (_label == null) return;
                 _label.text = value;
             }
         }
 
         public Transform content { get { return _content; } }
 
-        public void SetLabelActive(bool state) {
-            if(_label == null) return;
+        public void SetLabelActive(bool state)
+        {
+            if (_label == null) return;
             _label.gameObject.SetActive(state);
         }
     }

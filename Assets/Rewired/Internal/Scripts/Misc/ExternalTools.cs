@@ -72,28 +72,34 @@
 #pragma warning disable 0649
 #pragma warning disable 0067
 
-namespace Rewired.Utils {
+namespace Rewired.Utils
+{
 
-    using UnityEngine;
+    using Rewired.Utils.Interfaces;
     using System.Collections;
     using System.Collections.Generic;
-    using Rewired.Utils.Interfaces;
+    using UnityEngine;
 
     /// <exclude></exclude>
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public class ExternalTools : IExternalTools {
+    public class ExternalTools : IExternalTools
+    {
 
         private static System.Func<object> _getPlatformInitializerDelegate;
-        public static System.Func<object> getPlatformInitializerDelegate {
-            get {
+        public static System.Func<object> getPlatformInitializerDelegate
+        {
+            get
+            {
                 return _getPlatformInitializerDelegate;
             }
-            set {
+            set
+            {
                 _getPlatformInitializerDelegate = value;
             }
         }
 
-        public ExternalTools() {
+        public ExternalTools()
+        {
 #if UNITY_EDITOR
 #if UNITY_2018_PLUS
             UnityEditor.EditorApplication.pauseStateChanged += OnEditorPauseStateChanged;
@@ -104,7 +110,8 @@ namespace Rewired.Utils {
 #endif
         }
 
-        public void Destroy() {
+        public void Destroy()
+        {
 #if UNITY_EDITOR
 #if UNITY_2018_PLUS
             UnityEditor.EditorApplication.pauseStateChanged -= OnEditorPauseStateChanged;
@@ -115,21 +122,25 @@ namespace Rewired.Utils {
         }
 
         private bool _isEditorPaused;
-        public bool isEditorPaused {
-            get {
+        public bool isEditorPaused
+        {
+            get
+            {
                 return _isEditorPaused;
             }
         }
 
         private System.Action<bool> _EditorPausedStateChangedEvent;
-        public event System.Action<bool> EditorPausedStateChangedEvent {
+        public event System.Action<bool> EditorPausedStateChangedEvent
+        {
             add { _EditorPausedStateChangedEvent += value; }
             remove { _EditorPausedStateChangedEvent -= value; }
         }
 
 #if UNITY_EDITOR
 #if UNITY_2018_PLUS
-        private void OnEditorPauseStateChanged(UnityEditor.PauseState state) {
+        private void OnEditorPauseStateChanged(UnityEditor.PauseState state)
+        {
             _isEditorPaused = state == UnityEditor.PauseState.Paused;
             var evt = _EditorPausedStateChangedEvent;
             if (evt != null) evt(_isEditorPaused);
@@ -147,7 +158,8 @@ namespace Rewired.Utils {
 #endif
 #endif
 
-        public object GetPlatformInitializer() {
+        public object GetPlatformInitializer()
+        {
 #if UNITY_5_PLUS
 #if (!UNITY_EDITOR && UNITY_STANDALONE_WIN) || UNITY_EDITOR_WIN
             return Rewired.Utils.Platforms.Windows.Main.GetPlatformInitializer();
@@ -173,7 +185,8 @@ namespace Rewired.Utils {
 #endif
         }
 
-        public string GetFocusedEditorWindowTitle() {
+        public string GetFocusedEditorWindowTitle()
+        {
 #if UNITY_EDITOR
             UnityEditor.EditorWindow window = UnityEditor.EditorWindow.focusedWindow;
 #if UNITY_2017_PLUS
@@ -186,16 +199,18 @@ namespace Rewired.Utils {
 #endif
         }
 
-        public bool IsEditorSceneViewFocused() {
+        public bool IsEditorSceneViewFocused()
+        {
 #if UNITY_EDITOR
             ArrayList sceneViews = UnityEditor.SceneView.sceneViews;
-            if(sceneViews == null) return false;
+            if (sceneViews == null) return false;
             string focusedWindowTitle = GetFocusedEditorWindowTitle();
-            for(int i = 0; i < sceneViews.Count; i++) {
+            for (int i = 0; i < sceneViews.Count; i++)
+            {
                 UnityEditor.SceneView sceneView = sceneViews[i] as UnityEditor.SceneView;
-                if(sceneView == null) continue;
+                if (sceneView == null) continue;
 #if UNITY_2017_PLUS
-                if(sceneView.titleContent.text == focusedWindowTitle) return true;
+                if (sceneView.titleContent.text == focusedWindowTitle) return true;
 #else
                 if (sceneView.title == focusedWindowTitle) return true;
 #endif
@@ -212,7 +227,8 @@ namespace Rewired.Utils {
             return UnityEngine.Input.IsJoystickPreconfigured(name);
         }
 #else
-        public bool LinuxInput_IsJoystickPreconfigured(string name) {
+        public bool LinuxInput_IsJoystickPreconfigured(string name)
+        {
             return false;
 
         }
@@ -795,12 +811,14 @@ namespace Rewired.Utils {
             }
         }
 #else
-        public void GetDeviceVIDPIDs(out List<int> vids, out List<int> pids) {
+        public void GetDeviceVIDPIDs(out List<int> vids, out List<int> pids)
+        {
             vids = new List<int>();
             pids = new List<int>();
         }
 
-        public int GetAndroidAPILevel() {
+        public int GetAndroidAPILevel()
+        {
             return -1;
         }
 #endif
@@ -809,16 +827,18 @@ namespace Rewired.Utils {
 
 #if SUPPORTS_UNITY_UI
 
-        public bool UnityUI_Graphic_GetRaycastTarget(object graphic) {
-            if(graphic as UnityEngine.UI.Graphic == null) return false;
+        public bool UnityUI_Graphic_GetRaycastTarget(object graphic)
+        {
+            if (graphic as UnityEngine.UI.Graphic == null) return false;
 #if UNITY_5_2_PLUS
             return (graphic as UnityEngine.UI.Graphic).raycastTarget;
 #else
             return true;
 #endif
         }
-        public void UnityUI_Graphic_SetRaycastTarget(object graphic, bool value) {
-            if(graphic as UnityEngine.UI.Graphic == null) return;
+        public void UnityUI_Graphic_SetRaycastTarget(object graphic, bool value)
+        {
+            if (graphic as UnityEngine.UI.Graphic == null) return;
 #if UNITY_5_2_PLUS
             (graphic as UnityEngine.UI.Graphic).raycastTarget = value;
 #endif
@@ -832,17 +852,20 @@ namespace Rewired.Utils {
 
         #region Touch
 
-        public bool UnityInput_IsTouchPressureSupported {
-            get {
+        public bool UnityInput_IsTouchPressureSupported
+        {
+            get
+            {
 #if UNITY_5_3_PLUS
-              return UnityEngine.Input.touchPressureSupported;
+                return UnityEngine.Input.touchPressureSupported;
 #else
                 return false;
 #endif
             }
         }
 
-        public float UnityInput_GetTouchPressure(ref UnityEngine.Touch touch) {
+        public float UnityInput_GetTouchPressure(ref UnityEngine.Touch touch)
+        {
 #if UNITY_5_3_PLUS
             return touch.pressure;
 #else
@@ -852,7 +875,8 @@ namespace Rewired.Utils {
 #endif
         }
 
-        public float UnityInput_GetTouchMaximumPossiblePressure(ref UnityEngine.Touch touch) {
+        public float UnityInput_GetTouchMaximumPossiblePressure(ref UnityEngine.Touch touch)
+        {
 #if UNITY_5_3_PLUS
             return touch.maximumPossiblePressure;
 #else
@@ -864,15 +888,18 @@ namespace Rewired.Utils {
 
         #region Controller Templates
 
-        public IControllerTemplate CreateControllerTemplate(System.Guid typeGuid, object payload) {
+        public IControllerTemplate CreateControllerTemplate(System.Guid typeGuid, object payload)
+        {
             return Rewired.Internal.ControllerTemplateFactory.Create(typeGuid, payload);
         }
 
-        public System.Type[] GetControllerTemplateTypes() {
+        public System.Type[] GetControllerTemplateTypes()
+        {
             return Rewired.Internal.ControllerTemplateFactory.templateTypes;
         }
 
-        public System.Type[] GetControllerTemplateInterfaceTypes() {
+        public System.Type[] GetControllerTemplateInterfaceTypes()
+        {
             return Rewired.Internal.ControllerTemplateFactory.templateInterfaceTypes;
         }
 

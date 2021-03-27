@@ -14,12 +14,11 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
     using UnityEngine;
     using UnityEngine.UI;
-    using System.Collections.Generic;
-    using Rewired;
 #if REWIRED_CONTROL_MAPPER_USE_TMPRO
     using Text = TMPro.TMP_Text;
     using Font = TMPro.TMP_FontAsset;
@@ -29,7 +28,8 @@ namespace Rewired.UI.ControlMapper {
 #endif
 
     [System.Serializable]
-    public class ThemeSettings : ScriptableObject {
+    public class ThemeSettings : ScriptableObject
+    {
 
         [SerializeField]
         private ImageSettings _mainWindowBackground;
@@ -70,42 +70,52 @@ namespace Rewired.UI.ControlMapper {
         [SerializeField]
         private TextSettings _inputGridFieldTextSettings;
 
-        public void Apply(ThemedElement.ElementInfo[] elementInfo) {
-            if(elementInfo == null) return;
-            for(int i = 0; i < elementInfo.Length; i++) {
-                if(elementInfo[i] == null) continue;
+        public void Apply(ThemedElement.ElementInfo[] elementInfo)
+        {
+            if (elementInfo == null) return;
+            for (int i = 0; i < elementInfo.Length; i++)
+            {
+                if (elementInfo[i] == null) continue;
                 Apply(elementInfo[i].themeClass, elementInfo[i].component);
             }
         }
 
-        private void Apply(string themeClass, Component component) {
-            if(component as Selectable != null) {
+        private void Apply(string themeClass, Component component)
+        {
+            if (component as Selectable != null)
+            {
                 Apply(themeClass, (Selectable)component);
                 return;
             }
 
-            if(component as Image != null) {
+            if (component as Image != null)
+            {
                 Apply(themeClass, (Image)component);
                 return;
             }
 
-            if(component as Text != null) {
+            if (component as Text != null)
+            {
                 Apply(themeClass, (Text)component);
                 return;
             }
 
-            if(component as UIImageHelper != null) {
+            if (component as UIImageHelper != null)
+            {
                 Apply(themeClass, (UIImageHelper)component);
                 return;
             }
         }
 
-        private void Apply(string themeClass, Selectable item) {
-            if(item == null) return;
+        private void Apply(string themeClass, Selectable item)
+        {
+            if (item == null) return;
 
             SelectableSettings_Base settings;
-            if(item as Button != null) {
-                switch(themeClass) {
+            if (item as Button != null)
+            {
+                switch (themeClass)
+                {
                     case "inputGridField":
                         settings = _inputGridFieldSettings;
                         break;
@@ -114,10 +124,13 @@ namespace Rewired.UI.ControlMapper {
                         break;
                 }
 
-            } else if(item as Scrollbar != null) settings = _scrollbarSettings;
-            else if(item as Slider != null) settings = _sliderSettings;
-            else if(item as Toggle != null) {
-                switch(themeClass) {
+            }
+            else if (item as Scrollbar != null) settings = _scrollbarSettings;
+            else if (item as Slider != null) settings = _sliderSettings;
+            else if (item as Toggle != null)
+            {
+                switch (themeClass)
+                {
                     case "button":
                         settings = _buttonSettings;
                         break;
@@ -126,15 +139,18 @@ namespace Rewired.UI.ControlMapper {
                         break;
                 }
 
-            } else settings = _selectableSettings;
+            }
+            else settings = _selectableSettings;
 
             settings.Apply(item);
         }
 
-        private void Apply(string themeClass, Image item) {
-            if(item == null) return;
+        private void Apply(string themeClass, Image item)
+        {
+            if (item == null) return;
 
-            switch(themeClass) {
+            switch (themeClass)
+            {
                 case "area":
                     if (_areaBackground != null) _areaBackground.CopyTo(item);
                     break;
@@ -174,12 +190,14 @@ namespace Rewired.UI.ControlMapper {
             }
         }
 
-        private void Apply(string themeClass, Text item) {
-            if(item == null) return;
+        private void Apply(string themeClass, Text item)
+        {
+            if (item == null) return;
 
             TextSettings settings;
 
-            switch(themeClass) {
+            switch (themeClass)
+            {
                 case "button":
                     settings = _buttonTextSettings;
                     break;
@@ -191,10 +209,11 @@ namespace Rewired.UI.ControlMapper {
                     break;
             }
 
-            if(settings.font != null) item.font = settings.font;
+            if (settings.font != null) item.font = settings.font;
             item.color = settings.color;
             item.lineSpacing = settings.lineSpacing;
-            if(settings.sizeMultiplier != 1.0f) {
+            if (settings.sizeMultiplier != 1.0f)
+            {
                 item.fontSize = (int)(item.fontSize * settings.sizeMultiplier);
 #if REWIRED_CONTROL_MAPPER_USE_TMPRO
                 item.fontSizeMax = (int)(item.fontSizeMax * settings.sizeMultiplier);
@@ -208,13 +227,15 @@ namespace Rewired.UI.ControlMapper {
             item.characterSpacing = settings.chracterSpacing;
             item.wordSpacing = settings.wordSpacing;
 #endif
-            if(settings.style != FontStyleOverride.Default) {
+            if (settings.style != FontStyleOverride.Default)
+            {
                 item.fontStyle = GetFontStyle(settings.style);
             }
         }
 
-        private void Apply(string themeClass, UIImageHelper item) {
-            if(item == null) return;
+        private void Apply(string themeClass, UIImageHelper item)
+        {
+            if (item == null) return;
 
             item.SetEnabledStateColor(_invertToggle.color);
             item.SetDisabledStateColor(_invertToggleDisabledColor);
@@ -238,13 +259,15 @@ namespace Rewired.UI.ControlMapper {
             }
         }
 #else
-        private static FontStyle GetFontStyle(FontStyleOverride style) {
-                return (FontStyle)((int)style - 1);
+        private static FontStyle GetFontStyle(FontStyleOverride style)
+        {
+            return (FontStyle)((int)style - 1);
         }
 #endif
 
         [System.Serializable]
-        private abstract class SelectableSettings_Base {
+        private abstract class SelectableSettings_Base
+        {
 
             [SerializeField]
             protected Selectable.Transition _transition;
@@ -260,54 +283,63 @@ namespace Rewired.UI.ControlMapper {
             public CustomSpriteState spriteState { get { return _spriteState; } }
             public CustomAnimationTriggers animationTriggers { get { return _animationTriggers; } }
 
-            public virtual void Apply(Selectable item) {
+            public virtual void Apply(Selectable item)
+            {
                 Selectable.Transition transition = _transition;
                 bool transitionChanged = item.transition != transition;
                 item.transition = transition;
 
                 ICustomSelectable customSel = item as ICustomSelectable;
 
-                if(transition == Selectable.Transition.ColorTint) {
+                if (transition == Selectable.Transition.ColorTint)
+                {
                     // Two-step color change to get around delay bug due to fade duration
                     CustomColorBlock cb = _colors;
                     cb.fadeDuration = 0.0f;
                     item.colors = cb;
                     cb.fadeDuration = _colors.fadeDuration;
                     item.colors = cb;
-                    if(customSel != null) customSel.disabledHighlightedColor = cb.disabledHighlightedColor;
+                    if (customSel != null) customSel.disabledHighlightedColor = cb.disabledHighlightedColor;
 
-                } else if(transition == Selectable.Transition.SpriteSwap) {
+                }
+                else if (transition == Selectable.Transition.SpriteSwap)
+                {
                     item.spriteState = _spriteState;
-                    if(customSel != null) customSel.disabledHighlightedSprite = _spriteState.disabledHighlightedSprite;
-                } else if(transition == Selectable.Transition.Animation) {
+                    if (customSel != null) customSel.disabledHighlightedSprite = _spriteState.disabledHighlightedSprite;
+                }
+                else if (transition == Selectable.Transition.Animation)
+                {
                     item.animationTriggers.disabledTrigger = _animationTriggers.disabledTrigger;
                     item.animationTriggers.highlightedTrigger = _animationTriggers.highlightedTrigger;
                     item.animationTriggers.normalTrigger = _animationTriggers.normalTrigger;
                     item.animationTriggers.pressedTrigger = _animationTriggers.pressedTrigger;
-                    if(customSel != null) customSel.disabledHighlightedTrigger = _animationTriggers.disabledHighlightedTrigger;
+                    if (customSel != null) customSel.disabledHighlightedTrigger = _animationTriggers.disabledHighlightedTrigger;
                 }
 
-                if(transitionChanged) item.targetGraphic.CrossFadeColor(item.targetGraphic.color, 0.0f, true, true); // force color to revert to default or it will be left with color tint
+                if (transitionChanged) item.targetGraphic.CrossFadeColor(item.targetGraphic.color, 0.0f, true, true); // force color to revert to default or it will be left with color tint
             }
         }
 
         [System.Serializable]
-        private class SelectableSettings : SelectableSettings_Base {
+        private class SelectableSettings : SelectableSettings_Base
+        {
 
             [SerializeField]
             private ImageSettings _imageSettings;
             public ImageSettings imageSettings { get { return _imageSettings; } }
 
-            public override void Apply(Selectable item) {
-                if(item == null) return;
+            public override void Apply(Selectable item)
+            {
+                if (item == null) return;
                 base.Apply(item);
 
-                if(_imageSettings != null) _imageSettings.CopyTo(item.targetGraphic as Image);
+                if (_imageSettings != null) _imageSettings.CopyTo(item.targetGraphic as Image);
             }
         }
 
         [System.Serializable]
-        private class SliderSettings : SelectableSettings_Base {
+        private class SliderSettings : SelectableSettings_Base
+        {
 
             [SerializeField]
             private ImageSettings _handleImageSettings;
@@ -320,30 +352,36 @@ namespace Rewired.UI.ControlMapper {
             public ImageSettings fillImageSettings { get { return _fillImageSettings; } }
             public ImageSettings backgroundImageSettings { get { return _backgroundImageSettings; } }
 
-            private void Apply(Slider item) {
-                if(item == null) return;
+            private void Apply(Slider item)
+            {
+                if (item == null) return;
 
-                if(_handleImageSettings != null) _handleImageSettings.CopyTo(item.targetGraphic as Image);
-                if(_fillImageSettings != null) {
+                if (_handleImageSettings != null) _handleImageSettings.CopyTo(item.targetGraphic as Image);
+                if (_fillImageSettings != null)
+                {
                     RectTransform rt = item.fillRect;
-                    if(rt != null) _fillImageSettings.CopyTo(rt.GetComponent<Image>());
+                    if (rt != null) _fillImageSettings.CopyTo(rt.GetComponent<Image>());
                 }
-                if(_backgroundImageSettings != null) {
+                if (_backgroundImageSettings != null)
+                {
                     Transform t = item.transform.Find("Background");
-                    if(t != null) {
+                    if (t != null)
+                    {
                         _backgroundImageSettings.CopyTo(t.GetComponent<Image>());
                     }
                 }
             }
 
-            public override void Apply(Selectable item) {
+            public override void Apply(Selectable item)
+            {
                 base.Apply(item);
                 Apply(item as Slider);
             }
         }
 
         [System.Serializable]
-        private class ScrollbarSettings : SelectableSettings_Base {
+        private class ScrollbarSettings : SelectableSettings_Base
+        {
 
             [SerializeField]
             private ImageSettings _handleImageSettings;
@@ -353,21 +391,24 @@ namespace Rewired.UI.ControlMapper {
             public ImageSettings handle { get { return _handleImageSettings; } }
             public ImageSettings background { get { return _backgroundImageSettings; } }
 
-            private void Apply(Scrollbar item) {
-                if(item == null) return;
-                
-                if(_handleImageSettings != null) _handleImageSettings.CopyTo(item.targetGraphic as Image);
-                if(_backgroundImageSettings != null) _backgroundImageSettings.CopyTo(item.GetComponent<Image>());
+            private void Apply(Scrollbar item)
+            {
+                if (item == null) return;
+
+                if (_handleImageSettings != null) _handleImageSettings.CopyTo(item.targetGraphic as Image);
+                if (_backgroundImageSettings != null) _backgroundImageSettings.CopyTo(item.GetComponent<Image>());
             }
 
-            public override void Apply(Selectable item) {
+            public override void Apply(Selectable item)
+            {
                 base.Apply(item);
                 Apply(item as Scrollbar);
             }
         }
 
         [System.Serializable]
-        private class ImageSettings {
+        private class ImageSettings
+        {
 
             [SerializeField]
             private Color _color = Color.white;
@@ -401,8 +442,9 @@ namespace Rewired.UI.ControlMapper {
             public bool fillClockwise { get { return _fillClockwise; } }
             public int fillOrigin { get { return _fillOrigin; } }
 
-            public virtual void CopyTo(Image image) {
-                if(image == null) return;
+            public virtual void CopyTo(Image image)
+            {
+                if (image == null) return;
                 image.color = _color;
                 image.sprite = _sprite;
                 image.material = _materal;
@@ -417,7 +459,8 @@ namespace Rewired.UI.ControlMapper {
         }
 
         [System.Serializable]
-        private struct CustomColorBlock {
+        private struct CustomColorBlock
+        {
 
             [SerializeField]
             private float m_ColorMultiplier;
@@ -445,8 +488,10 @@ namespace Rewired.UI.ControlMapper {
             public Color selectedColor { get { return m_SelectedColor; } set { m_SelectedColor = value; } }
             public Color disabledHighlightedColor { get { return m_DisabledHighlightedColor; } set { m_DisabledHighlightedColor = value; } }
 
-            public static implicit operator ColorBlock(CustomColorBlock item) {
-                return new ColorBlock() {
+            public static implicit operator ColorBlock(CustomColorBlock item)
+            {
+                return new ColorBlock()
+                {
 #if UNITY_2019_PLUS
                     selectedColor = item.m_SelectedColor,
 #endif
@@ -461,7 +506,8 @@ namespace Rewired.UI.ControlMapper {
         }
 
         [System.Serializable]
-        private struct CustomSpriteState {
+        private struct CustomSpriteState
+        {
 
             public Sprite disabledSprite { get { return m_DisabledSprite; } set { m_DisabledSprite = value; } }
             public Sprite highlightedSprite { get { return m_HighlightedSprite; } set { m_HighlightedSprite = value; } }
@@ -480,8 +526,10 @@ namespace Rewired.UI.ControlMapper {
             [SerializeField]
             private Sprite m_DisabledHighlightedSprite;
 
-            public static implicit operator SpriteState(CustomSpriteState item) {
-                return new SpriteState() {
+            public static implicit operator SpriteState(CustomSpriteState item)
+            {
+                return new SpriteState()
+                {
 #if UNITY_2019_PLUS
                     selectedSprite = item.m_SelectedSprite,
 #endif
@@ -493,9 +541,11 @@ namespace Rewired.UI.ControlMapper {
         }
 
         [System.Serializable]
-        private class CustomAnimationTriggers {
+        private class CustomAnimationTriggers
+        {
 
-            public CustomAnimationTriggers() {
+            public CustomAnimationTriggers()
+            {
                 m_DisabledTrigger = string.Empty;
                 m_HighlightedTrigger = string.Empty;
                 m_NormalTrigger = string.Empty;
@@ -524,8 +574,10 @@ namespace Rewired.UI.ControlMapper {
             [SerializeField]
             private string m_DisabledHighlightedTrigger;
 
-            public static implicit operator AnimationTriggers(CustomAnimationTriggers item) {
-                return new AnimationTriggers() {
+            public static implicit operator AnimationTriggers(CustomAnimationTriggers item)
+            {
+                return new AnimationTriggers()
+                {
 #if UNITY_2019_PLUS
                     selectedTrigger = item.m_SelectedTrigger,
 #endif
@@ -538,7 +590,8 @@ namespace Rewired.UI.ControlMapper {
         }
 
         [System.Serializable]
-        private class TextSettings {
+        private class TextSettings
+        {
             [SerializeField]
             private Color _color = Color.white;
             [SerializeField]
@@ -566,7 +619,8 @@ namespace Rewired.UI.ControlMapper {
 #endif
         }
 
-        private enum FontStyleOverride {
+        private enum FontStyleOverride
+        {
             Default = 0,
             Normal = 1,
             Bold = 2,

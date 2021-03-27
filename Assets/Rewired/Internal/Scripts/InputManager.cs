@@ -64,33 +64,36 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired {
+namespace Rewired
+{
 
     using UnityEngine;
-    using System.Collections.Generic;
     using Rewired.Platforms;
     using Rewired.Utils;
     using Rewired.Utils.Interfaces;
-    using System;
 #if SUPPORTS_SCENE_MANAGEMENT
     using UnityEngine.SceneManagement;
 #endif
 
     [AddComponentMenu("Rewired/Input Manager")]
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public sealed class InputManager : InputManager_Base {
+    public sealed class InputManager : InputManager_Base
+    {
 
         private bool ignoreRecompile;
 
-        protected override void OnInitialized() {
+        protected override void OnInitialized()
+        {
             SubscribeEvents();
         }
 
-        protected override void OnDeinitialized() {
+        protected override void OnDeinitialized()
+        {
             UnsubscribeEvents();
         }
 
-        protected override void DetectPlatform() {
+        protected override void DetectPlatform()
+        {
             // Set the editor and platform versions
 
 #if UNITY_EDITOR
@@ -287,13 +290,16 @@ namespace Rewired {
 #endif
         }
 
-        protected override void CheckRecompile() {
+        protected override void CheckRecompile()
+        {
 #if UNITY_EDITOR
-            if(ignoreRecompile) return;
+            if (ignoreRecompile) return;
 
             // Destroy system if recompiling
-            if(UnityEditor.EditorApplication.isCompiling) { // editor is recompiling
-                if(!isCompiling) { // this is the first cycle of recompile
+            if (UnityEditor.EditorApplication.isCompiling)
+            { // editor is recompiling
+                if (!isCompiling)
+                { // this is the first cycle of recompile
                     isCompiling = true; // flag it
                     RecompileStart();
                 }
@@ -301,38 +307,44 @@ namespace Rewired {
             }
 
             // Check for end of compile
-            if(isCompiling) { // compiling is done
+            if (isCompiling)
+            { // compiling is done
                 isCompiling = false; // flag off
                 RecompileEnd();
             }
 #endif
         }
 
-        protected override IExternalTools GetExternalTools() {
+        protected override IExternalTools GetExternalTools()
+        {
             return new ExternalTools();
         }
 
-        private bool CheckDeviceName(string searchPattern, string deviceName, string deviceModel) {
+        private bool CheckDeviceName(string searchPattern, string deviceName, string deviceModel)
+        {
             return System.Text.RegularExpressions.Regex.IsMatch(deviceName, searchPattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase) ||
                 System.Text.RegularExpressions.Regex.IsMatch(deviceModel, searchPattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
         }
 
-        private void SubscribeEvents() {
+        private void SubscribeEvents()
+        {
             UnsubscribeEvents();
 #if SUPPORTS_SCENE_MANAGEMENT
             SceneManager.sceneLoaded += OnSceneLoaded;
 #endif
         }
 
-        private void UnsubscribeEvents() {
+        private void UnsubscribeEvents()
+        {
 #if SUPPORTS_SCENE_MANAGEMENT
             SceneManager.sceneLoaded -= OnSceneLoaded;
 #endif
         }
 
 #if SUPPORTS_SCENE_MANAGEMENT
-      
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
             OnSceneLoaded();
         }
 
@@ -344,7 +356,8 @@ namespace Rewired {
 #endif
 
 #if UNITY_EDITOR
-        private enum ScriptChangesDuringPlayOptions {
+        private enum ScriptChangesDuringPlayOptions
+        {
             RecompileAndContinuePlaying,
             RecompileAfterFinishedPlaying,
             StopPlayingAndRecompile

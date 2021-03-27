@@ -52,11 +52,13 @@
 #pragma warning disable 0067
 #endregion
 
-namespace Rewired.Demos {
+namespace Rewired.Demos
+{
     using UnityEngine;
 
     [AddComponentMenu("")]
-    public class PlayerMouseSpriteExample : MonoBehaviour {
+    public class PlayerMouseSpriteExample : MonoBehaviour
+    {
 
 #if UNITY_4_6_PLUS
         [Tooltip("The Player that will control the mouse")]
@@ -124,13 +126,14 @@ namespace Rewired.Demos {
         [System.NonSerialized]
         private PlayerMouse mouse;
 
-        void Awake() {
+        void Awake()
+        {
 
             pointer = (GameObject)GameObject.Instantiate(pointerPrefab);
             pointer.transform.localScale = new Vector3(spriteScale, spriteScale, spriteScale);
 
 #if UNITY_5_PLUS
-            if(hideHardwarePointer) Cursor.visible = false; // hide the hardware pointer
+            if (hideHardwarePointer) Cursor.visible = false; // hide the hardware pointer
 #endif
 
             // Create the Player Mouse
@@ -172,7 +175,8 @@ namespace Rewired.Demos {
             OnScreenPositionChanged(mouse.screenPosition);
         }
 
-        void Update() {
+        void Update()
+        {
             if (!ReInput.isReady) return;
 
             // Use the mouse wheel to rotate the pointer
@@ -181,15 +185,17 @@ namespace Rewired.Demos {
             // Use the left or right button to create an object where you clicked
             if (mouse.leftButton.justPressed) CreateClickEffect(new Color(0f, 1f, 0f, 1f)); // green for left
             if (mouse.rightButton.justPressed) CreateClickEffect(new Color(1f, 0f, 0f, 1f)); // red for right
-            if(mouse.middleButton.justPressed) CreateClickEffect(new Color(1f, 1f, 0f, 1f)); // yellow for middle
+            if (mouse.middleButton.justPressed) CreateClickEffect(new Color(1f, 1f, 0f, 1f)); // yellow for middle
         }
 
-        void OnDestroy() {
+        void OnDestroy()
+        {
             if (!ReInput.isReady) return;
             mouse.ScreenPositionChangedEvent -= OnScreenPositionChanged;
         }
 
-        void CreateClickEffect(Color color) {
+        void CreateClickEffect(Color color)
+        {
             GameObject go = (GameObject)GameObject.Instantiate(clickEffectPrefab);
             go.transform.localScale = new Vector3(spriteScale, spriteScale, spriteScale);
             go.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(mouse.screenPosition.x, mouse.screenPosition.y, distanceFromCamera));
@@ -198,7 +204,8 @@ namespace Rewired.Demos {
         }
 
         // Callback when the screen position changes
-        void OnScreenPositionChanged(Vector2 position) {
+        void OnScreenPositionChanged(Vector2 position)
+        {
 
             // Convert from screen space to world space
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, distanceFromCamera));

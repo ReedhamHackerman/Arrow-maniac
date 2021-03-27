@@ -3,19 +3,17 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
     using UnityEngine;
-    using UnityEngine.UI;
     using UnityEngine.EventSystems;
-    using UnityEngine.Events;
-    using System.Collections.Generic;
-    using System.Collections;
-    using Rewired;
+    using UnityEngine.UI;
 
     [AddComponentMenu("")]
     [RequireComponent(typeof(Selectable))]
-    public class ScrollRectSelectableChild : MonoBehaviour, ISelectHandler {
+    public class ScrollRectSelectableChild : MonoBehaviour, ISelectHandler
+    {
 
         public bool useCustomEdgePadding = false;
         public float customEdgePadding = 50.0f;
@@ -28,9 +26,11 @@ namespace Rewired.UI.ControlMapper {
 
         private RectTransform rectTransform { get { return transform as RectTransform; } }
 
-        void Start() {
+        void Start()
+        {
             parentScrollRect = transform.GetComponentInParent<ScrollRect>();
-            if(parentScrollRect == null) {
+            if (parentScrollRect == null)
+            {
                 Debug.LogError("Rewired Control Mapper: No ScrollRect found! This component must be a child of a ScrollRect!");
                 return;
             }
@@ -38,20 +38,21 @@ namespace Rewired.UI.ControlMapper {
 
         #region ISelectHandlder Implementation
 
-        public void OnSelect(BaseEventData eventData) {
-            if(parentScrollRect == null) return;
+        public void OnSelect(BaseEventData eventData)
+        {
+            if (parentScrollRect == null) return;
 
             // Check if this is a keyboard/joystick move event -- mouse click events are excluded otherwise clicks will miss when scroll rect is moved
             AxisEventData aed = eventData as AxisEventData;
-            if(aed == null) return;
+            if (aed == null) return;
 
             // Evaluate object size and position and determine if visible within the scroll rect
-            
+
             RectTransform parentScrollRectTransform = parentScrollRect.transform as RectTransform;
 
             // Get the selectable rect relative to the view rect
             Rect relSelectableRect = Rewired.Utils.MathTools.TransformRect(rectTransform.rect, rectTransform, parentScrollRectTransform);
-            
+
             // Get the view rect
             Rect viewRect = parentScrollRectTransform.rect;
 
@@ -59,9 +60,12 @@ namespace Rewired.UI.ControlMapper {
             Rect paddedViewRect = parentScrollRectTransform.rect;
             float yPad;
             // float xPad;
-            if(useCustomEdgePadding) {
+            if (useCustomEdgePadding)
+            {
                 yPad = customEdgePadding;
-            } else {
+            }
+            else
+            {
                 yPad = relSelectableRect.height; // scroll when we are 1 selectable unit from edge
                 //xPad = relSelectableRect.width; // scroll when we are 1 selectable unit from edge
             }
@@ -72,13 +76,15 @@ namespace Rewired.UI.ControlMapper {
             //paddedViewRect.xMin += xPad;
 
             // Check if selectable is not fully inside the padded visible rect area
-            if(Rewired.Utils.MathTools.RectContains(paddedViewRect, relSelectableRect)) { // rect is visible
+            if (Rewired.Utils.MathTools.RectContains(paddedViewRect, relSelectableRect))
+            { // rect is visible
                 return;
             }
 
             // Offset scroll rect to fit selectable
             Vector2 offset;
-            if(!Rewired.Utils.MathTools.GetOffsetToContainRect(paddedViewRect, relSelectableRect, out offset)) { // get the view area offet required to fit this element
+            if (!Rewired.Utils.MathTools.GetOffsetToContainRect(paddedViewRect, relSelectableRect, out offset))
+            { // get the view area offet required to fit this element
                 return; // selectable cannot fit within view rect
             }
 

@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class GameManager
+﻿public class GameManager
 {
     #region Singleton
     private GameManager() { }

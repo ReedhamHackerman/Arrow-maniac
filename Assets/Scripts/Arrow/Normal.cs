@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Normal : Arrow
 {
@@ -9,41 +7,44 @@ public class Normal : Arrow
         base.OnHit(collision);
         if (collision.gameObject.CompareTag("Ground"))
         {
-            
+
             Stuck();
-            
-           
+
+
         }
-    
+
     }
-    
-   private void Stuck()
-   {
+
+    private void Stuck()
+    {
         HasHit = true;
         RB2D.velocity = Vector3.zero;
         RB2D.isKinematic = true;
-        
-   }
+        IsPickable = true;
+        selfCollider2D.isTrigger = true;
+    }
 
     public override void Freeze()
     {
         if (HasHit) return; // so that stuck normal arrows do not get affected 
         base.Freeze();
-        IsPickable = true;
-        selfCollider2D.isTrigger = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(IsPickable)
+        if (IsPickable)
         {
-            PlayerUnit player = collision.gameObject.GetComponent<PlayerUnit>();
-            player.EquipArrow(arrowType, 1);
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                PlayerUnit player = collision.gameObject.GetComponent<PlayerUnit>();
+                player.EquipArrow(arrowType, 1);
 
-            selfCollider2D.isTrigger = false;
+                selfCollider2D.isTrigger = false;
 
-            Debug.Log("EquipArrow");
-            DestroyArrow();
+                Debug.Log("EquipArrow");
+                DestroyArrow();
+            }
+
         }
     }
 

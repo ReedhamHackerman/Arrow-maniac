@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class StopResumeParticle : MonoBehaviour, IFreezable
 {
 
     private ParticleSystem particle;
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -14,7 +12,7 @@ public class StopResumeParticle : MonoBehaviour, IFreezable
         particle = gameObject.GetComponent<ParticleSystem>();
     }
 
-    
+
     public void Freeze()
     {
         particle.Pause();

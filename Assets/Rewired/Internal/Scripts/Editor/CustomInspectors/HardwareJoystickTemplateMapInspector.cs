@@ -3,19 +3,19 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.Editor {
-
-    using UnityEngine;
-    using UnityEditor;
-    using Rewired;
+namespace Rewired.Editor
+{
     using Rewired.Data.Mapping;
+    using UnityEditor;
 
     [System.ComponentModel.Browsable(false)]
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [CustomEditor(typeof(HardwareJoystickTemplateMap))]
-    public sealed class HardwareJoystickTemplateMapInspector : CustomInspector_External {
+    public sealed class HardwareJoystickTemplateMapInspector : CustomInspector_External
+    {
 
-        private void OnEnable() {
+        private void OnEnable()
+        {
             internalEditor = new HardwareJoystickTemplateMapInspector_Internal(this);
             internalEditor.OnEnable();
         }

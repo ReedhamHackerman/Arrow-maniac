@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class Abilities : MonoBehaviour
 {
-    
+
     public enum AbilitiesType
     {
         TIME_STOP,

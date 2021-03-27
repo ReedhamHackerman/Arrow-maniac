@@ -1,9 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Rewired;
 
-public class Invisible : Abilities,IFreezable
+public class Invisible : Abilities, IFreezable
 {
     private SpriteRenderer[] childSprites;
     private float fade = 1f;
@@ -22,33 +20,33 @@ public class Invisible : Abilities,IFreezable
     protected override void Refresh()
     {
         if (inputManager.UseAbility2/* && canUseAbility*/)
-              
+
         {
             //canUseAbility = false;
-            
+
             StartCoroutine(InvisibleAbility());
         }
     }
 
     IEnumerator InvisibleAbility()
     {
-        
-            while(fade >= 0)
-            {
-                fade -= (canPerfomeFade) ? Time.deltaTime : 0;
-                FadeAnimation();
-                yield return null;
-            }
-        
-        yield return new WaitForSeconds(abilityRunTime);   
-       
-            while(fade <= 1)
-            {
-                fade += (canPerfomeFade)? Time.deltaTime : 0;
-                FadeAnimation();
-                yield return null;
-            }
-       
+
+        while (fade >= 0)
+        {
+            fade -= (canPerfomeFade) ? Time.deltaTime : 0;
+            FadeAnimation();
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(abilityRunTime);
+
+        while (fade <= 1)
+        {
+            fade += (canPerfomeFade) ? Time.deltaTime : 0;
+            FadeAnimation();
+            yield return null;
+        }
+
     }
 
     private void FadeAnimation()
@@ -57,7 +55,7 @@ public class Invisible : Abilities,IFreezable
         {
             spriteRenderer.material.SetFloat("_Fade", fade);
         }
-        
+
     }
 
     void IFreezable.Freeze()
