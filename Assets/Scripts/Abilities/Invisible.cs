@@ -6,7 +6,7 @@ public class Invisible : Abilities, IFreezable
     private SpriteRenderer[] childSprites;
     private float fade = 1f;
     private bool canPerfomeFade;
-    private bool canUseAbility = false;
+    private bool canUseAbility = true;
     [SerializeField] private GameObject invisibleAbilityUI;
 
 
