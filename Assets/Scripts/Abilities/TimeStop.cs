@@ -8,9 +8,11 @@ public class TimeStop : Abilities
     private PlayerUnit thisPlayerUnit;
     List< IFreezable> freezables = new List<IFreezable>();
     private bool canUseTimeStop = true;
+    [SerializeField] private GameObject TimeStopAbilityUI;
 
     protected override void Initialize()
     {
+        TimeStopAbilityUI.SetActive(true);
         abilityTime = 2f;
         thisPlayerUnit = gameObject.GetComponent<PlayerUnit>();
 
@@ -39,6 +41,7 @@ public class TimeStop : Abilities
             //StartCoroutine(TimeStopAbility());
             TimeManager.Instance.AddDelegate(() => Activate(), 0, 1);
             canUseTimeStop = false;
+            TimeStopAbilityUI.SetActive(false);
         }
     }
 

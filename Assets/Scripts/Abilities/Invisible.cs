@@ -7,10 +7,12 @@ public class Invisible : Abilities, IFreezable
     private float fade = 1f;
     private bool canPerfomeFade;
     private bool canUseAbility = false;
+    [SerializeField] private GameObject invisibleAbilityUI;
 
 
     protected override void Initialize()
     {
+        invisibleAbilityUI.SetActive(true);
         abilityTime = 2f;
         childSprites = GetComponentsInChildren<SpriteRenderer>();
         canPerfomeFade = true;
@@ -23,6 +25,7 @@ public class Invisible : Abilities, IFreezable
         {
             StartCoroutine(InvisibleAbility());
             canUseAbility = false;
+            invisibleAbilityUI.SetActive(false);
         }
     }
 
