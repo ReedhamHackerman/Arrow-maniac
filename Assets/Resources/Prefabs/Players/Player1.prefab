@@ -311,7 +311,7 @@ MonoBehaviour:
   fireFromPos: {fileID: 2670805510485863802}
   arrowHudParent: {fileID: 4918655387147926752}
   arrowHudHeight: 0.31
-  arrowHudSpacing: 0.55
+  arrowHudSpacing: 0.45
   showGizmos: 0
   walkParticle: {fileID: 5912162363126356365}
   jumpParticle: {fileID: 5359939819249098132}
