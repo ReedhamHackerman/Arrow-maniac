@@ -52,16 +52,10 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     [SerializeField] private ParticleSystem jumpParticle;
     [SerializeField] private ParticleSystem dashParticle;
 
-
-
     private Rigidbody2D _rb;
     private Animator _animator;
     private SpriteRenderer _myCharacterSprite;
 
-
-
-//AbilityTypes 
-    private AbilitiesType[] allAbilities;
     private float angleAim;
    
     private bool isDashing;
@@ -100,7 +94,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
         InitializeArrowStack();
         InitializeReferences();
-        // LoadAlltheArrowHUD();
         isMoving = true;
         canUseDash = true;
         HudRotation = arrowHudParent.transform.rotation;
@@ -110,7 +103,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private void InitializeReferences()
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
-        //dustParticle = GetComponent<ParticleSystem>();
         groundLayerMask = LayerMask.GetMask("Ground");
         arrowLayerMask = LayerMask.GetMask("Arrow");
         invisibleScript = GetComponent<Invisible>();
