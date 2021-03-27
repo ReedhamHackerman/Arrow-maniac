@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 
@@ -43,7 +42,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private Dictionary<ArrowType, GameObject> AllArrowHUDSDictionary = new Dictionary<ArrowType, GameObject>();
     public float arrowHudHeight;
     public float arrowHudSpacing;
-    private GameObject[] AllArrowHudSArray = new GameObject[] { };
+    Quaternion HudRotation;
 
     [Header("OTHER SETTINGS")]
     [SerializeField] private bool showGizmos;
@@ -93,7 +92,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
        // LoadAlltheArrowHUD();
         isMoving = true;
         canUseDash = true;
-       
+        HudRotation =  arrowHudParent.transform.rotation;
     }
    
     #region INITIALIZATION CODE
@@ -159,10 +158,10 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     public void UpdateUnit()
     {
+       
         Grounded = isGrounded();
         LeftHit = isLeftHit();
         RightHit = isRightHit();
-
        
         Jump();
         Rotate();
@@ -170,7 +169,10 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         WallSlide();
         Aim();
     }
-
+    private void LateUpdate()
+    {
+        arrowHudParent.transform.rotation = HudRotation;
+    }
     public void FixedUpdateUnit()
     {
         Move();
