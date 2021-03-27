@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class GameHUD : UI
+﻿public class GameHUD : UI
 {
-   
+
 }

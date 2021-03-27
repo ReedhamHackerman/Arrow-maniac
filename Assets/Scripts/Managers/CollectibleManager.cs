@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class CollectibleManager 
+﻿public class CollectibleManager
 {
     #region Singleton
     private CollectibleManager() { }

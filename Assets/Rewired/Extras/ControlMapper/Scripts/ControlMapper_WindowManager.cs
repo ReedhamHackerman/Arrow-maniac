@@ -3,16 +3,17 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
-    using UnityEngine;
-    using UnityEngine.UI;
     using System.Collections.Generic;
-    using Rewired;
-    
-    public partial class ControlMapper {
+    using UnityEngine;
 
-        private class WindowManager {
+    public partial class ControlMapper
+    {
+
+        private class WindowManager
+        {
 
             private List<Window> windows;
             private GameObject windowPrefab;
@@ -21,19 +22,25 @@ namespace Rewired.UI.ControlMapper {
 
             private int idCounter = 0;
 
-            public bool isWindowOpen {
-                get {
-                    for(int i = windows.Count - 1; i >= 0; i--) {
-                        if(windows[i] == null) continue;
+            public bool isWindowOpen
+            {
+                get
+                {
+                    for (int i = windows.Count - 1; i >= 0; i--)
+                    {
+                        if (windows[i] == null) continue;
                         return true;
                     }
                     return false;
                 }
             }
-            public Window topWindow {
-                get {
-                    for(int i = windows.Count - 1; i >= 0; i--) {
-                        if(windows[i] == null) continue;
+            public Window topWindow
+            {
+                get
+                {
+                    for (int i = windows.Count - 1; i >= 0; i--)
+                    {
+                        if (windows[i] == null) continue;
                         return windows[i];
                     }
                     return null;
@@ -41,7 +48,8 @@ namespace Rewired.UI.ControlMapper {
             }
 
 
-            public WindowManager(GameObject windowPrefab, GameObject faderPrefab, Transform parent) {
+            public WindowManager(GameObject windowPrefab, GameObject faderPrefab, Transform parent)
+            {
                 this.windowPrefab = windowPrefab;
                 this.parent = parent;
                 windows = new List<Window>();
@@ -52,14 +60,17 @@ namespace Rewired.UI.ControlMapper {
             }
 
 
-            public Window OpenWindow(string name, int width, int height) {
+            public Window OpenWindow(string name, int width, int height)
+            {
                 Window window = InstantiateWindow(name, width, height);
                 UpdateFader();
                 return window;
             }
 
-            public Window OpenWindow(GameObject windowPrefab, string name) {
-                if(windowPrefab == null) {
+            public Window OpenWindow(GameObject windowPrefab, string name)
+            {
+                if (windowPrefab == null)
+                {
                     Debug.LogError("Rewired Control Mapper: Window Prefab is null!");
                     return null;
                 }
@@ -68,9 +79,12 @@ namespace Rewired.UI.ControlMapper {
                 return window;
             }
 
-            public void CloseTop() {
-                for(int i = windows.Count - 1; i >= 0; i--) {
-                    if(windows[i] == null) {
+            public void CloseTop()
+            {
+                for (int i = windows.Count - 1; i >= 0; i--)
+                {
+                    if (windows[i] == null)
+                    {
                         windows.RemoveAt(i); // remove null entry
                         continue;
                     }
@@ -81,17 +95,21 @@ namespace Rewired.UI.ControlMapper {
                 UpdateFader();
             }
 
-            public void CloseWindow(int windowId) {
+            public void CloseWindow(int windowId)
+            {
                 CloseWindow(GetWindow(windowId));
             }
-            public void CloseWindow(Window window) {
-                if(window == null) return;
-                for(int i = windows.Count - 1; i >= 0; i--) {
-                    if(windows[i] == null) {
+            public void CloseWindow(Window window)
+            {
+                if (window == null) return;
+                for (int i = windows.Count - 1; i >= 0; i--)
+                {
+                    if (windows[i] == null)
+                    {
                         windows.RemoveAt(i); // remove null entry
                         continue;
                     }
-                    if(windows[i] != window) continue;
+                    if (windows[i] != window) continue;
                     DestroyWindow(windows[i]);
                     windows.RemoveAt(i);
                     break;
@@ -100,10 +118,13 @@ namespace Rewired.UI.ControlMapper {
                 FocusTopWindow();
             }
 
-            public void CloseAll() {
+            public void CloseAll()
+            {
                 SetFaderActive(false);
-                for(int i = windows.Count - 1; i >= 0; i--) {
-                    if(windows[i] == null) {
+                for (int i = windows.Count - 1; i >= 0; i--)
+                {
+                    if (windows[i] == null)
+                    {
                         windows.RemoveAt(i); // remove null entry
                         continue;
                     }
@@ -113,58 +134,69 @@ namespace Rewired.UI.ControlMapper {
                 UpdateFader();
             }
 
-            public void CancelAll() {
-                if(!isWindowOpen) return;
-                for(int i = windows.Count - 1; i >= 0; i--) {
-                    if(windows[i] == null) continue;
+            public void CancelAll()
+            {
+                if (!isWindowOpen) return;
+                for (int i = windows.Count - 1; i >= 0; i--)
+                {
+                    if (windows[i] == null) continue;
                     windows[i].Cancel();
                 }
                 CloseAll();
             }
 
-            public Window GetWindow(int windowId) {
-                if(windowId < 0) return null;
-                for(int i = windows.Count - 1; i >= 0; i--) {
-                    if(windows[i] == null) continue;
-                    if(windows[i].id != windowId) continue;
+            public Window GetWindow(int windowId)
+            {
+                if (windowId < 0) return null;
+                for (int i = windows.Count - 1; i >= 0; i--)
+                {
+                    if (windows[i] == null) continue;
+                    if (windows[i].id != windowId) continue;
                     return windows[i];
                 }
                 return null;
             }
 
-            public bool IsFocused(int windowId) {
-                if(windowId < 0) return false;
-                if(topWindow == null) return false;
+            public bool IsFocused(int windowId)
+            {
+                if (windowId < 0) return false;
+                if (topWindow == null) return false;
                 return topWindow.id == windowId;
             }
 
-            public void Focus(int windowId) {
+            public void Focus(int windowId)
+            {
                 Focus(GetWindow(windowId));
             }
-            public void Focus(Window window) {
-                if(window == null) return;
+            public void Focus(Window window)
+            {
+                if (window == null) return;
                 window.TakeInputFocus();
                 DefocusOtherWindows(window.id);
             }
 
-            private void DefocusOtherWindows(int focusedWindowId) {
-                if(focusedWindowId < 0) return;
-                for(int i = windows.Count - 1; i >= 0; i--) {
-                    if(windows[i] == null) continue;
-                    if(windows[i].id == focusedWindowId) continue; // skip focused window
+            private void DefocusOtherWindows(int focusedWindowId)
+            {
+                if (focusedWindowId < 0) return;
+                for (int i = windows.Count - 1; i >= 0; i--)
+                {
+                    if (windows[i] == null) continue;
+                    if (windows[i].id == focusedWindowId) continue; // skip focused window
                     windows[i].Disable();
                 }
             }
 
-            private void UpdateFader() {
-                if(!isWindowOpen) {
+            private void UpdateFader()
+            {
+                if (!isWindowOpen)
+                {
                     SetFaderActive(false);
                     return;
                 }
 
                 // Activate the fader and move it behind the top window in the hierarchy
                 Transform windowParent = topWindow.transform.parent;
-                if(windowParent == null) return;
+                if (windowParent == null) return;
 
                 SetFaderActive(true); // activate fader
 
@@ -174,54 +206,63 @@ namespace Rewired.UI.ControlMapper {
 
             }
 
-            private void FocusTopWindow() {
-                if(topWindow == null) return;
+            private void FocusTopWindow()
+            {
+                if (topWindow == null) return;
                 topWindow.TakeInputFocus();
             }
 
-            private void SetFaderActive(bool state) {
+            private void SetFaderActive(bool state)
+            {
                 fader.SetActive(state);
             }
 
-            private Window InstantiateWindow(string name, int width, int height) {
-                if(string.IsNullOrEmpty(name)) name = "Window";
+            private Window InstantiateWindow(string name, int width, int height)
+            {
+                if (string.IsNullOrEmpty(name)) name = "Window";
                 GameObject instance = UI.ControlMapper.UITools.InstantiateGUIObject<Window>(windowPrefab, parent, name);
-                if(instance == null) return null;
+                if (instance == null) return null;
                 Window window = instance.GetComponent<Window>();
-                if(window != null) {
+                if (window != null)
+                {
                     window.Initialize(GetNewId(), IsFocused);
                     windows.Add(window);
                     window.SetSize(width, height);
                 }
                 return window;
             }
-            private Window InstantiateWindow(string name, GameObject windowPrefab) {
-                if(string.IsNullOrEmpty(name)) name = "Window";
-                if(windowPrefab == null) return null;
+            private Window InstantiateWindow(string name, GameObject windowPrefab)
+            {
+                if (string.IsNullOrEmpty(name)) name = "Window";
+                if (windowPrefab == null) return null;
                 GameObject instance = UI.ControlMapper.UITools.InstantiateGUIObject<Window>(windowPrefab, parent, name);
-                if(instance == null) return null;
+                if (instance == null) return null;
                 Window window = instance.GetComponent<Window>();
-                if(window != null) {
+                if (window != null)
+                {
                     window.Initialize(GetNewId(), IsFocused);
                     windows.Add(window);
                 }
                 return window;
             }
 
-            private void DestroyWindow(Window window) {
-                if(window == null) return;
+            private void DestroyWindow(Window window)
+            {
+                if (window == null) return;
                 Object.Destroy(window.gameObject);
             }
 
-            private int GetNewId() {
+            private int GetNewId()
+            {
                 int id = idCounter;
                 idCounter++;
                 return id;
             }
 
-            public void ClearCompletely() {
+            public void ClearCompletely()
+            {
                 CloseAll();
-                if(fader != null) Object.Destroy(fader);
+                if (fader != null) Object.Destroy(fader);
             }
 
         }

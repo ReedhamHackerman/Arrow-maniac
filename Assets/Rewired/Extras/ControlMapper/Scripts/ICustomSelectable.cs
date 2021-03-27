@@ -3,17 +3,15 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
     using UnityEngine;
-    using UnityEngine.UI;
-    using UnityEngine.EventSystems;
     using UnityEngine.Events;
-    using System.Collections.Generic;
-    using System.Collections;
-    using Rewired;
+    using UnityEngine.EventSystems;
 
-    public interface ICustomSelectable : ICancelHandler {
+    public interface ICustomSelectable : ICancelHandler
+    {
 
         Sprite disabledHighlightedSprite { get; set; }
         Color disabledHighlightedColor { get; set; }

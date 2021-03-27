@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class TimeManager
-{   
+{
     public bool IsTimeStopped { get; set; }
 
     public delegate void MyDelegate();
-   
+
     private static TimeManager instance;
-    
+
     public static TimeManager Instance
     {
         get
@@ -24,24 +23,24 @@ public class TimeManager
 
     private TimeManager()
     {
-       
+
     }
-   // public delegate string MyArgumentDelegate(string S);
+    // public delegate string MyArgumentDelegate(string S);
 
 
 
 
-     List<DelegateTimer> delegateTimerList;
+    List<DelegateTimer> delegateTimerList;
     public void Initialize()
     {
-        
+
         delegateTimerList = new List<DelegateTimer>();
     }
     public void Refresh()
     {
         for (int i = delegateTimerList.Count - 1; i >= 0; i--)
         {
-            if(IsTimeStopped)
+            if (IsTimeStopped)
             {
                 if (delegateTimerList[i].isRelatedToTime)
                 {
@@ -63,7 +62,7 @@ public class TimeManager
             }
             else
             {
-                if (delegateTimerList[i].timeToInvoke <= Time.time ) 
+                if (delegateTimerList[i].timeToInvoke <= Time.time)
                 {
                     try
                     {

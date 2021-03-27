@@ -1,20 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using Rewired;
-using System.Linq;
 using UnityEngine.SceneManagement;
 
 public class TimeStop : Abilities
 {
     public bool isPlayerStopped;
     private PlayerUnit thisPlayerUnit;
-    List< IFreezable> freezables = new List<IFreezable>();    
+    List<IFreezable> freezables = new List<IFreezable>();
     protected override void Initialize()
     {
         abilityTime = 2f;
         thisPlayerUnit = gameObject.GetComponent<PlayerUnit>();
-        
+
     }
 
     public static List<T> Finds<T>()

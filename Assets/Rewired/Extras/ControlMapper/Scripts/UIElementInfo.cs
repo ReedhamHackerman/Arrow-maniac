@@ -6,13 +6,11 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
     using UnityEngine;
-    using UnityEngine.UI;
     using UnityEngine.EventSystems;
-    using System.Collections;
-    using Rewired;
 #if REWIRED_CONTROL_MAPPER_USE_TMPRO
     using Text = TMPro.TMP_Text;
 #else
@@ -20,7 +18,8 @@ namespace Rewired.UI.ControlMapper {
 #endif
 
     [AddComponentMenu("")]
-    public abstract class UIElementInfo : MonoBehaviour, ISelectHandler {
+    public abstract class UIElementInfo : MonoBehaviour, ISelectHandler
+    {
 
         public string identifier;
         public int intData;
@@ -30,8 +29,9 @@ namespace Rewired.UI.ControlMapper {
 
         #region ISelectHandler Implementation
 
-        public void OnSelect(BaseEventData eventData) {
-            if(OnSelectedEvent != null) OnSelectedEvent(this.gameObject);
+        public void OnSelect(BaseEventData eventData)
+        {
+            if (OnSelectedEvent != null) OnSelectedEvent(this.gameObject);
         }
 
         #endregion

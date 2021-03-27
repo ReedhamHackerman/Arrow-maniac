@@ -3,21 +3,19 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
+    public partial class ControlMapper
+    {
 
-    using UnityEngine;
-    using UnityEngine.UI;
-    using System.Collections.Generic;
-    using Rewired;
-
-    public partial class ControlMapper {
-
-        private enum LayoutElementSizeType {
+        private enum LayoutElementSizeType
+        {
             MinSize = 0,
             PreferredSize = 1
         }
 
-        private enum WindowType {
+        private enum WindowType
+        {
             None = 0,
             ChooseJoystick,
             JoystickAssignmentConflict,

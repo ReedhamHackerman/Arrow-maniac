@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class ArrowFactory
@@ -32,7 +31,7 @@ public class ArrowFactory
 
     public void RefreshUpdate()
     {
-        if(arrowList.Count > 0)
+        if (arrowList.Count > 0)
         {
             foreach (var arrow in arrowList)
                 arrow.OnUpdate();

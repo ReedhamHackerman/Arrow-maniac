@@ -6,14 +6,12 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
     using UnityEngine;
     using UnityEngine.UI;
-    using UnityEngine.EventSystems;
-    using UnityEngine.Events;
     using System.Collections.Generic;
-    using System.Collections;
     using Rewired;
 #if REWIRED_CONTROL_MAPPER_USE_TMPRO
     using Text = TMPro.TMP_Text;
@@ -22,7 +20,8 @@ namespace Rewired.UI.ControlMapper {
 #endif
 
     [AddComponentMenu("")]
-    public class InputBehaviorWindow : Window {
+    public class InputBehaviorWindow : Window
+    {
 
         private const float minSensitivity = 0.1f;
 
@@ -52,8 +51,9 @@ namespace Rewired.UI.ControlMapper {
 
         private int playerId;
 
-        public override void Initialize(int id, System.Func<int, bool> isFocusedCallback) {
-            if(
+        public override void Initialize(int id, System.Func<int, bool> isFocusedCallback)
+        {
+            if (
                 spawnTransform == null ||
                 doneButton == null ||
                 cancelButton == null ||
@@ -63,7 +63,8 @@ namespace Rewired.UI.ControlMapper {
                 doneButtonLabel == null ||
                 cancelButtonLabel == null ||
                 defaultButtonLabel == null
-            ) {
+            )
+            {
                 Debug.LogError("Rewired Control Mapper: All inspector values must be assigned!");
                 return;
             }
@@ -79,30 +80,33 @@ namespace Rewired.UI.ControlMapper {
             base.Initialize(id, isFocusedCallback);
         }
 
-        public void SetData(int playerId, ControlMapper.InputBehaviorSettings[] data) {
-            if(!initialized) return;
+        public void SetData(int playerId, ControlMapper.InputBehaviorSettings[] data)
+        {
+            if (!initialized) return;
 
             this.playerId = playerId;
 
             // Create control sets
-            for(int i = 0; i < data.Length; i++) {
+            for (int i = 0; i < data.Length; i++)
+            {
                 var item = data[i];
-                if(item == null || !item.isValid) continue;
+                if (item == null || !item.isValid) continue;
 
                 InputBehavior inputBehavior = GetInputBehavior(item.inputBehaviorId);
-                if(inputBehavior == null) continue;
+                if (inputBehavior == null) continue;
 
                 UIControlSet set = CreateControlSet();
                 Dictionary<int, PropertyType> idToProperty = new Dictionary<int, PropertyType>(); ;
 
                 // Set the title
                 string customTitle = ControlMapper.GetLanguage().GetCustomEntry(item.labelLanguageKey);
-                if(!string.IsNullOrEmpty(customTitle)) set.SetTitle(customTitle);
+                if (!string.IsNullOrEmpty(customTitle)) set.SetTitle(customTitle);
                 else set.SetTitle(inputBehavior.name);
 
                 // Create sliders
 
-                if(item.showJoystickAxisSensitivity) {
+                if (item.showJoystickAxisSensitivity)
+                {
                     UISliderControl slider = CreateSlider(
                         set,
                         inputBehavior.id,
@@ -120,7 +124,8 @@ namespace Rewired.UI.ControlMapper {
                     idToProperty.Add(slider.id, PropertyType.JoystickAxisSensitivity);
                 }
 
-                if(item.showMouseXYAxisSensitivity) {
+                if (item.showMouseXYAxisSensitivity)
+                {
                     UISliderControl slider = CreateSlider(
                         set,
                         inputBehavior.id,
@@ -148,25 +153,29 @@ namespace Rewired.UI.ControlMapper {
             defaultUIElement = doneButton.gameObject;
         }
 
-        public void SetButtonCallback(ButtonIdentifier buttonIdentifier, System.Action<int> callback) {
-            if(!initialized) return;
-            if(callback == null) return;
-            if(buttonCallbacks.ContainsKey((int)buttonIdentifier)) buttonCallbacks[(int)buttonIdentifier] = callback;
+        public void SetButtonCallback(ButtonIdentifier buttonIdentifier, System.Action<int> callback)
+        {
+            if (!initialized) return;
+            if (callback == null) return;
+            if (buttonCallbacks.ContainsKey((int)buttonIdentifier)) buttonCallbacks[(int)buttonIdentifier] = callback;
             else buttonCallbacks.Add((int)buttonIdentifier, callback);
         }
 
-        public override void Cancel() {
-            if(!initialized) return;
+        public override void Cancel()
+        {
+            if (!initialized) return;
             // don't call on base
 
             // Restore original data to input behaviors
-            foreach(InputBehaviorInfo info in inputBehaviorInfo) {
+            foreach (InputBehaviorInfo info in inputBehaviorInfo)
+            {
                 info.RestorePreviousData();
             }
-        
+
             System.Action<int> callback;
-            if(!buttonCallbacks.TryGetValue((int)ButtonIdentifier.Cancel, out callback)) {
-                if(cancelCallback != null) cancelCallback();
+            if (!buttonCallbacks.TryGetValue((int)ButtonIdentifier.Cancel, out callback))
+            {
+                if (cancelCallback != null) cancelCallback();
                 return;
             }
             callback(id);
@@ -174,22 +183,26 @@ namespace Rewired.UI.ControlMapper {
 
         #region Window Button Event Handlers
 
-        public void OnDone() {
-            if(!initialized) return;
+        public void OnDone()
+        {
+            if (!initialized) return;
             System.Action<int> callback;
-            if(!buttonCallbacks.TryGetValue((int)ButtonIdentifier.Done, out callback)) return;
+            if (!buttonCallbacks.TryGetValue((int)ButtonIdentifier.Done, out callback)) return;
             callback(id);
         }
 
-        public void OnCancel() {
+        public void OnCancel()
+        {
             Cancel();
         }
 
-        public void OnRestoreDefault() {
-            if(!initialized) return;
+        public void OnRestoreDefault()
+        {
+            if (!initialized) return;
 
             // Revert to default settings in each input behavior
-            foreach(InputBehaviorInfo info in inputBehaviorInfo) {
+            foreach (InputBehaviorInfo info in inputBehaviorInfo)
+            {
                 info.RestoreDefaultData();
             }
         }
@@ -198,39 +211,46 @@ namespace Rewired.UI.ControlMapper {
 
         #region Slider Control Event Handlers
 
-        private void JoystickAxisSensitivityValueChanged(int inputBehaviorId, int controlId, float value) {
+        private void JoystickAxisSensitivityValueChanged(int inputBehaviorId, int controlId, float value)
+        {
             GetInputBehavior(inputBehaviorId).joystickAxisSensitivity = value;
         }
 
-        private void MouseXYAxisSensitivityValueChanged(int inputBehaviorId, int controlId, float value) {
+        private void MouseXYAxisSensitivityValueChanged(int inputBehaviorId, int controlId, float value)
+        {
             GetInputBehavior(inputBehaviorId).mouseXYAxisSensitivity = value;
         }
 
-        private void JoystickAxisSensitivityCanceled(int inputBehaviorId, int controlId) {
+        private void JoystickAxisSensitivityCanceled(int inputBehaviorId, int controlId)
+        {
             InputBehaviorInfo info = GetInputBehaviorInfo(inputBehaviorId);
-            if(info == null) return;
+            if (info == null) return;
             info.RestoreData(PropertyType.JoystickAxisSensitivity, controlId);
         }
 
-        private void MouseXYAxisSensitivityCanceled(int inputBehaviorId, int controlId) {
+        private void MouseXYAxisSensitivityCanceled(int inputBehaviorId, int controlId)
+        {
             InputBehaviorInfo info = GetInputBehaviorInfo(inputBehaviorId);
-            if(info == null) return;
+            if (info == null) return;
             info.RestoreData(PropertyType.MouseXYAxisSensitivity, controlId);
         }
 
         #endregion
 
-        public override void TakeInputFocus() {
+        public override void TakeInputFocus()
+        {
             base.TakeInputFocus();
         }
 
-        private UIControlSet CreateControlSet() {
+        private UIControlSet CreateControlSet()
+        {
             GameObject instance = (GameObject)Object.Instantiate(uiControlSetPrefab);
             instance.transform.SetParent(spawnTransform, false);
             return instance.GetComponent<UIControlSet>();
         }
 
-        private UISliderControl CreateSlider(UIControlSet set, int inputBehaviorId, string defaultTitle, string overrideTitle, Sprite icon, float minValue, float maxValue, System.Action<int, int, float> valueChangedCallback, System.Action<int, int> cancelCallback) {
+        private UISliderControl CreateSlider(UIControlSet set, int inputBehaviorId, string defaultTitle, string overrideTitle, Sprite icon, float minValue, float maxValue, System.Action<int, int, float> valueChangedCallback, System.Action<int, int> cancelCallback)
+        {
             // Create slider control
             UISliderControl control = set.CreateSlider(
                 uiSliderControlPrefab,
@@ -243,10 +263,13 @@ namespace Rewired.UI.ControlMapper {
 
             // Title
             string title = string.IsNullOrEmpty(overrideTitle) ? defaultTitle : overrideTitle;
-            if(!string.IsNullOrEmpty(title)) {
+            if (!string.IsNullOrEmpty(title))
+            {
                 control.showTitle = true;
                 control.title.text = title;
-            } else {
+            }
+            else
+            {
                 control.showTitle = false;
             }
 
@@ -256,14 +279,17 @@ namespace Rewired.UI.ControlMapper {
             return control;
         }
 
-        private InputBehavior GetInputBehavior(int id) {
+        private InputBehavior GetInputBehavior(int id)
+        {
             return ReInput.mapping.GetInputBehavior(playerId, id);
         }
 
-        private InputBehaviorInfo GetInputBehaviorInfo(int inputBehaviorId) {
+        private InputBehaviorInfo GetInputBehaviorInfo(int inputBehaviorId)
+        {
             int count = inputBehaviorInfo.Count;
-            for(int i = 0; i < count; i++) {
-                if(inputBehaviorInfo[i].inputBehavior.id != inputBehaviorId) continue;
+            for (int i = 0; i < count; i++)
+            {
+                if (inputBehaviorInfo[i].inputBehavior.id != inputBehaviorId) continue;
                 return inputBehaviorInfo[i];
             }
             return null;
@@ -271,8 +297,9 @@ namespace Rewired.UI.ControlMapper {
 
         // Classes
 
-        private class InputBehaviorInfo {
-            private InputBehavior _inputBehavior; 
+        private class InputBehaviorInfo
+        {
+            private InputBehavior _inputBehavior;
             private UIControlSet _controlSet;
             private Dictionary<int, PropertyType> idToProperty;
 
@@ -281,51 +308,62 @@ namespace Rewired.UI.ControlMapper {
 
             private InputBehavior copyOfOriginal;
 
-            public InputBehaviorInfo(InputBehavior inputBehavior, UIControlSet controlSet, Dictionary<int, PropertyType> idToProperty) {
+            public InputBehaviorInfo(InputBehavior inputBehavior, UIControlSet controlSet, Dictionary<int, PropertyType> idToProperty)
+            {
                 this._inputBehavior = inputBehavior;
                 this._controlSet = controlSet;
                 this.idToProperty = idToProperty;
                 copyOfOriginal = new InputBehavior(inputBehavior);
             }
 
-            public void RestorePreviousData() {
+            public void RestorePreviousData()
+            {
                 _inputBehavior.ImportData(copyOfOriginal);
             }
 
-            public void RestoreDefaultData() {
+            public void RestoreDefaultData()
+            {
                 _inputBehavior.Reset();
                 RefreshControls();
             }
 
-            public void RestoreData(PropertyType propertyType, int controlId) {
-                
-                switch(propertyType) {
-                    case PropertyType.JoystickAxisSensitivity: {
-                        float value = copyOfOriginal.joystickAxisSensitivity;
-                        _inputBehavior.joystickAxisSensitivity = value;
-                        UISliderControl control = _controlSet.GetControl<UISliderControl>(controlId);
-                        if(control != null) control.slider.value = value; // update control
-                        break;
-                    } case PropertyType.MouseXYAxisSensitivity: {
-                        float value = copyOfOriginal.mouseXYAxisSensitivity;
-                        _inputBehavior.mouseXYAxisSensitivity = value;
-                        UISliderControl control = _controlSet.GetControl<UISliderControl>(controlId);
-                        if(control != null) control.slider.value = value; // update control
-                        break;
-                    }
+            public void RestoreData(PropertyType propertyType, int controlId)
+            {
+
+                switch (propertyType)
+                {
+                    case PropertyType.JoystickAxisSensitivity:
+                        {
+                            float value = copyOfOriginal.joystickAxisSensitivity;
+                            _inputBehavior.joystickAxisSensitivity = value;
+                            UISliderControl control = _controlSet.GetControl<UISliderControl>(controlId);
+                            if (control != null) control.slider.value = value; // update control
+                            break;
+                        }
+                    case PropertyType.MouseXYAxisSensitivity:
+                        {
+                            float value = copyOfOriginal.mouseXYAxisSensitivity;
+                            _inputBehavior.mouseXYAxisSensitivity = value;
+                            UISliderControl control = _controlSet.GetControl<UISliderControl>(controlId);
+                            if (control != null) control.slider.value = value; // update control
+                            break;
+                        }
                 }
             }
 
-            public void RefreshControls() {
-                if(_controlSet == null) return;
-                if(idToProperty == null) return;
+            public void RefreshControls()
+            {
+                if (_controlSet == null) return;
+                if (idToProperty == null) return;
 
                 // Redraw the controls with the current values
 
-                foreach(KeyValuePair<int, PropertyType> pair in idToProperty) {
+                foreach (KeyValuePair<int, PropertyType> pair in idToProperty)
+                {
                     UISliderControl control = _controlSet.GetControl<UISliderControl>(pair.Key);
-                    if(control == null) continue;
-                    switch(pair.Value) {
+                    if (control == null) continue;
+                    switch (pair.Value)
+                    {
                         case PropertyType.JoystickAxisSensitivity:
                             control.slider.value = _inputBehavior.joystickAxisSensitivity;
                             break;
@@ -339,13 +377,15 @@ namespace Rewired.UI.ControlMapper {
 
         // Enums
 
-        public enum ButtonIdentifier {
+        public enum ButtonIdentifier
+        {
             Done,
             Cancel,
             Default
         }
 
-        private enum PropertyType {
+        private enum PropertyType
+        {
             JoystickAxisSensitivity = 0,
             MouseXYAxisSensitivity = 1
         }

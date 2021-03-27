@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using System;
 
 public class CollectibleChest : MonoBehaviour
 {
@@ -25,7 +23,7 @@ public class CollectibleChest : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(!isOpened)
+        if (!isOpened)
         {
             if ((playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask && !TimeManager.Instance.IsTimeStopped)
             {

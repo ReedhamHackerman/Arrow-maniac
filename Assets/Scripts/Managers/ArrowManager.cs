@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ArrowManager 
+public class ArrowManager
 {
     #region Singleton
     private ArrowManager() { }
@@ -28,7 +26,7 @@ public class ArrowManager
     }
     public void Start()
     {
-      
+
     }
 
     public void Refresh()
@@ -38,7 +36,7 @@ public class ArrowManager
 
     public void FixedRefresh()
     {
-       // AddArrow(new Ricochet());
+        // AddArrow(new Ricochet());
     }
 
     public Arrow Fire(ArrowType arrowType, Vector2 pos, Quaternion rot)

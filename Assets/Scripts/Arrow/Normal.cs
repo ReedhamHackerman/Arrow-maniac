@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Normal : Arrow
 {
@@ -9,16 +7,16 @@ public class Normal : Arrow
         base.OnHit(collision);
         if (collision.gameObject.CompareTag("Ground"))
         {
-            
+
             Stuck();
-            
-           
+
+
         }
-    
+
     }
-    
-   private void Stuck()
-   {
+
+    private void Stuck()
+    {
         HasHit = true;
         RB2D.velocity = Vector3.zero;
         RB2D.isKinematic = true;
@@ -34,7 +32,7 @@ public class Normal : Arrow
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(IsPickable)
+        if (IsPickable)
         {
             if (collision.gameObject.CompareTag("Player"))
             {
@@ -46,7 +44,7 @@ public class Normal : Arrow
                 Debug.Log("EquipArrow");
                 DestroyArrow();
             }
-           
+
         }
     }
 

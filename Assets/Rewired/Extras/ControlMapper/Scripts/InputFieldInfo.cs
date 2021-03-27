@@ -3,15 +3,15 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
-    using UnityEngine;
-    using UnityEngine.UI;
-    using System.Collections;
     using Rewired;
+    using UnityEngine;
 
     [AddComponentMenu("")]
-    public class InputFieldInfo : UIElementInfo {
+    public class InputFieldInfo : UIElementInfo
+    {
         public int actionId { get; set; }
         public AxisRange axisRange { get; set; }
         public int actionElementMapId { get; set; }

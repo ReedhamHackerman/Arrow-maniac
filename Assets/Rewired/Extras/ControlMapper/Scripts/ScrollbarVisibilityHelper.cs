@@ -64,12 +64,11 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
 
     using UnityEngine;
     using UnityEngine.UI;
-    using System.Collections;
-    using Rewired;
 
     /// <summary>
     /// Hides ScrollRect scrollbars based on the dimensions of the content.
@@ -77,7 +76,8 @@ namespace Rewired.UI.ControlMapper {
     /// This component is no longer necessary in Unity 5.2+ because ScrollRect now handles ScrollBar visibility.
     /// </summary>
     [AddComponentMenu("")]
-    public class ScrollbarVisibilityHelper : MonoBehaviour {
+    public class ScrollbarVisibilityHelper : MonoBehaviour
+    {
 
         public ScrollRect scrollRect;
 

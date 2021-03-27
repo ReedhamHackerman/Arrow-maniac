@@ -1,52 +1,51 @@
 ﻿using UnityEngine;
-using Rewired;
 public enum ArrowType
 {
     NORMAL,
     EXPLOSIVE,
     RICOCHET
 }
-public class Arrow : MonoBehaviour,IFreezable
+public class Arrow : MonoBehaviour, IFreezable
 {
     public ArrowType arrowType;
     [HideInInspector] protected Rigidbody2D RB2D { get; set; }
     [HideInInspector] protected bool HasHit { get; set; }
 
     protected Vector2 arrowValocity;
-    
+
     protected float arrowSpeed;
 
     protected bool isTimeStopped;
-  
+
     [SerializeField] private float shootForce;
 
     protected bool IsPickable { get; set; }
 
     protected Collider2D selfCollider2D;
-  
+
     public virtual void ArrowRotation()
     {
-        if (HasHit==false && !isTimeStopped)
+        if (HasHit == false && !isTimeStopped)
         {
             float angle = Mathf.Atan2(RB2D.velocity.y, RB2D.velocity.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
-       
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-      
+
         OnHit(collision);
-       
+
     }
-    
+
     public virtual void OnHit(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             //PlayerDie Logic Here And It should be Replaced By Player class Logic not by arrow 
-            
+
             if (!IsPickable)
             {
                 PlayerManager.Instance.PlayerDied(collision.gameObject.GetComponent<PlayerUnit>().PlayerId);
@@ -69,9 +68,9 @@ public class Arrow : MonoBehaviour,IFreezable
         {
             ArrowRotation();
         }
-       
+
     }
-    
+
     public void AddForceInDirection(Vector2 dir)
     {
         RB2D.velocity = dir * shootForce;
@@ -92,7 +91,7 @@ public class Arrow : MonoBehaviour,IFreezable
 
     public virtual void UnFreeze()
     {
-        isTimeStopped = false;      
+        isTimeStopped = false;
         RB2D.velocity = arrowValocity;
         RB2D.isKinematic = false;
         isTimeStopped = false;

@@ -3,13 +3,15 @@
 #pragma warning disable 0618
 #pragma warning disable 0649
 
-namespace Rewired.UI.ControlMapper {
+namespace Rewired.UI.ControlMapper
+{
+    using Rewired;
     using System;
     using UnityEngine;
-    using Rewired;
 
     [Serializable]
-    public abstract class LanguageDataBase : ScriptableObject {
+    public abstract class LanguageDataBase : ScriptableObject
+    {
         public abstract void Initialize();
         public abstract string GetCustomEntry(string key);
         public abstract bool ContainsCustomEntryKey(string key);
