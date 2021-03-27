@@ -325,7 +325,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private void AddNewArrowTOHUD(ArrowType ourArrowTYPE)
     {
         float countArrowSpacing = ((arrowStack.Count - 1) * arrowHudSpacing);
-        GameObject arrowHud = Instantiate(AllArrowHUDSDictionary[ourArrowTYPE], new Vector2(arrowHudParent.transform.position.x + (countArrowSpacing), arrowHudParent.transform.position.y + arrowHudHeight), Quaternion.identity, arrowHudParent.transform);
+        GameObject arrowHud = Instantiate(AllArrowHUDSDictionary[ourArrowTYPE], new Vector2(arrowHudParent.transform.position.x - (countArrowSpacing), arrowHudParent.transform.position.y + arrowHudHeight), Quaternion.identity, arrowHudParent.transform);
 
         //GameObject arrowHud = Instantiate(AllArrowHUDS[ourArrowTYPE], new Vector2(0f, 0), Quaternion.identity, arrowHudParent.transform);
     }
