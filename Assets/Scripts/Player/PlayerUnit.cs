@@ -52,14 +52,12 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     [SerializeField] private ParticleSystem jumpParticle;
     [SerializeField] private ParticleSystem dashParticle;
 
-
-
     private Rigidbody2D _rb;
     private Animator _animator;
     private SpriteRenderer _myCharacterSprite;
 
     private float angleAim;
-
+   
     private bool isDashing;
     private bool isMoving;
     private bool isWallSliding;
@@ -96,7 +94,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
         InitializeArrowStack();
         InitializeReferences();
-        // LoadAlltheArrowHUD();
         isMoving = true;
         canUseDash = true;
         HudRotation = arrowHudParent.transform.rotation;
@@ -106,7 +103,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private void InitializeReferences()
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
-        //dustParticle = GetComponent<ParticleSystem>();
         groundLayerMask = LayerMask.GetMask("Ground");
         arrowLayerMask = LayerMask.GetMask("Arrow");
         invisibleScript = GetComponent<Invisible>();
@@ -325,7 +321,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private void AddNewArrowTOHUD(ArrowType ourArrowTYPE)
     {
         float countArrowSpacing = ((arrowStack.Count - 1) * arrowHudSpacing);
-        GameObject arrowHud = Instantiate(AllArrowHUDSDictionary[ourArrowTYPE], new Vector2(arrowHudParent.transform.position.x + (countArrowSpacing), arrowHudParent.transform.position.y + arrowHudHeight), Quaternion.identity, arrowHudParent.transform);
+        GameObject arrowHud = Instantiate(AllArrowHUDSDictionary[ourArrowTYPE], new Vector2(arrowHudParent.transform.position.x - (countArrowSpacing), arrowHudParent.transform.position.y + arrowHudHeight), Quaternion.identity, arrowHudParent.transform);
 
         //GameObject arrowHud = Instantiate(AllArrowHUDS[ourArrowTYPE], new Vector2(0f, 0), Quaternion.identity, arrowHudParent.transform);
     }
@@ -410,8 +406,25 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
 
     }
+    
+   public void EquipAbility(AbilitiesType toEquip)
+   {
+        switch(toEquip)
+        {
+            case AbilitiesType.INVISIBLE:
+                invisibleScript.enabled = true;
+                break;
 
+            case AbilitiesType.TIME_STOP:
+                timeStopScript.enabled = true;
+                break;
 
+            default:
+                Debug.LogError("Something went wrong while equiping Ability!");
+                break;
+
+        }   
+   }
 
     public void Freeze()
     {
