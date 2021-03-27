@@ -6,12 +6,14 @@ public class Invisible : Abilities, IFreezable
     private SpriteRenderer[] childSprites;
     private float fade = 1f;
     private bool canPerfomeFade;
-    float abilityRunTime;
+    private bool canUseAbility = true;
+    [SerializeField] private GameObject invisibleAbilityUI;
 
 
     protected override void Initialize()
     {
-        abilityRunTime = 2f;
+        invisibleAbilityUI.SetActive(true);
+        abilityTime = 2f;
         childSprites = GetComponentsInChildren<SpriteRenderer>();
         canPerfomeFade = true;
 
@@ -19,34 +21,32 @@ public class Invisible : Abilities, IFreezable
 
     protected override void Refresh()
     {
-        if (inputManager.UseAbility2/* && canUseAbility*/)
-
+        if (inputManager.UseAbility && canUseAbility)    
         {
-            //canUseAbility = false;
-
             StartCoroutine(InvisibleAbility());
+            canUseAbility = false;
+            invisibleAbilityUI.SetActive(false);
         }
     }
 
     IEnumerator InvisibleAbility()
     {
 
-        while (fade >= 0)
-        {
-            fade -= (canPerfomeFade) ? Time.deltaTime : 0;
-            FadeAnimation();
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(abilityRunTime);
-
-        while (fade <= 1)
-        {
-            fade += (canPerfomeFade) ? Time.deltaTime : 0;
-            FadeAnimation();
-            yield return null;
-        }
-
+            while(fade >= 0)
+            {
+                fade -= (canPerfomeFade) ? Time.deltaTime : 0;
+                FadeAnimation();
+                yield return null;
+            }
+        
+            yield return new WaitForSeconds(abilityTime);   
+       
+            while(fade <= 1)
+            {
+                fade += (canPerfomeFade)? Time.deltaTime : 0;
+                FadeAnimation();
+                yield return null;
+            }
     }
 
     private void FadeAnimation()

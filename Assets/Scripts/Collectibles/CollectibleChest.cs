@@ -13,6 +13,7 @@ public class CollectibleChest : MonoBehaviour
 
     private int collectibleId;
     private int randomArrowId;
+    private int randomAbilityId;
 
     public void Initialize()
     {
@@ -51,6 +52,7 @@ public class CollectibleChest : MonoBehaviour
                 break;
 
             case 1:
+                AbilityGenerate();
                 break;
 
             default:
@@ -68,6 +70,7 @@ public class CollectibleChest : MonoBehaviour
                 break;
 
             case 1:
+                AbilityEquip();
                 break;
 
             default:
@@ -99,11 +102,21 @@ public class CollectibleChest : MonoBehaviour
     #region ABILITY
     private void AbilityGenerate()
     {
+        Array myAbilityEnums = Enum.GetValues(typeof(AbilitiesType));
+        randomAbilityId = UnityEngine.Random.Range(0, myAbilityEnums.Length);
 
     }
 
     private void AbilityEquip()
     {
+
+        if (playerUnit)
+        {
+            AbilitiesType abilityToEquip = (AbilitiesType)randomAbilityId;
+            playerUnit.EquipAbility(abilityToEquip);
+
+        }
+        else Debug.LogError("PlayerUnit is empty!");
 
     }
     #endregion
