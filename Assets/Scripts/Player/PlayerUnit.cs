@@ -2,7 +2,7 @@
 using UnityEngine;
 using Rewired;
 
-public class PlayerUnit : MonoBehaviour,IFreezable
+public class PlayerUnit : MonoBehaviour, IFreezable
 {
     [Header("LOCAL MULTIPLAYER")]
     [SerializeField] private int playerId;
@@ -46,6 +46,13 @@ public class PlayerUnit : MonoBehaviour,IFreezable
 
     [Header("OTHER SETTINGS")]
     [SerializeField] private bool showGizmos;
+
+    [Header("Particle Effects")]
+    [SerializeField] private ParticleSystem walkParticle;
+    [SerializeField] private ParticleSystem jumpParticle;
+    [SerializeField] private ParticleSystem dashParticle;
+
+
 
     private Rigidbody2D _rb;
     private Animator _animator;
@@ -99,6 +106,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     private void InitializeReferences()
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
+        //dustParticle = GetComponent<ParticleSystem>();
         groundLayerMask = LayerMask.GetMask("Ground");
         arrowLayerMask = LayerMask.GetMask("Arrow");
         invisibleScript = GetComponent<Invisible>();
@@ -189,11 +197,21 @@ public class PlayerUnit : MonoBehaviour,IFreezable
             if (isMoving)
             {
                 _rb.velocity = new Vector2(inputManager.HorizontalInput * movementSpeed, _rb.velocity.y);
+                if(inputManager.HorizontalInput != 0 && isGrounded())
+                {
+                    PlayParticle(walkParticle);
+                }
+
+
             }
 
             if (isDashing)
             {
                 _rb.velocity = new Vector2(inputManager.HorizontalInput * dashSpeed, _rb.velocity.y);
+                if (inputManager.HorizontalInput != 0 && isGrounded())
+                {
+                    PlayParticle(walkParticle);
+                }
             }
         }
     }
@@ -202,8 +220,8 @@ public class PlayerUnit : MonoBehaviour,IFreezable
     {
         if (isTimeStop) return;
         if (inputManager.HorizontalInput != 0)
-        {
-            transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
+        {          
+            transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);                  
         }
     }
 
@@ -226,6 +244,8 @@ public class PlayerUnit : MonoBehaviour,IFreezable
             else
                 _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
 
+            PlayParticle(jumpParticle);
+            StopParticle(walkParticle);
             canJump = false;
         }
     }
@@ -235,6 +255,7 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         if (inputManager.GetDashButtonDown && canUseDash && !isDashing && !isWallSliding)
         {
             StartDash();
+            PlayParticle(dashParticle);
         }
     }
 
@@ -434,4 +455,16 @@ public class PlayerUnit : MonoBehaviour,IFreezable
         print("player id " + playerId);
         Destroy(gameObject);
     }
+
+    public void PlayParticle(ParticleSystem particleSystem)
+    {
+        particleSystem.Play();
+    }
+
+    public void StopParticle(ParticleSystem particleSystem)
+    {
+        particleSystem.Pause();
+        particleSystem.Clear();
+    }
+
 }
