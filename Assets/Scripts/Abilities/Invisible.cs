@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Invisible : Abilities, IFreezable
 {
-    private SpriteRenderer[] childSprites;
+    public SpriteRenderer[] childSprites;
     private float fade = 1f;
     private bool canPerfomeFade;
     private bool canUseAbility = true;
@@ -53,7 +53,8 @@ public class Invisible : Abilities, IFreezable
     {
         foreach (SpriteRenderer spriteRenderer in childSprites)
         {
-            spriteRenderer.material.SetFloat("_Fade", fade);
+            if(spriteRenderer != null)
+                spriteRenderer.material.SetFloat("_Fade", fade);
         }
 
     }
