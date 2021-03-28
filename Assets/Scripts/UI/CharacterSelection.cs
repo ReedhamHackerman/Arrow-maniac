@@ -2,21 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CharacterSelection : MonoBehaviour
 {
     [Header("Player 1 UI")]
     public RawImage p1_SelectedCharacterImg;
+    public GameObject p1_confirmImage;
 
     [Header("Player 2 UI")]
     public RawImage p2_SelectedCharacterImg;
+    public GameObject p2_confirmImage;
 
-    private Dictionary<int, InputManager> playerInputs = new Dictionary<int, InputManager>();
+    private Dictionary<int, UIInputManager> playerInputs = new Dictionary<int, UIInputManager>();
 
     private Texture[] allCharacterTextures;
 
-    private int p1_CurrentSelectedId;
-    private int p2_CurrentSelectedId;
+    public static int p1_CurrentSelectedId;
+    public static int p2_CurrentSelectedId;
+
+    public static Dictionary<int, int> playerWithSelectedCharacter = new Dictionary<int, int>();
+
+    private int connectedPlayers;
+    public int confirmedCount;
 
     void Start()
     {
@@ -31,14 +39,14 @@ public class CharacterSelection : MonoBehaviour
 
     private void InitializeAllConnectedPlayers()
     {
-        int connectedPlayerCount = ReInput.controllers.joystickCount;
+        connectedPlayers = ReInput.controllers.joystickCount;
 
-        if (connectedPlayerCount > 0)
+        if (connectedPlayers > 0)
         {
-            for (int i = 0; i < connectedPlayerCount; i++)
+            for (int i = 0; i < connectedPlayers; i++)
             {
                 Player p = ReInput.players.GetPlayer(i);
-                InputManager input = new InputManager(p);
+                UIInputManager input = new UIInputManager(p);
 
                 playerInputs.Add(i, input);
             }
@@ -47,7 +55,7 @@ public class CharacterSelection : MonoBehaviour
 
     private void RefreshInput()
     {
-        foreach (KeyValuePair<int, InputManager> input in playerInputs)
+        foreach (KeyValuePair<int, UIInputManager> input in playerInputs)
         {
             if (input.Value.GetPreviousButtonDown)
             {
@@ -57,6 +65,16 @@ public class CharacterSelection : MonoBehaviour
             if (input.Value.GetNextButtonDown)
             {
                 ChangeNextById(input.Key);
+            }
+
+            if(input.Value.GetConfirmButtonDown)
+            {
+                ConfirmSelection(input.Key);
+            }
+
+            if (input.Value.GetStartButtonDown)
+            {
+                StartGame();
             }
         }
     }
@@ -120,5 +138,41 @@ public class CharacterSelection : MonoBehaviour
         characterId = characterId < 0 ? (allCharacterTextures.Length - 1) : characterId;
 
         characterRawImg.texture = allCharacterTextures[characterId];
+    }
+
+    private void ConfirmSelection(int playerId)
+    {
+        switch (playerId)
+        {
+            case 0:
+                playerWithSelectedCharacter.Add(playerId, p1_CurrentSelectedId);
+                p1_confirmImage.SetActive(true);
+                break;
+
+            case 1:
+                playerWithSelectedCharacter.Add(playerId, p2_CurrentSelectedId);
+                p2_confirmImage.SetActive(true);
+                break;
+
+            default:
+                break;
+        }
+
+        confirmedCount++;
+    }
+
+    private void CancelSelection()
+    {
+
+    }
+
+    private void StartGame()
+    {
+        if (confirmedCount == connectedPlayers)
+        {
+            SceneManager.LoadScene("MainScene");
+        }
+        else
+            Debug.Log("All players must confirm!");
     }
 }
