@@ -721,6 +721,7 @@ MonoBehaviour:
   p1_confirmImage: {fileID: 1611597048}
   p2_SelectedCharacterImg: {fileID: 1408357686}
   p2_confirmImage: {fileID: 2113713472}
+  confirmedCount: 0
 --- !u!1 &952190283
 GameObject:
   m_ObjectHideFlags: 0
