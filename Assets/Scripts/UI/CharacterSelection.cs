@@ -15,11 +15,12 @@ public class CharacterSelection : MonoBehaviour
     public GameObject p2_confirmImage;
 
     private Dictionary<int, UIInputManager> playerInputs = new Dictionary<int, UIInputManager>();
+    private Dictionary<int, bool> playersIsCofirmed = new Dictionary<int, bool>();
 
     private Texture[] allCharacterTextures;
 
-    public static int p1_CurrentSelectedId;
-    public static int p2_CurrentSelectedId;
+    public int p1_CurrentSelectedId;
+    public int p2_CurrentSelectedId;
 
     public static Dictionary<int, int> playerWithSelectedCharacter = new Dictionary<int, int>();
 
@@ -49,6 +50,8 @@ public class CharacterSelection : MonoBehaviour
                 UIInputManager input = new UIInputManager(p);
 
                 playerInputs.Add(i, input);
+                playersIsCofirmed.Add(i, false);
+                playerWithSelectedCharacter.Add(i, 0);
             }
         }
     }
@@ -72,15 +75,22 @@ public class CharacterSelection : MonoBehaviour
                 ConfirmSelection(input.Key);
             }
 
+            if (input.Value.GetCancelButtonDown)
+            {
+                CancelSelection(input.Key);
+            }
+
             if (input.Value.GetStartButtonDown)
             {
-                StartGame();
+                CheckForAllPlayersAndStart();
             }
         }
     }
 
     private void ChangeNextById(int playerId)
     {
+        if (playersIsCofirmed[playerId]) return;
+
         switch (playerId)
         {
             case 0:
@@ -98,6 +108,8 @@ public class CharacterSelection : MonoBehaviour
 
     private void ChangePrevioustById(int playerId)
     {
+        if (playersIsCofirmed[playerId]) return;
+
         switch (playerId)
         {
             case 0:
@@ -142,37 +154,61 @@ public class CharacterSelection : MonoBehaviour
 
     private void ConfirmSelection(int playerId)
     {
-        switch (playerId)
+        if (!playersIsCofirmed[playerId])
         {
-            case 0:
-                playerWithSelectedCharacter.Add(playerId, p1_CurrentSelectedId);
-                p1_confirmImage.SetActive(true);
-                break;
+            switch (playerId)
+            {
+                case 0:
+                    playerWithSelectedCharacter[playerId] = p1_CurrentSelectedId;
+                    p1_confirmImage.SetActive(true);
+                    break;
 
-            case 1:
-                playerWithSelectedCharacter.Add(playerId, p2_CurrentSelectedId);
-                p2_confirmImage.SetActive(true);
-                break;
+                case 1:
+                    playerWithSelectedCharacter[playerId] = p2_CurrentSelectedId;
+                    p2_confirmImage.SetActive(true);
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
+
+            playersIsCofirmed[playerId] = true;
+            confirmedCount++;
         }
-
-        confirmedCount++;
     }
 
-    private void CancelSelection()
+    private void CancelSelection(int playerId)
     {
+        if (playersIsCofirmed[playerId])
+        {
+            switch (playerId)
+            {
+                case 0:
+                    p1_confirmImage.SetActive(false);
+                    break;
 
+                case 1:
+                    
+                    p2_confirmImage.SetActive(false);
+                    break;
+
+                default:
+                    break;
+            }
+
+            playerWithSelectedCharacter[playerId] = 0;
+            playersIsCofirmed[playerId] = false;
+            confirmedCount--;
+        }
     }
 
-    private void StartGame()
+    private void CheckForAllPlayersAndStart()
     {
         if (confirmedCount == connectedPlayers)
         {
             SceneManager.LoadScene("MainScene");
         }
         else
-            Debug.Log("All players must confirm!");
+            Debug.Log("All players must confirm archers!");
     }
 }
