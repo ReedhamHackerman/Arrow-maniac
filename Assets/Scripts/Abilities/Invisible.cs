@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Invisible : Abilities, IFreezable
 {
-    public List<SpriteRenderer> childSprites = new List<SpriteRenderer> ();
-   // private SpriteRenderer[] childSprites;
+    private List<SpriteRenderer> childSprites = new List<SpriteRenderer> ();
     private float fade = 1f;
     private bool canPerfomeFade;
     private bool canUseAbility = true;
