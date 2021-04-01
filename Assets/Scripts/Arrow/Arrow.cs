@@ -13,11 +13,11 @@ public class Arrow : MonoBehaviour, IFreezable
 
     protected Vector2 arrowValocity;
 
-    protected float arrowSpeed;
+   
 
     protected bool isTimeStopped;
 
-    [SerializeField] private float shootForce;
+    [SerializeField] protected float shootForce;
 
     protected bool IsPickable { get; set; }
 
