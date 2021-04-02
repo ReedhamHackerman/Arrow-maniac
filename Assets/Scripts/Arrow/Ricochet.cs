@@ -7,7 +7,8 @@ public class Ricochet : Arrow
     //Destroy After This Time 
     public float DestroyAfterTimer;
     //reduce by the factor of given velocity
-   // public float speedFactor;
+    // public float speedFactor;
+    [SerializeField] private AudioClip ricochetHitSound;
     public override void ArrowRotation()
     {
         //Meant To be Empty

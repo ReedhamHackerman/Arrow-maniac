@@ -52,6 +52,13 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     [SerializeField] private ParticleSystem jumpParticle;
     [SerializeField] private ParticleSystem dashParticle;
 
+    [Header("Audio Related Logic")]
+    
+    [SerializeField] private AudioClip playerDash;
+    [SerializeField] private AudioClip playerJump;
+
+
+
     private Rigidbody2D _rb;
     private Animator _animator;
     private SpriteRenderer _myCharacterSprite;
@@ -99,6 +106,10 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         HudRotation = arrowHudParent.transform.rotation;
     }
 
+
+
+
+
     #region INITIALIZATION CODE
     private void InitializeReferences()
     {
@@ -129,7 +140,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
         for (int i = 0; i < START_ARROW_COUNT; i++)
         {
-            arrowStack.Push(ArrowType.NORMAL);
+            arrowStack.Push(ArrowType.EXPLOSIVE);
             AddNewArrowTOHUD(ArrowType.NORMAL);
         }
 
