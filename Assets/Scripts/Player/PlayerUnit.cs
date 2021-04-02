@@ -328,7 +328,12 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     {
         float countArrowSpacing = ((arrowStack.Count - 1) * arrowHudSpacing);
         GameObject arrowHud = Instantiate(AllArrowHUDSDictionary[ourArrowTYPE], new Vector2(arrowHudParent.transform.position.x - (countArrowSpacing), arrowHudParent.transform.position.y + arrowHudHeight), Quaternion.identity, arrowHudParent.transform);
-
+        if (invisibleScript != null &&  invisibleScript.gameObject == true)
+        {
+            invisibleScript.childSprites.Add(arrowHud.GetComponent<SpriteRenderer>());
+            invisibleScript.MakeGrabbedArrowInvisible(arrowHud);
+        }
+       
         //GameObject arrowHud = Instantiate(AllArrowHUDS[ourArrowTYPE], new Vector2(0f, 0), Quaternion.identity, arrowHudParent.transform);
     }
     private void RemoveArrowFromHUD(ArrowType ourArowType)
