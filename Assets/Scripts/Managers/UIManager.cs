@@ -1,4 +1,5 @@
-﻿public class UIManager
+﻿
+public class UIManager
 {
     #region Singleton
     private UIManager() { }

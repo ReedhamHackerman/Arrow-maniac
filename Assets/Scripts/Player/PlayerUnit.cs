@@ -1,6 +1,7 @@
 ﻿using Rewired;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerUnit : MonoBehaviour, IFreezable
 {
@@ -160,6 +161,11 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         Dash();
         WallSlide();
         Aim();
+
+        
+
+        if (Input.GetKeyDown(KeyCode.G))
+            SceneManager.LoadScene("MainScene");
     }
     private void LateUpdate()
     {
