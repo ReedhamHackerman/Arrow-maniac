@@ -38,6 +38,7 @@ public class TimeStop : Abilities
         if (inputManager.UseAbility && canUseTimeStop )
         {
             PlayerManager.Instance.playerIdUsedAbility = thisPlayerUnit.PlayerId;
+            //StartCoroutine(TimeStopAbility());
             TimeManager.Instance.AddDelegate(() => Activate(), 0, 1);
             canUseTimeStop = false;
             TimeStopAbilityUI.SetActive(false);

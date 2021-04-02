@@ -1,10 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Invisible : Abilities, IFreezable
 {
-    private List<SpriteRenderer> childSprites = new List<SpriteRenderer> ();
+    public SpriteRenderer[] childSprites;
     private float fade = 1f;
     private bool canPerfomeFade;
     private bool canUseAbility = true;
@@ -15,7 +14,7 @@ public class Invisible : Abilities, IFreezable
     {
         invisibleAbilityUI.SetActive(true);
         abilityTime = 2f;
-        childSprites.AddRange(GetComponentsInChildren<SpriteRenderer>());
+        childSprites = GetComponentsInChildren<SpriteRenderer>();
         canPerfomeFade = true;
 
     }
@@ -59,14 +58,6 @@ public class Invisible : Abilities, IFreezable
         }
 
     }
-
-    public void MakeGrabbedArrowInvisible(GameObject gameObjToInvisible )
-    {
-        SpriteRenderer sr = gameObjToInvisible.GetComponent<SpriteRenderer>();
-        sr.material.SetFloat("_Fade", fade);
-    }
-
-    
 
     void IFreezable.Freeze()
     {
