@@ -6,29 +6,39 @@ using static Rewired.Controller;
 
 public class RoundSystemUI : MonoBehaviour
 {
-    [SerializeField] private GameObject[] player1trophies ;
-    [SerializeField] private GameObject[] player2trophies;
+    private GameObject[] player1trophies;
+    private GameObject[] player2trophies;
+    [SerializeField] private GameObject player1Parent;
+    [SerializeField] private GameObject player2Parent;
+    private GameObject scoreTrophy; 
+    private int trophySpawnDistance = 80;
+
+
     [SerializeField] private GameObject roundUI;
     private int winScore = 3;
-
+    //private int maxRounds = 5;
 
 
     private void Awake()
     {
+        player1trophies = new GameObject[winScore];
+        player2trophies = new GameObject[winScore];
+
+        scoreTrophy = Resources.Load<GameObject>("Prefabs/HUD/Trophy");
+
         
-        for (int i = 0; i < 5; i++)
-        {
-            player1trophies[i].SetActive(false);
-            player2trophies[i].SetActive(false);
-        }
-      
+
     }
+
+
+   
 
 
     void Start()
     {
-       
-        //roundUI.SetActive(false);
+        LoadTrophiesinArray();
+        MakeAllTrophyDeactive();
+        roundUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -39,13 +49,34 @@ public class RoundSystemUI : MonoBehaviour
 
     public void StopTrophyUI()
     {
-        //roundUI.SetActive(false);
+        roundUI.SetActive(false);
     }
 
     public void StartTrophyUI()
     {
-        //roundUI.SetActive(true);
+        roundUI.SetActive(true);
 
+    }
+
+    public  void LoadTrophiesinArray()
+    {
+        for (int i = 0; i < winScore; i++)
+        {
+            player1trophies[i] = Instantiate(scoreTrophy,new Vector3(player1Parent.transform.position.x + trophySpawnDistance, player1Parent.transform.position.y,player1Parent.transform.position.z), Quaternion.identity, player1Parent.transform);
+            player2trophies[i] = Instantiate(scoreTrophy,new Vector3(player2Parent.transform.position.x + trophySpawnDistance, player2Parent.transform.position.y, player2Parent.transform.position.z), Quaternion.identity, player2Parent.transform);
+
+            trophySpawnDistance += 80;
+        }
+    }
+
+
+    public void MakeAllTrophyDeactive()
+    {
+        for (int i = 0; i < winScore; i++)
+        {
+            player1trophies[i].SetActive(false);
+            player2trophies[i].SetActive(false);
+        }
     }
 
     public void IncrementScore()
@@ -57,11 +88,13 @@ public class RoundSystemUI : MonoBehaviour
             {
                 PlayerManager.Instance.ScoreDict[key] = PlayerManager.Instance.ScoreDict[key] + 1;
             }
-            WinScreenUI();
-            StartTrophyUI();
-            SceneManager.LoadScene("MainScene");
+            //WinScreenUI();
+            //StartTrophyUI();
+           // SceneManager.LoadScene("MainScene");
         }
     }
+
+
 
     public void WinScreenUI()
     {
@@ -75,6 +108,15 @@ public class RoundSystemUI : MonoBehaviour
 
         }
     }
+
+    public void ReloadScne()
+    {
+        SceneManager.LoadScene("MainScene");
+    }
+
+
+
+
 
     public void IncrementTrophyInUI()
     {

@@ -1,6 +1,7 @@
 ﻿using Rewired;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using UnityEngine.SceneManagement;
 
 public class PlayerManager
@@ -29,32 +30,23 @@ public class PlayerManager
 
     private GameObject playerSpawnParent;
 
-    private RoundSystemUI roundSystemUI = new RoundSystemUI();
+    private RoundSystemUI roundSystemUI;
 
     public void Initialize()
     {
         GetPlayerCountAndInitialize();
+
+        roundSystemUI = GameObject.FindObjectOfType<RoundSystemUI>();
     }
     public void Start()
     {
-        if (ScoreDict.Count == 0)
-        {
-            Debug.Log("data added");
-        }
-        else
-            Debug.Log(ScoreDict[0] + " data");
+        
     }
 
     public void Refresh()
     {
         foreach (KeyValuePair<int, PlayerUnit> p in UnitDictionary)
             p.Value.UpdateUnit();
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            ScoreDict[0] = ScoreDict[0] + 1;
-            Debug.Log(ScoreDict[0] + " : 0 id value");
-        }
     }
 
     public void FixedRefresh()
@@ -102,27 +94,16 @@ public class PlayerManager
         PlayerUnit unit = UnitDictionary[id];
         UnitDictionary.Remove(id);
 
-
+        
         roundSystemUI.StartTrophyUI();
-
+       
         roundSystemUI.IncrementScore();
         roundSystemUI.IncrementTrophyInUI();
 
         TimeManager.Instance.AddDelegate(() => roundSystemUI.StopTrophyUI(), 5, 1);
 
-
+        TimeManager.Instance.AddDelegate(() => roundSystemUI.ReloadScne(), 5, 1);
         unit.Die();
 
     }
-
-   
-
-    
-
-
-   
-    
-
-
-
 }
