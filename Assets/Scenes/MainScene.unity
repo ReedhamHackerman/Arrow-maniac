@@ -1103,6 +1103,7 @@ MonoBehaviour:
   player2Parent: {fileID: 508509105}
   roundUI: {fileID: 1065541644}
   WinUI: {fileID: 81793396}
+  WonPlayerImage: {fileID: 221188031}
 --- !u!1 &1958087473
 GameObject:
   m_ObjectHideFlags: 0

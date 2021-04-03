@@ -81,7 +81,6 @@ public class PlayerManager
 
     public void AddPlayerInScoreDict(int id,int score)
     {
-
         if (UnitDictionary.Count > ScoreDict.Count)
         {
             ScoreDict.Add(id,score);
@@ -93,16 +92,40 @@ public class PlayerManager
         //Need to implement this
         PlayerUnit unit = UnitDictionary[id];
         UnitDictionary.Remove(id);
-        
-        roundSystemUI.StartTrophyUI();
-       
+        ActivateUI();
+        unit.Die();
+    }
+
+    public void CheckForWin()
+    {
+        foreach (KeyValuePair<int, int> dict in ScoreDict)
+        {
+            if (dict.Value == roundSystemUI.WinScore)
+            {
+                roundSystemUI.WinScreenUI();
+                roundSystemUI.IsGameOver = true;
+            }          
+        }
+    }
+
+    public void ActivateUI()
+    {
         roundSystemUI.IncrementScore();
+        CheckForWin();
+        if (!roundSystemUI.IsGameOver)
+        {
+            ActivateRoundUI();
+        }
+    }
+
+    public void ActivateRoundUI()
+    {
+        roundSystemUI.StartTrophyUI();
         roundSystemUI.IncrementTrophyInUI();
 
-        TimeManager.Instance.AddDelegate(() => roundSystemUI.StopTrophyUI(), 5, 1);
-
-        TimeManager.Instance.AddDelegate(() => roundSystemUI.ReloadScne(), 5, 1);
-        unit.Die();
-
+        TimeManager.Instance.AddDelegate(() => roundSystemUI.StopTrophyUI(), 4, 1);
+        TimeManager.Instance.AddDelegate(() => roundSystemUI.ReloadScne(), 4, 1);
     }
+
+
 }

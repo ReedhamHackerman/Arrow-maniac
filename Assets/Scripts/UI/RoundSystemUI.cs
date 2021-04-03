@@ -8,39 +8,37 @@ using static Rewired.Controller;
 
 public class RoundSystemUI : MonoBehaviour
 {
-    private GameObject[] player1trophies;
-    private GameObject[] player2trophies;
     [SerializeField] private GameObject player1Parent;
     [SerializeField] private GameObject player2Parent;
-    private GameObject scoreTrophy; 
-    private int trophySpawnDistance = 50;
-    private int charImageSpawnDistance = 0;
-    
-    
-
     [SerializeField] private GameObject roundUI;
-    private int winScore = 5;
-    //private int maxRounds = 5;
+    [SerializeField] private GameObject WinUI;
+    [SerializeField] private RawImage WonPlayerImage;
 
+    private GameObject[] player1trophies;
+    private GameObject[] player2trophies;    
+    private GameObject scoreTrophy; 
+    private int trophySpawnDistance = 80;
+    private int charImageSpawnDistance = 0;
+
+    public bool IsGameOver { get; set; } = false;
+    public int WinScore { get; private set; } = 5;
+   
 
     private void Awake()
     {
-        player1trophies = new GameObject[winScore];
-        player2trophies = new GameObject[winScore];
+        player1trophies = new GameObject[WinScore];
+        player2trophies = new GameObject[WinScore];
 
         scoreTrophy = Resources.Load<GameObject>("Prefabs/HUD/Trophy");
         LoadCharImageInUI();
-
-
-
     }
-
 
     void Start()
     {
         LoadTrophiesinArray();
         MakeAllTrophyDeactive();
         roundUI.SetActive(false);
+        WinUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -57,13 +55,11 @@ public class RoundSystemUI : MonoBehaviour
     public void StartTrophyUI()
     {
         roundUI.SetActive(true);
-
     }
 
     private void LoadCharImageInUI()
     {
         int connectedPlayerCount = ReInput.controllers.joystickCount;
-
 
         for (int i = 0; i < connectedPlayerCount; i++)
         {
@@ -73,31 +69,22 @@ public class RoundSystemUI : MonoBehaviour
             playerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + charId);
             charImageSpawnDistance += 100;
         }
-
-
-
-
-       
-
-
     }
-
 
     public  void LoadTrophiesinArray()
     {
-        for (int i = 0; i < winScore; i++)
+        for (int i = 0; i < WinScore; i++)
         {
             player1trophies[i] = Instantiate(scoreTrophy,new Vector3(player1Parent.transform.position.x + trophySpawnDistance, player1Parent.transform.position.y,player1Parent.transform.position.z), Quaternion.identity, player1Parent.transform);
             player2trophies[i] = Instantiate(scoreTrophy,new Vector3(player2Parent.transform.position.x + trophySpawnDistance, player2Parent.transform.position.y, player2Parent.transform.position.z), Quaternion.identity, player2Parent.transform);
 
-            trophySpawnDistance += 80;
+            trophySpawnDistance += 60;
         }
     }
 
-
     public void MakeAllTrophyDeactive()
     {
-        for (int i = 0; i < winScore; i++)
+        for (int i = 0; i < WinScore; i++)
         {
             player1trophies[i].SetActive(false);
             player2trophies[i].SetActive(false);
@@ -109,30 +96,24 @@ public class RoundSystemUI : MonoBehaviour
               
         if (PlayerManager.Instance.UnitDictionary.Count == 1)
         {
-            
-
             foreach (int key in PlayerManager.Instance.UnitDictionary.Keys)
             {
                 PlayerUnit playerUnit = PlayerManager.Instance.UnitDictionary[key];
                 playerUnit.IsMovementStop = true;
                 PlayerManager.Instance.ScoreDict[key] = PlayerManager.Instance.ScoreDict[key] + 1;
             }
-            //WinScreenUI();
-            //StartTrophyUI();
-           // SceneManager.LoadScene("MainScene");
         }
     }
-
 
 
     public void WinScreenUI()
     {
         foreach (KeyValuePair<int, int> dict in PlayerManager.Instance.ScoreDict)
         {
-            if (dict.Value == winScore)
+            if (dict.Value == WinScore)
             {
-                Debug.Log("Player won :" + dict.Key);
-
+                WonPlayerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + dict.Key);
+                WinUI.SetActive(true);
             }
 
         }
@@ -143,13 +124,8 @@ public class RoundSystemUI : MonoBehaviour
         SceneManager.LoadScene("MainScene");
     }
 
-
-
-
-
     public void IncrementTrophyInUI()
     {
-
         foreach (KeyValuePair<int, int> dict in PlayerManager.Instance.ScoreDict)
         {
             if (dict.Key == 0)
@@ -157,7 +133,6 @@ public class RoundSystemUI : MonoBehaviour
                 for (int i = 0; i < PlayerManager.Instance.ScoreDict[dict.Key]; i++)
                 {
                     player1trophies[i].SetActive(true);
-
                 }
             }
 
