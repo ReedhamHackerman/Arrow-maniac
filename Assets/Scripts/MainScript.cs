@@ -4,14 +4,18 @@ public class MainScript : MonoBehaviour
 {
 
     [SerializeField] private Camera mainCamera;
-
+   
     private void Awake()
     {
+       
         GameManager.Instance.Initialize();
         UIManager.Instance.Initialize();
         CollectibleManager.Instance.Initialize();
         TimeManager.Instance.Initialize();
     }
+
+   
+
     private void Start()
     {
         GameManager.Instance.Start();

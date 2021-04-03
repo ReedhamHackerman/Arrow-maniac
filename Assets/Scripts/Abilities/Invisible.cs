@@ -3,18 +3,18 @@ using UnityEngine;
 
 public class Invisible : Abilities, IFreezable
 {
-    public SpriteRenderer[] childSprites;
+    public List<SpriteRenderer> ChildSprites { get; set; } = new List<SpriteRenderer>();
     private float fade = 1f;
     private bool canPerfomeFade;
     private bool canUseAbility = true;
     [SerializeField] private GameObject invisibleAbilityUI;
-
+    [SerializeField] private AudioClip invisiblityAudioClip;
 
     protected override void Initialize()
     {
         invisibleAbilityUI.SetActive(true);
         abilityTime = 2f;
-        childSprites = GetComponentsInChildren<SpriteRenderer>();
+        ChildSprites.AddRange(GetComponentsInChildren<SpriteRenderer>());
         canPerfomeFade = true;
 
     }
@@ -22,7 +22,9 @@ public class Invisible : Abilities, IFreezable
     protected override void Refresh()
     {
         if (inputManager.UseAbility && canUseAbility)    
-        {
+        { 
+            AudioSource.PlayClipAtPoint(invisiblityAudioClip, Camera.main.transform.position, 1f);
+           
             StartCoroutine(InvisibleAbility());
             canUseAbility = false;
             invisibleAbilityUI.SetActive(false);
@@ -51,7 +53,7 @@ public class Invisible : Abilities, IFreezable
 
     private void FadeAnimation()
     {
-        foreach (SpriteRenderer spriteRenderer in childSprites)
+        foreach (SpriteRenderer spriteRenderer in ChildSprites)
         {
             if(spriteRenderer != null)
                 spriteRenderer.material.SetFloat("_Fade", fade);

@@ -9,7 +9,7 @@ public class TimeStop : Abilities
     List< IFreezable> freezables = new List<IFreezable>();
     private bool canUseTimeStop = true;
     [SerializeField] private GameObject TimeStopAbilityUI;
-
+    [SerializeField] private AudioClip timeStopAudioClip;
     protected override void Initialize()
     {
         TimeStopAbilityUI.SetActive(true);
@@ -37,6 +37,7 @@ public class TimeStop : Abilities
     {
         if (inputManager.UseAbility && canUseTimeStop )
         {
+            AudioSource.PlayClipAtPoint(timeStopAudioClip, Camera.main.transform.position, 1.0f);
             PlayerManager.Instance.playerIdUsedAbility = thisPlayerUnit.PlayerId;
             //StartCoroutine(TimeStopAbility());
             TimeManager.Instance.AddDelegate(() => Activate(), 0, 1);

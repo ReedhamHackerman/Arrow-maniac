@@ -43,7 +43,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private Dictionary<ArrowType, GameObject> AllArrowHUDSDictionary = new Dictionary<ArrowType, GameObject>();
     [SerializeField]private float arrowHudHeight;
     [SerializeField]private float arrowHudSpacing;
-    Quaternion HudRotation;
+    private Quaternion HudRotation;
 
     [Header("OTHER SETTINGS")]
     [SerializeField] private bool showGizmos;
@@ -52,6 +52,14 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     [SerializeField] private ParticleSystem walkParticle;
     [SerializeField] private ParticleSystem jumpParticle;
     [SerializeField] private ParticleSystem dashParticle;
+    
+    [Header("Audio Related Logic")]
+    private AudioSource playerAudioSource;
+    [SerializeField] private AudioClip playerDash;
+    [SerializeField] private AudioClip playerJump;
+    [SerializeField] private AudioClip collectArrowSound;
+    [SerializeField] private AudioClip collectAbilitySound;
+    [SerializeField] private AudioClip playerDieSound;
 
     private Rigidbody2D _rb;
     private Animator _animator;
@@ -92,7 +100,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         LoadAlltheArrowHUD();
         this.playerId = playerId;
         InitializePlayersById();
-
+        playerAudioSource = GetComponent<AudioSource>();
         InitializeArrowStack();
         InitializeReferences();
         isMoving = true;
@@ -100,10 +108,15 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         HudRotation = arrowHudParent.transform.rotation;
     }
 
+
+
+
+
     #region INITIALIZATION CODE
     private void InitializeReferences()
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
         groundLayerMask = LayerMask.GetMask("Ground");
         arrowLayerMask = LayerMask.GetMask("Arrow");
         invisibleScript = GetComponent<Invisible>();
@@ -181,6 +194,11 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     #region MOVEMENT MECHANICS
     private void Move()
     {
+        if (inputManager.HorizontalInput == 0 && !isWallSliding)
+        {
+            SetBoolForAnimation(_animator, true, false, false, false);
+        }
+
         if (!isAiming)
         {
             if (isMoving)
@@ -189,9 +207,9 @@ public class PlayerUnit : MonoBehaviour, IFreezable
                 if (inputManager.HorizontalInput != 0 && isGrounded())
                 {
                     PlayParticle(walkParticle);
+
+                    SetBoolForAnimation(_animator, false, true, false, false);
                 }
-
-
             }
 
             if (isDashing)
@@ -208,7 +226,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private void Rotate()
     {
         if (IsMovementStop) return;
-        if (inputManager.HorizontalInput != 0)
+        if (inputManager.HorizontalInput != 0 && !isWallSliding)
         {
             transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
         }
@@ -232,22 +250,37 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             }
             else
                 _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
-
+            PlayJumpSound();
             PlayParticle(jumpParticle);
             StopParticle(walkParticle);
+
             canJump = false;
         }
-    }
 
+        if(!Grounded)
+        {
+            SetBoolForAnimation(_animator, false, false, true, false);
+        }
+    }
+    void PlayJumpSound()
+    {
+        playerAudioSource.clip = playerJump;
+        playerAudioSource.Play();
+    }
     private void Dash()
     {
         if (inputManager.GetDashButtonDown && canUseDash && !isDashing && !isWallSliding)
         {
             StartDash();
             PlayParticle(dashParticle);
+            PlayDashSound();
         }
     }
-
+    void PlayDashSound()
+    {
+        playerAudioSource.clip = playerDash;
+        playerAudioSource.Play();
+    }
     private void StartDash()
     {
         isDashing = true;
@@ -279,6 +312,8 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         {
             isMoving = false;
             _rb.velocity = new Vector2(_rb.velocity.x, -wallSlideSpeed);
+
+            SetBoolForAnimation(_animator, false, false, false, true);
         }
         else
         {
@@ -330,6 +365,12 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         float countArrowSpacing = ((arrowStack.Count - 1) * arrowHudSpacing);
         GameObject arrowHud = Instantiate(AllArrowHUDSDictionary[ourArrowTYPE], new Vector2(arrowHudParent.transform.position.x - (countArrowSpacing), arrowHudParent.transform.position.y + arrowHudHeight), Quaternion.identity, arrowHudParent.transform);
 
+        if (invisibleScript != null &&  invisibleScript.gameObject == true)
+        {
+            invisibleScript.ChildSprites.Add(arrowHud.GetComponent<SpriteRenderer>());
+            invisibleScript.MakeGrabbedArrowInvisible(arrowHud);
+        }
+       
         //GameObject arrowHud = Instantiate(AllArrowHUDS[ourArrowTYPE], new Vector2(0f, 0), Quaternion.identity, arrowHudParent.transform);
     }
     private void RemoveArrowFromHUD(ArrowType ourArowType)
@@ -349,6 +390,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             Arrow newArrow = ArrowManager.Instance.Fire(arrowType, fireFromPos.position, fireFromPos.rotation);
             newArrow.Oninitialize();
             newArrow.AddForceInDirection(fireFromPos.right);
+           
         }
         else Debug.Log("no arrows!");
     }
@@ -405,6 +447,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     public void EquipArrow(ArrowType toEquip, int equipCount)
     {
+        PlayArrowEquipSound();
         for (int i = 0; i < equipCount; i++)
         {
             arrowStack.Push(toEquip);
@@ -414,8 +457,15 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     }
     
+    void PlayArrowEquipSound()
+    {
+        playerAudioSource.clip = collectArrowSound;
+        playerAudioSource.Play();
+
+    }
    public void EquipAbility(AbilitiesType toEquip)
    {
+        PlayAbilityEquipSound();
         switch(toEquip)
         {
             case AbilitiesType.INVISIBLE:
@@ -432,6 +482,11 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
         }   
    }
+    void PlayAbilityEquipSound()
+    {
+        playerAudioSource.clip = collectAbilitySound;
+        playerAudioSource.Play();
+    }
 
     public void Freeze()
     {
@@ -459,18 +514,26 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     public void Die()
     {
         print("player id " + playerId);
+        AudioSource.PlayClipAtPoint(playerDieSound, GameManager.Instance.MainCamera.transform.position, 0.34f);
         Destroy(gameObject);
     }
 
-    public void PlayParticle(ParticleSystem particleSystem)
+    private void PlayParticle(ParticleSystem particleSystem)
     {
         particleSystem.Play();
     }
 
-    public void StopParticle(ParticleSystem particleSystem)
+    private void StopParticle(ParticleSystem particleSystem)
     {
         particleSystem.Pause();
         particleSystem.Clear();
     }
 
+    private void SetBoolForAnimation(Animator myAnimator, bool isIdle, bool isWalking, bool isJumping, bool isSliding)
+    {
+        myAnimator.SetBool("isIdle", isIdle);
+        myAnimator.SetBool("isWalking", isWalking);
+        myAnimator.SetBool("isJumping", isJumping);
+        myAnimator.SetBool("isSliding", isSliding);
+    }
 }
