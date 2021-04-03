@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using Rewired;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using static Rewired.Controller;
 
 public class RoundSystemUI : MonoBehaviour
@@ -11,11 +13,13 @@ public class RoundSystemUI : MonoBehaviour
     [SerializeField] private GameObject player1Parent;
     [SerializeField] private GameObject player2Parent;
     private GameObject scoreTrophy; 
-    private int trophySpawnDistance = 80;
-
+    private int trophySpawnDistance = 50;
+    private int charImageSpawnDistance = 0;
+    
+    
 
     [SerializeField] private GameObject roundUI;
-    private int winScore = 3;
+    private int winScore = 5;
     //private int maxRounds = 5;
 
 
@@ -25,13 +29,11 @@ public class RoundSystemUI : MonoBehaviour
         player2trophies = new GameObject[winScore];
 
         scoreTrophy = Resources.Load<GameObject>("Prefabs/HUD/Trophy");
+        LoadCharImageInUI();
 
-        
+
 
     }
-
-
-   
 
 
     void Start()
@@ -57,6 +59,29 @@ public class RoundSystemUI : MonoBehaviour
         roundUI.SetActive(true);
 
     }
+
+    private void LoadCharImageInUI()
+    {
+        int connectedPlayerCount = ReInput.controllers.joystickCount;
+
+
+        for (int i = 0; i < connectedPlayerCount; i++)
+        {
+            int charId = CharacterSelection.playerWithSelectedCharacter[i];
+            GameObject playerchar =  GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/HUD/CharImage"),new Vector3 (player1Parent.transform.position.x,player1Parent.transform.position.y - charImageSpawnDistance,player1Parent.transform.position.z) ,Quaternion.identity,roundUI.transform);
+            RawImage playerImage = playerchar.GetComponent<RawImage>();
+            playerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + charId);
+            charImageSpawnDistance += 100;
+        }
+
+
+
+
+       
+
+
+    }
+
 
     public  void LoadTrophiesinArray()
     {
@@ -84,8 +109,12 @@ public class RoundSystemUI : MonoBehaviour
               
         if (PlayerManager.Instance.UnitDictionary.Count == 1)
         {
+            
+
             foreach (int key in PlayerManager.Instance.UnitDictionary.Keys)
             {
+                PlayerUnit playerUnit = PlayerManager.Instance.UnitDictionary[key];
+                playerUnit.IsMovementStop = true;
                 PlayerManager.Instance.ScoreDict[key] = PlayerManager.Instance.ScoreDict[key] + 1;
             }
             //WinScreenUI();

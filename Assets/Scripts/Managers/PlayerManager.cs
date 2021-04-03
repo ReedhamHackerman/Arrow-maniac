@@ -93,7 +93,6 @@ public class PlayerManager
         //Need to implement this
         PlayerUnit unit = UnitDictionary[id];
         UnitDictionary.Remove(id);
-
         
         roundSystemUI.StartTrophyUI();
        

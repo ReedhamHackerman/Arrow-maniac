@@ -65,7 +65,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private bool isAiming;
     private bool canUseDash;
     private bool canJump;
-    private bool isTimeStop = false;
+    public bool IsMovementStop { get; set; } = false;
     private bool stopShoot = false;
 
     private Vector2 storedPlayerVelocity;
@@ -149,7 +149,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     public void UpdateUnit()
     {
-        if (isTimeStop) return;
+        if (IsMovementStop) return;
 
         Grounded = isGrounded();
         LeftHit = isLeftHit();
@@ -173,6 +173,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     }
     public void FixedUpdateUnit()
     {
+        if (IsMovementStop) return;
         Move();
     }
 
@@ -206,7 +207,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     private void Rotate()
     {
-        if (isTimeStop) return;
+        if (IsMovementStop) return;
         if (inputManager.HorizontalInput != 0)
         {
             transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
@@ -439,7 +440,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         {
             storedPlayerVelocity = _rb.velocity;
             _rb.bodyType = RigidbodyType2D.Static;
-            isTimeStop = true;
+            IsMovementStop = true;
         }
     }
 
@@ -450,7 +451,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         {
             _rb.bodyType = RigidbodyType2D.Dynamic;
             _rb.velocity = storedPlayerVelocity;
-            isTimeStop = false;
+            IsMovementStop = false;
 
         }
     }
