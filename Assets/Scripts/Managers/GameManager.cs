@@ -1,4 +1,5 @@
-﻿public class GameManager
+﻿using UnityEngine;
+public class GameManager
 {
     #region Singleton
     private GameManager() { }
@@ -15,12 +16,14 @@
         }
     }
     #endregion
-
+    private AudioSource BackgroundMusic;
+    public Camera MainCamera => Camera.main;
     public void Initialize()
     {
         MapManager.Instance.Initialize();
         PlayerManager.Instance.Initialize();
         ArrowManager.Instance.Initialize();
+        InitializeBackgroundMusicAndPlay();
     }
     public void Start()
     {
@@ -37,5 +40,11 @@
     {
         PlayerManager.Instance.FixedRefresh();
         ArrowManager.Instance.FixedRefresh();
+    }
+    private void InitializeBackgroundMusicAndPlay()
+    {
+        BackgroundMusic = GameObject.Instantiate(Resources.Load<AudioSource>("Prefabs/BackgroundAudio/MainBackgroundAudio"));
+        
+       
     }
 }

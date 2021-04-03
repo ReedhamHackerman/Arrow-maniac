@@ -6,9 +6,9 @@ public class Explosive : Arrow
     [SerializeField] private AudioClip timerClock;
     [SerializeField] private AudioClip directHitBombExplosion;
     //Specify the time That Arrow Should Stuck in the Object
-    public float explodeAfterTimer;
+    [SerializeField] private float explodeAfterTimer;
     //Specify the Explosion Radius For The AOE Damage In That Area
-    public float explosionRadius;
+    [SerializeField] private float explosionRadius;
     public override void OnHit(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -31,7 +31,7 @@ public class Explosive : Arrow
 
     private void Explode()
     {
-        AudioSource.PlayClipAtPoint(directHitBombExplosion, Camera.main.transform.position, 0.85f);
+        AudioSource.PlayClipAtPoint(directHitBombExplosion, GameManager.Instance.MainCamera.transform.position, 0.85f);
         Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(transform.position, explosionRadius, LayerMask.GetMask("Player"));
         for (int i = 0; i < collider2Ds.Length; i++)
         {

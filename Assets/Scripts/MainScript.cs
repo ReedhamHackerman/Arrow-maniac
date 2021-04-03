@@ -4,23 +4,17 @@ public class MainScript : MonoBehaviour
 {
 
     [SerializeField] private Camera mainCamera;
-    GameObject BackgroundMusic;
-    private AudioSource mainBackGroundMusic;
+   
     private void Awake()
     {
-        InitializeBackgroundMusicAndPlay();
+       
         GameManager.Instance.Initialize();
         UIManager.Instance.Initialize();
         CollectibleManager.Instance.Initialize();
         TimeManager.Instance.Initialize();
     }
 
-    private void InitializeBackgroundMusicAndPlay()
-    {
-        BackgroundMusic = Instantiate( Resources.Load<GameObject>("Prefabs/BackgroundAudio/MainBackgroundAudio"),transform);
-        mainBackGroundMusic = BackgroundMusic.GetComponent<AudioSource>();
-        mainBackGroundMusic.Play();
-    }
+   
 
     private void Start()
     {

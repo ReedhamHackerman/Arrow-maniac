@@ -492,7 +492,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     public void Die()
     {
         print("player id " + playerId);
-        AudioSource.PlayClipAtPoint(playerDieSound, Camera.main.transform.position, 0.34f);
+        AudioSource.PlayClipAtPoint(playerDieSound, GameManager.Instance.MainCamera.transform.position, 0.34f);
         Destroy(gameObject);
     }
 
