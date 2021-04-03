@@ -207,7 +207,8 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private void Rotate()
     {
         if (isTimeStop) return;
-        if (inputManager.HorizontalInput != 0)
+
+        if (inputManager.HorizontalInput != 0 && !isWallSliding)
         {
             transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
         }
