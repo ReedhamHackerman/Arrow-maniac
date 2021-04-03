@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static Rewired.Controller;
+using System.Linq;
 
 public class RoundSystemUI : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class RoundSystemUI : MonoBehaviour
     private GameObject scoreTrophy; 
     private int trophySpawnDistance = 120;
     private int charImageSpawnDistance = 0;
+
 
     public bool IsGameOver { get; set; } = false;
     public int WinScore { get; private set; } = 5;
@@ -112,14 +114,16 @@ public class RoundSystemUI : MonoBehaviour
         {
             if (dict.Value == WinScore)
             {
-                WonPlayerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + dict.Key);
+                int charId = CharacterSelection.playerWithSelectedCharacter[dict.Key];
+                WonPlayerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + charId);
                 WinUI.SetActive(true);
             }
 
         }
     }
 
-    public void ReloadScne()
+
+    public void ReloadScene()
     {
         SceneManager.LoadScene("MainScene");
     }
@@ -144,6 +148,19 @@ public class RoundSystemUI : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    public void PlayAgain()
+    {
+        List<int> tempKeys = new List<int>(PlayerManager.Instance.ScoreDict.Keys);
+
+        foreach (int key in tempKeys)
+        {
+            PlayerManager.Instance.ScoreDict[key] = 0; 
+        }
+        MakeAllTrophyDeactive();
+        ReloadScene();
     }
 
 }
