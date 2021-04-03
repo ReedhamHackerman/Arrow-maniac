@@ -62,13 +62,11 @@ public class Invisible : Abilities, IFreezable
 
     }
 
-    public void MakeGrabbedArrowInvisible(GameObject gameObjToInvisible )
+    public void MakeGrabbedArrowInvisible(GameObject gameObjToInvisible)
     {
         SpriteRenderer sr = gameObjToInvisible.GetComponent<SpriteRenderer>();
         sr.material.SetFloat("_Fade", fade);
     }
-
-    
 
     void IFreezable.Freeze()
     {

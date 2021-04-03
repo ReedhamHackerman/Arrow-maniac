@@ -593,7 +593,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -400, y: -40}
+  m_AnchoredPosition: {x: -397.75, y: -40}
   m_SizeDelta: {x: 500, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &589237633
@@ -792,6 +792,9 @@ MonoBehaviour:
   p1_confirmImage: {fileID: 1611597048}
   p2_SelectedCharacterImg: {fileID: 1408357686}
   p2_confirmImage: {fileID: 2113713472}
+  p1_CurrentSelectedId: 0
+  p2_CurrentSelectedId: 0
+  confirmedCount: 0
 --- !u!1 &952190283
 GameObject:
   m_ObjectHideFlags: 0
@@ -2101,7 +2104,7 @@ MonoBehaviour:
       - _actionCategoryId: 0
         _actionId: 3
         _elementType: 1
-        _elementIdentifierId: 15
+        _elementIdentifierId: 7
         _axisRange: 0
         _invert: 0
         _axisContribution: 0
