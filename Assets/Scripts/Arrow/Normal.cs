@@ -21,7 +21,7 @@ public class Normal : Arrow
 
     private void Stuck()
     {
-        AudioSource.PlayClipAtPoint(arrowStuckSound, transform.position, 0.34f);
+        AudioSource.PlayClipAtPoint(arrowStuckSound, Camera.main.transform.position, 0.04f);
         HasHit = true;
         RB2D.velocity = Vector3.zero;
         RB2D.isKinematic = true;

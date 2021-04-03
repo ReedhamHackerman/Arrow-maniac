@@ -50,7 +50,7 @@ public class Ricochet : Arrow
         }
         else
         {
-            AudioSource.PlayClipAtPoint(ricochetHitSound, transform.position, 0.444f);
+            AudioSource.PlayClipAtPoint(ricochetHitSound, Camera.main.transform.position, 0.444f);
             Vector2 LastContact;
             //float speed = lastVelocity.magnitude;
             if (collision.contacts.Length>1)
