@@ -368,7 +368,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         if (invisibleScript != null &&  invisibleScript.gameObject == true)
         {
             invisibleScript.ChildSprites.Add(arrowHud.GetComponent<SpriteRenderer>());
-            invisibleScript.MakeGrabbedArrowInvisible(arrowHud);
+            //invisibleScript.MakeGrabbedArrowInvisible(arrowHud);
         }
        
         //GameObject arrowHud = Instantiate(AllArrowHUDS[ourArrowTYPE], new Vector2(0f, 0), Quaternion.identity, arrowHudParent.transform);

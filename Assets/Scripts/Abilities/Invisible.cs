@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Invisible : Abilities, IFreezable
@@ -59,6 +60,12 @@ public class Invisible : Abilities, IFreezable
                 spriteRenderer.material.SetFloat("_Fade", fade);
         }
 
+    }
+
+    public void MakeGrabbedArrowInvisible(GameObject gameObjToInvisible)
+    {
+        SpriteRenderer sr = gameObjToInvisible.GetComponent<SpriteRenderer>();
+        sr.material.SetFloat("_Fade", fade);
     }
 
     void IFreezable.Freeze()
