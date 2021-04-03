@@ -17,7 +17,7 @@ public class RoundSystemUI : MonoBehaviour
     private GameObject[] player1trophies;
     private GameObject[] player2trophies;    
     private GameObject scoreTrophy; 
-    private int trophySpawnDistance = 80;
+    private int trophySpawnDistance = 120;
     private int charImageSpawnDistance = 0;
 
     public bool IsGameOver { get; set; } = false;
@@ -67,7 +67,7 @@ public class RoundSystemUI : MonoBehaviour
             GameObject playerchar =  GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/HUD/CharImage"),new Vector3 (player1Parent.transform.position.x,player1Parent.transform.position.y - charImageSpawnDistance,player1Parent.transform.position.z) ,Quaternion.identity,roundUI.transform);
             RawImage playerImage = playerchar.GetComponent<RawImage>();
             playerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + charId);
-            charImageSpawnDistance += 100;
+            charImageSpawnDistance += 245;
         }
     }
 
@@ -78,7 +78,7 @@ public class RoundSystemUI : MonoBehaviour
             player1trophies[i] = Instantiate(scoreTrophy,new Vector3(player1Parent.transform.position.x + trophySpawnDistance, player1Parent.transform.position.y,player1Parent.transform.position.z), Quaternion.identity, player1Parent.transform);
             player2trophies[i] = Instantiate(scoreTrophy,new Vector3(player2Parent.transform.position.x + trophySpawnDistance, player2Parent.transform.position.y, player2Parent.transform.position.z), Quaternion.identity, player2Parent.transform);
 
-            trophySpawnDistance += 60;
+            trophySpawnDistance += 120;
         }
     }
 
