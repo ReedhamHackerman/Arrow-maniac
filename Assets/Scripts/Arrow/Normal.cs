@@ -45,8 +45,6 @@ public class Normal : Arrow
                 player.EquipArrow(arrowType, 1);
 
                 selfCollider2D.isTrigger = false;
-
-                Debug.Log("EquipArrow");
                 DestroyArrow();
             }
 

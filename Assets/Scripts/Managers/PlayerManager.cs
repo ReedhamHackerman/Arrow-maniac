@@ -104,7 +104,7 @@ public class PlayerManager
             {
                 roundSystemUI.WinScreenUI();
                 roundSystemUI.IsGameOver = true;
-            }          
+            }
         }
     }
 
@@ -124,7 +124,7 @@ public class PlayerManager
         roundSystemUI.IncrementTrophyInUI();
 
         TimeManager.Instance.AddDelegate(() => roundSystemUI.StopTrophyUI(), 4, 1);
-        TimeManager.Instance.AddDelegate(() => roundSystemUI.ReloadScne(), 4, 1);
+        TimeManager.Instance.AddDelegate(() => roundSystemUI.ReloadScene(), 4, 1);
     }
 
 
