@@ -20,6 +20,7 @@ public class Explosive : Arrow
 
     private void Stuck()
     {
+        
         audioSourceArrow.clip = timerClock;
         audioSourceArrow.loop = timerClock;
         audioSourceArrow.Play();
@@ -31,6 +32,7 @@ public class Explosive : Arrow
 
     private void Explode()
     {
+        ExplosionParticleEffect();
         AudioSource.PlayClipAtPoint(directHitBombExplosion, GameManager.Instance.MainCamera.transform.position, 0.85f);
         Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(transform.position, explosionRadius, LayerMask.GetMask("Player"));
         for (int i = 0; i < collider2Ds.Length; i++)
@@ -38,8 +40,14 @@ public class Explosive : Arrow
             PlayerManager.Instance.PlayerDied(collider2Ds[i].gameObject.GetComponent<PlayerUnit>().PlayerId);
         }
         ArrowManager.Instance.DestroyArrow(this);
+        
     }
 
+    private void ExplosionParticleEffect()
+    {
+        ParticleSystem particleEffect = Instantiate(ArrowManager.Instance.ExplosionPartical, transform.position,Quaternion.identity);
+        
+    }
     public override void Freeze()
     {
         if (HasHit) return; // so that stuck explosive arrows do not get affected 
