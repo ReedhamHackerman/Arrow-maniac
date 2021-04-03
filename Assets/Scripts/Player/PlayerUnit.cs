@@ -1,6 +1,7 @@
 ﻿using Rewired;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerUnit : MonoBehaviour, IFreezable
 {
@@ -72,7 +73,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private bool isAiming;
     private bool canUseDash;
     private bool canJump;
-    private bool isTimeStop = false;
+    public bool IsMovementStop { get; set; } = false;
     private bool stopShoot = false;
 
     private Vector2 storedPlayerVelocity;
@@ -161,7 +162,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     public void UpdateUnit()
     {
-        if (isTimeStop) return;
+        if (IsMovementStop) return;
 
         Grounded = isGrounded();
         LeftHit = isLeftHit();
@@ -173,6 +174,11 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         Dash();
         WallSlide();
         Aim();
+
+        
+
+        if (Input.GetKeyDown(KeyCode.G))
+            SceneManager.LoadScene("MainScene");
     }
     private void LateUpdate()
     {
@@ -180,6 +186,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     }
     public void FixedUpdateUnit()
     {
+        if (IsMovementStop) return;
         Move();
     }
 
@@ -218,8 +225,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     private void Rotate()
     {
-        if (isTimeStop) return;
-
+        if (IsMovementStop) return;
         if (inputManager.HorizontalInput != 0 && !isWallSliding)
         {
             transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
@@ -358,10 +364,11 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     {
         float countArrowSpacing = ((arrowStack.Count - 1) * arrowHudSpacing);
         GameObject arrowHud = Instantiate(AllArrowHUDSDictionary[ourArrowTYPE], new Vector2(arrowHudParent.transform.position.x - (countArrowSpacing), arrowHudParent.transform.position.y + arrowHudHeight), Quaternion.identity, arrowHudParent.transform);
+
         if (invisibleScript != null &&  invisibleScript.gameObject == true)
         {
             invisibleScript.ChildSprites.Add(arrowHud.GetComponent<SpriteRenderer>());
-            invisibleScript.MakeGrabbedArrowInvisible(arrowHud);
+            //invisibleScript.MakeGrabbedArrowInvisible(arrowHud);
         }
        
         //GameObject arrowHud = Instantiate(AllArrowHUDS[ourArrowTYPE], new Vector2(0f, 0), Quaternion.identity, arrowHudParent.transform);
@@ -488,7 +495,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         {
             storedPlayerVelocity = _rb.velocity;
             _rb.bodyType = RigidbodyType2D.Static;
-            isTimeStop = true;
+            IsMovementStop = true;
         }
     }
 
@@ -499,14 +506,13 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         {
             _rb.bodyType = RigidbodyType2D.Dynamic;
             _rb.velocity = storedPlayerVelocity;
-            isTimeStop = false;
+            IsMovementStop = false;
 
         }
     }
 
     public void Die()
     {
-        print("player id " + playerId);
         AudioSource.PlayClipAtPoint(playerDieSound, GameManager.Instance.MainCamera.transform.position, 0.34f);
         Destroy(gameObject);
     }
