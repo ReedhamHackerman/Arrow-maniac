@@ -279,7 +279,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     {
         isDashing = true;
         isMoving = false;
-
+        
         TimeManager.Instance.AddDelegate(() => StopDash(), maxDashTime, 1);
     }
 

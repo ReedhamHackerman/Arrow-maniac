@@ -19,9 +19,11 @@ public class ArrowManager
     #endregion
 
     private ArrowFactory arrowFactory;
-
+    private ParticleSystem explosioPartical;
+    public ParticleSystem ExplosionPartical=>explosioPartical;
     public void Initialize()
     {
+        explosioPartical = Resources.Load<ParticleSystem>("Prefabs/Particles/ExplosionParticle");
         arrowFactory = new ArrowFactory();
     }
     public void Start()
