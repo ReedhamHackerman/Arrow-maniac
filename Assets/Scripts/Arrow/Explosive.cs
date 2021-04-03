@@ -31,7 +31,7 @@ public class Explosive : Arrow
 
     private void Explode()
     {
-        AudioSource.PlayClipAtPoint(directHitBombExplosion, transform.position,0.05f);
+        AudioSource.PlayClipAtPoint(directHitBombExplosion, Camera.main.transform.position, 0.85f);
         Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(transform.position, explosionRadius, LayerMask.GetMask("Player"));
         for (int i = 0; i < collider2Ds.Length; i++)
         {

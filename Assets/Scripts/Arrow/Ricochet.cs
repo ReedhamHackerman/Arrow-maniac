@@ -14,12 +14,12 @@ public class Ricochet : Arrow
         //Meant To be Empty
     }
 
-    public void Awake()
-    {
-        base.Oninitialize();
-        RB2D.gravityScale = 0.0f;
-        TimeManager.Instance.AddDelegate(() => DestroyRicochetArrow(), DestroyAfterTimer, 1);
-    }
+    //public void Awake()
+    //{
+    //    base.Oninitialize();
+    //    RB2D.gravityScale = 0.0f;
+    //    TimeManager.Instance.AddDelegate(() => DestroyRicochetArrow(), DestroyAfterTimer, 1);
+    //}
 
     public void Update()
     {
@@ -50,7 +50,7 @@ public class Ricochet : Arrow
         }
         else
         {
-
+            AudioSource.PlayClipAtPoint(ricochetHitSound, transform.position, 0.444f);
             Vector2 LastContact;
             //float speed = lastVelocity.magnitude;
             if (collision.contacts.Length>1)

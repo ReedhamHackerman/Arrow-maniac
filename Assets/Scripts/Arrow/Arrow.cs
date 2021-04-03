@@ -26,7 +26,7 @@ public class Arrow : MonoBehaviour, IFreezable
     [Header("All Audio Related Things")]
     protected AudioSource audioSourceArrow;
     [SerializeField] private AudioClip arrowFireSound;
-    [SerializeField] private AudioClip arrowStuckSound;
+   
     public virtual void ArrowRotation()
     {
         if (HasHit == false && !isTimeStopped)
