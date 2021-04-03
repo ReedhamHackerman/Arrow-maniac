@@ -354,8 +354,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8449584684077586143}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5.312117, y: 5.671044, z: 5.7428293}
+  m_LocalPosition: {x: 0.26, y: 0.64, z: 0}
+  m_LocalScale: {x: 2.091282, y: 1.7371036, z: 5.7428293}
   m_Children: []
   m_Father: {fileID: 8449584685759101257}
   m_RootOrder: 2
@@ -399,7 +399,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e51e360f052b4e14b9a1aa4a9033d678, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 22cf668390fc9414191404d42563fed7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5732,6 +5732,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198566352031416708, guid: a7e045589d761bb4abb0cf6ece0b7b68,
         type: 3}
+      propertyPath: useRigidbodyForVelocity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198566352031416708, guid: a7e045589d761bb4abb0cf6ece0b7b68,
+        type: 3}
       propertyPath: ExternalForcesModule.enabled
       value: 0
       objectReference: {fileID: 0}
@@ -5739,6 +5744,11 @@ PrefabInstance:
         type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 198566352031416708, guid: a7e045589d761bb4abb0cf6ece0b7b68,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 198566352031416708, guid: a7e045589d761bb4abb0cf6ece0b7b68,
         type: 3}
