@@ -13,16 +13,20 @@ public class Arrow : MonoBehaviour, IFreezable
 
     protected Vector2 arrowValocity;
 
-    protected float arrowSpeed;
 
+    
     protected bool isTimeStopped;
 
-    [SerializeField] private float shootForce;
+    [SerializeField] protected float shootForce;
 
     protected bool IsPickable { get; set; }
 
     protected Collider2D selfCollider2D;
 
+    [Header("All Audio Related Things")]
+    protected AudioSource audioSourceArrow;
+    [SerializeField] private AudioClip arrowFireSound;
+   
     public virtual void ArrowRotation()
     {
         if (HasHit == false && !isTimeStopped)
@@ -57,9 +61,12 @@ public class Arrow : MonoBehaviour, IFreezable
 
     public virtual void Oninitialize()
     {
+        audioSourceArrow = GetComponent<AudioSource>();
         RB2D = GetComponent<Rigidbody2D>();
         selfCollider2D = GetComponent<Collider2D>();
         IsPickable = false;
+        audioSourceArrow.clip = arrowFireSound;
+        audioSourceArrow.Play();
     }
 
     public virtual void OnUpdate()

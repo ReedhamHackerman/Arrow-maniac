@@ -42,7 +42,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private Dictionary<ArrowType, GameObject> AllArrowHUDSDictionary = new Dictionary<ArrowType, GameObject>();
     [SerializeField]private float arrowHudHeight;
     [SerializeField]private float arrowHudSpacing;
-    Quaternion HudRotation;
+    private Quaternion HudRotation;
 
     [Header("OTHER SETTINGS")]
     [SerializeField] private bool showGizmos;
@@ -51,6 +51,14 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     [SerializeField] private ParticleSystem walkParticle;
     [SerializeField] private ParticleSystem jumpParticle;
     [SerializeField] private ParticleSystem dashParticle;
+    
+    [Header("Audio Related Logic")]
+    private AudioSource playerAudioSource;
+    [SerializeField] private AudioClip playerDash;
+    [SerializeField] private AudioClip playerJump;
+    [SerializeField] private AudioClip collectArrowSound;
+    [SerializeField] private AudioClip collectAbilitySound;
+    [SerializeField] private AudioClip playerDieSound;
 
     private Rigidbody2D _rb;
     private Animator _animator;
@@ -91,13 +99,17 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         LoadAlltheArrowHUD();
         this.playerId = playerId;
         InitializePlayersById();
-
+        playerAudioSource = GetComponent<AudioSource>();
         InitializeArrowStack();
         InitializeReferences();
         isMoving = true;
         canUseDash = true;
         HudRotation = arrowHudParent.transform.rotation;
     }
+
+
+
+
 
     #region INITIALIZATION CODE
     private void InitializeReferences()
@@ -232,7 +244,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             }
             else
                 _rb.velocity = new Vector2(_rb.velocity.x, jumpForce);
-
+            PlayJumpSound();
             PlayParticle(jumpParticle);
             StopParticle(walkParticle);
 
@@ -244,16 +256,25 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             SetBoolForAnimation(_animator, false, false, true, false);
         }
     }
-
+    void PlayJumpSound()
+    {
+        playerAudioSource.clip = playerJump;
+        playerAudioSource.Play();
+    }
     private void Dash()
     {
         if (inputManager.GetDashButtonDown && canUseDash && !isDashing && !isWallSliding)
         {
             StartDash();
             PlayParticle(dashParticle);
+            PlayDashSound();
         }
     }
-
+    void PlayDashSound()
+    {
+        playerAudioSource.clip = playerDash;
+        playerAudioSource.Play();
+    }
     private void StartDash()
     {
         isDashing = true;
@@ -362,6 +383,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             Arrow newArrow = ArrowManager.Instance.Fire(arrowType, fireFromPos.position, fireFromPos.rotation);
             newArrow.Oninitialize();
             newArrow.AddForceInDirection(fireFromPos.right);
+           
         }
         else Debug.Log("no arrows!");
     }
@@ -418,6 +440,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     public void EquipArrow(ArrowType toEquip, int equipCount)
     {
+        PlayArrowEquipSound();
         for (int i = 0; i < equipCount; i++)
         {
             arrowStack.Push(toEquip);
@@ -427,8 +450,15 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     }
     
+    void PlayArrowEquipSound()
+    {
+        playerAudioSource.clip = collectArrowSound;
+        playerAudioSource.Play();
+
+    }
    public void EquipAbility(AbilitiesType toEquip)
    {
+        PlayAbilityEquipSound();
         switch(toEquip)
         {
             case AbilitiesType.INVISIBLE:
@@ -445,6 +475,11 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
         }   
    }
+    void PlayAbilityEquipSound()
+    {
+        playerAudioSource.clip = collectAbilitySound;
+        playerAudioSource.Play();
+    }
 
     public void Freeze()
     {
@@ -472,6 +507,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     public void Die()
     {
         print("player id " + playerId);
+        AudioSource.PlayClipAtPoint(playerDieSound, GameManager.Instance.MainCamera.transform.position, 0.34f);
         Destroy(gameObject);
     }
 

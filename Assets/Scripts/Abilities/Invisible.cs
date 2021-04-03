@@ -9,7 +9,7 @@ public class Invisible : Abilities, IFreezable
     private bool canPerfomeFade;
     private bool canUseAbility = true;
     [SerializeField] private GameObject invisibleAbilityUI;
-
+    [SerializeField] private AudioClip invisiblityAudioClip;
 
     protected override void Initialize()
     {
@@ -23,7 +23,9 @@ public class Invisible : Abilities, IFreezable
     protected override void Refresh()
     {
         if (inputManager.UseAbility && canUseAbility)    
-        {
+        { 
+            AudioSource.PlayClipAtPoint(invisiblityAudioClip, Camera.main.transform.position, 1f);
+           
             StartCoroutine(InvisibleAbility());
             canUseAbility = false;
             invisibleAbilityUI.SetActive(false);
