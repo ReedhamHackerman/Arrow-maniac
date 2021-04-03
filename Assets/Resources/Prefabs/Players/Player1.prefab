@@ -377,6 +377,7 @@ GameObject:
   - component: {fileID: 8476890786577798658}
   - component: {fileID: -8652061852337927798}
   - component: {fileID: -6049954687701120001}
+  - component: {fileID: 3177753856374164857}
   - component: {fileID: 7215418971267612503}
   - component: {fileID: 385631639}
   - component: {fileID: 6092602023212908800}
@@ -445,6 +446,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0.6051992, y: 0.6588151}
   m_Size: {x: 5.0456543, y: 8.108551}
   m_Direction: 0
+--- !u!95 &3177753856374164857
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8476890786577798659}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3e056c367f8710d45b2cea1ebddbeaaa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &7215418971267612503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,7 +520,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilitiesType: 0
   abilityTime: 0
-  childSprites: []
   invisibleAbilityUI: {fileID: 1849624126929666729}
   invisiblityAudioClip: {fileID: 8300000, guid: cbf7a52409ebd21428065ee2628c8a1b,
     type: 3}

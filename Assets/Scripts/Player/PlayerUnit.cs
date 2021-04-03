@@ -115,6 +115,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private void InitializeReferences()
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
         groundLayerMask = LayerMask.GetMask("Ground");
         arrowLayerMask = LayerMask.GetMask("Arrow");
         invisibleScript = GetComponent<Invisible>();
@@ -186,6 +187,11 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     #region MOVEMENT MECHANICS
     private void Move()
     {
+        if (inputManager.HorizontalInput == 0 && !isWallSliding)
+        {
+            SetBoolForAnimation(_animator, true, false, false, false);
+        }
+
         if (!isAiming)
         {
             if (isMoving)
@@ -194,9 +200,9 @@ public class PlayerUnit : MonoBehaviour, IFreezable
                 if (inputManager.HorizontalInput != 0 && isGrounded())
                 {
                     PlayParticle(walkParticle);
+
+                    SetBoolForAnimation(_animator, false, true, false, false);
                 }
-
-
             }
 
             if (isDashing)
@@ -213,7 +219,8 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private void Rotate()
     {
         if (isTimeStop) return;
-        if (inputManager.HorizontalInput != 0)
+
+        if (inputManager.HorizontalInput != 0 && !isWallSliding)
         {
             transform.rotation = inputManager.HorizontalInput < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
         }
@@ -240,7 +247,13 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             PlayJumpSound();
             PlayParticle(jumpParticle);
             StopParticle(walkParticle);
+
             canJump = false;
+        }
+
+        if(!Grounded)
+        {
+            SetBoolForAnimation(_animator, false, false, true, false);
         }
     }
     void PlayJumpSound()
@@ -293,6 +306,8 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         {
             isMoving = false;
             _rb.velocity = new Vector2(_rb.velocity.x, -wallSlideSpeed);
+
+            SetBoolForAnimation(_animator, false, false, false, true);
         }
         else
         {
@@ -496,15 +511,22 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         Destroy(gameObject);
     }
 
-    public void PlayParticle(ParticleSystem particleSystem)
+    private void PlayParticle(ParticleSystem particleSystem)
     {
         particleSystem.Play();
     }
 
-    public void StopParticle(ParticleSystem particleSystem)
+    private void StopParticle(ParticleSystem particleSystem)
     {
         particleSystem.Pause();
         particleSystem.Clear();
     }
 
+    private void SetBoolForAnimation(Animator myAnimator, bool isIdle, bool isWalking, bool isJumping, bool isSliding)
+    {
+        myAnimator.SetBool("isIdle", isIdle);
+        myAnimator.SetBool("isWalking", isWalking);
+        myAnimator.SetBool("isJumping", isJumping);
+        myAnimator.SetBool("isSliding", isSliding);
+    }
 }

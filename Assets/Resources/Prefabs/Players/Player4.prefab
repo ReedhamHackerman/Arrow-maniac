@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 1230013393030182591}
   - component: {fileID: -3672882794713749866}
   - component: {fileID: -81289050818217872}
+  - component: {fileID: -5027380170482203189}
   - component: {fileID: 5421985419259134187}
   - component: {fileID: 7399467513617028856}
   - component: {fileID: 5168394927613050105}
@@ -110,6 +111,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0.6051992, y: 0.6588151}
   m_Size: {x: 5.0456543, y: 8.108551}
   m_Direction: 0
+--- !u!95 &-5027380170482203189
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230013393030182590}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3e056c367f8710d45b2cea1ebddbeaaa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &5421985419259134187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,7 +185,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilitiesType: 0
   abilityTime: 0
-  childSprites: []
   invisibleAbilityUI: {fileID: 6944969905556945308}
   invisiblityAudioClip: {fileID: 8300000, guid: cbf7a52409ebd21428065ee2628c8a1b,
     type: 3}
@@ -1574,15 +1593,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03209d5871c7d5744a43e64f7bb65283, type: 3}
---- !u!198 &1672144448872606862 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 2854908149951900772, guid: 03209d5871c7d5744a43e64f7bb65283,
-    type: 3}
-  m_PrefabInstance: {fileID: 3506629907586302186}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1709598818268928709 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2815798990290393647, guid: 03209d5871c7d5744a43e64f7bb65283,
+    type: 3}
+  m_PrefabInstance: {fileID: 3506629907586302186}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1672144448872606862 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2854908149951900772, guid: 03209d5871c7d5744a43e64f7bb65283,
     type: 3}
   m_PrefabInstance: {fileID: 3506629907586302186}
   m_PrefabAsset: {fileID: 0}
