@@ -142,7 +142,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
         for (int i = 0; i < START_ARROW_COUNT; i++)
         {
-            arrowStack.Push(ArrowType.EXPLOSIVE);
+            arrowStack.Push(ArrowType.NORMAL);
             AddNewArrowTOHUD(ArrowType.NORMAL);
         }
 
