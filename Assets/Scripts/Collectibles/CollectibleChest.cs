@@ -1,76 +1,76 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class CollectibleChest : MonoBehaviour
 {
     [SerializeField] private LayerMask playerLayerMask;
     [SerializeField] private Sprite openedChestSprite;
 
+    private PickCollectible collectiblePrefab;
+
     private PlayerUnit playerUnit;
 
     private SpriteRenderer mySpriteRenderer;
-    public bool isOpened;
+
+    private bool isOpened;
 
     private int collectibleId;
     private int randomArrowId;
     private int randomAbilityId;
 
+    private Dictionary<ArrowType, Sprite> arrowSprites = new Dictionary<ArrowType, Sprite>();
+    private Dictionary<AbilitiesType, Sprite> abilitySprites = new Dictionary<AbilitiesType, Sprite>();
+
     public void Initialize()
     {
         mySpriteRenderer = GetComponent<SpriteRenderer>();
 
-        GenerateRandomCollectible();
+        collectiblePrefab = Resources.Load<PickCollectible>("Prefabs/CollectibleChests/CollectibleSprite");
+
+        LoadSprites();
+    }
+
+    private void LoadSprites()
+    {
+        arrowSprites.Add(ArrowType.EXPLOSIVE, Resources.Load<Sprite>("PNGS/ArrowSprites/ExplosiveArrow"));
+        arrowSprites.Add(ArrowType.RICOCHET, Resources.Load<Sprite>("PNGS/ArrowSprites/RicoChetArrow"));
+
+        abilitySprites.Add(AbilitiesType.TIME_STOP, Resources.Load<Sprite>("PNGS/Abilities/TimeStopAbility"));
+        abilitySprites.Add(AbilitiesType.INVISIBLE, Resources.Load<Sprite>("PNGS/Abilities/Invisible"));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isOpened)
+        if (!isOpened && (playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask && !TimeManager.Instance.IsTimeStopped)
         {
-            if ((playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask && !TimeManager.Instance.IsTimeStopped)
-            {
-                playerUnit = collision.gameObject.GetComponent<PlayerUnit>();
+            playerUnit = collision.gameObject.GetComponent<PlayerUnit>();
 
-                mySpriteRenderer.sprite = openedChestSprite;
-                isOpened = true;
+            mySpriteRenderer.sprite = openedChestSprite;
+            isOpened = true;
 
-                EquipRandomCollectible();
-            }
+            EquipRandomCollectible(playerUnit);
         }
     }
 
     #region COLLECTIBLE GENERATE AND EQUIP
-
-    //Generates a collectible (Arrow or Ability) randomly. 0 = Arrow and 1 = Ability
-    private void GenerateRandomCollectible()
+    private void EquipRandomCollectible(PlayerUnit playerUnit)
     {
-        collectibleId = UnityEngine.Random.Range(0, 2); // Max is 2 because we only need 0 and 1
+        CollectibleType collectibleType = (CollectibleType) UnityEngine.Random.Range(0, Enum.GetValues(typeof(CollectibleType)).Length);
 
-        switch (collectibleId)
+        switch (collectibleType)
         {
-            case 0:
-                ArrowGenerate();
+            case CollectibleType.Arrow:
+
+                ArrowEquip(playerUnit);
+
                 break;
 
-            case 1:
-                AbilityGenerate();
-                break;
+            case CollectibleType.Ability:
 
-            default:
-                Debug.LogError("Something went wrong while generating collectible!");
-                break;
-        }
-    }
+                AbilityEquip(playerUnit);
 
-    private void EquipRandomCollectible()
-    {
-        switch (collectibleId)
-        {
-            case 0:
-                ArrowEquip();
-                break;
-
-            case 1:
-                AbilityEquip();
                 break;
 
             default:
@@ -82,41 +82,24 @@ public class CollectibleChest : MonoBehaviour
     #endregion
 
     #region ARROW
-    private void ArrowGenerate()
+    private void ArrowEquip(PlayerUnit playerUnit)
     {
-        Array myEnums = Enum.GetValues(typeof(ArrowType));
-        randomArrowId = UnityEngine.Random.Range(1, myEnums.Length);
-    }
+        PickCollectible newCollectible = Instantiate<PickCollectible>(collectiblePrefab, transform.position, Quaternion.identity);
 
-    private void ArrowEquip()
-    {
-        if (playerUnit)
-        {
-            ArrowType toEquip = (ArrowType)randomArrowId;
-            playerUnit.EquipArrow(toEquip, 2);
-        }
-        else Debug.LogError("PlayerUnit is empty!");
+        ArrowType typeOfArrow = (ArrowType) UnityEngine.Random.Range(1, Enum.GetValues(typeof(ArrowType)).Length);
+
+        newCollectible.InitializeArrow(typeOfArrow, playerUnit, arrowSprites[typeOfArrow]);
     }
     #endregion
 
     #region ABILITY
-    private void AbilityGenerate()
+    private void AbilityEquip(PlayerUnit playerUnit)
     {
-        Array myAbilityEnums = Enum.GetValues(typeof(AbilitiesType));
-        randomAbilityId = UnityEngine.Random.Range(0, myAbilityEnums.Length);
+        PickCollectible newCollectible = Instantiate<PickCollectible>(collectiblePrefab, transform.position, Quaternion.identity);
 
-    }
+        AbilitiesType abilityType = (AbilitiesType) UnityEngine.Random.Range(0, Enum.GetValues(typeof(AbilitiesType)).Length);
 
-    private void AbilityEquip()
-    {
-
-        if (playerUnit)
-        {
-            AbilitiesType abilityToEquip = (AbilitiesType)randomAbilityId;
-            playerUnit.EquipAbility(abilityToEquip);
-
-        }
-        else Debug.LogError("PlayerUnit is empty!");
+        newCollectible.InitializeAbility(playerUnit, abilityType, abilitySprites[abilityType]);
 
     }
     #endregion

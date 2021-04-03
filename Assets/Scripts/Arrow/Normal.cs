@@ -2,6 +2,10 @@
 
 public class Normal : Arrow
 {
+
+
+
+    [SerializeField] private AudioClip arrowStuckSound;
     public override void OnHit(Collision2D collision)
     {
         base.OnHit(collision);
@@ -17,6 +21,7 @@ public class Normal : Arrow
 
     private void Stuck()
     {
+        AudioSource.PlayClipAtPoint(arrowStuckSound, GameManager.Instance.MainCamera.transform.position, 0.04f);
         HasHit = true;
         RB2D.velocity = Vector3.zero;
         RB2D.isKinematic = true;
