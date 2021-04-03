@@ -7,25 +7,25 @@ using UnityEngine.SceneManagement;
 public class CharacterSelection : MonoBehaviour
 {
     [Header("Player 1 UI")]
-    public RawImage p1_SelectedCharacterImg;
-    public GameObject p1_confirmImage;
+    [SerializeField] private RawImage p1_SelectedCharacterImg;
+    [SerializeField] private GameObject p1_confirmImage;
 
     [Header("Player 2 UI")]
-    public RawImage p2_SelectedCharacterImg;
-    public GameObject p2_confirmImage;
+    [SerializeField] private RawImage p2_SelectedCharacterImg;
+    [SerializeField] private GameObject p2_confirmImage;
 
     private Dictionary<int, UIInputManager> playerInputs = new Dictionary<int, UIInputManager>();
     private Dictionary<int, bool> playersIsCofirmed = new Dictionary<int, bool>();
 
     private Texture[] allCharacterTextures;
 
-    public int p1_CurrentSelectedId;
-    public int p2_CurrentSelectedId;
+    private int p1_CurrentSelectedId;
+    private int p2_CurrentSelectedId;
 
     public static Dictionary<int, int> playerWithSelectedCharacter = new Dictionary<int, int>();
 
     private int connectedPlayers;
-    public int confirmedCount;
+    private int confirmedCount;
 
     void Start()
     {
