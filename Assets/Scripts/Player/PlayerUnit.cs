@@ -355,6 +355,8 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             {
                 handTransform.localEulerAngles = new Vector3(0f, 0f, angleAim);
             }
+
+            SetBoolForAnimation(_animator, true, false, false, false);
         }
         else
             handTransform.localEulerAngles = Vector2.zero;
