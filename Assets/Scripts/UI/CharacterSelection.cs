@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class CharacterSelection : MonoBehaviour
 {
@@ -14,18 +15,23 @@ public class CharacterSelection : MonoBehaviour
     public RawImage p2_SelectedCharacterImg;
     public GameObject p2_confirmImage;
 
+    [Header("Loading UI")]
+    [SerializeField] private GameObject loadingUI;
+    [SerializeField] private Image loadingFillbar;
+    [SerializeField] private Text percentageText;
+
     private Dictionary<int, UIInputManager> playerInputs = new Dictionary<int, UIInputManager>();
     private Dictionary<int, bool> playersIsCofirmed = new Dictionary<int, bool>();
 
     private Texture[] allCharacterTextures;
 
-    public int p1_CurrentSelectedId;
-    public int p2_CurrentSelectedId;
+    private int p1_CurrentSelectedId;
+    private int p2_CurrentSelectedId;
 
     public static Dictionary<int, int> playerWithSelectedCharacter = new Dictionary<int, int>();
 
     private int connectedPlayers;
-    public int confirmedCount;
+    private int confirmedCount;
 
     void Start()
     {
@@ -206,9 +212,39 @@ public class CharacterSelection : MonoBehaviour
     {
         if (confirmedCount == connectedPlayers)
         {
-            SceneManager.LoadScene("MainScene");
+            StartLoadingUI();
         }
         else
             Debug.Log("All players must confirm archers!");
     }
+
+    #region LOADING UI REGION
+    private void StartLoadingUI()
+    {
+        loadingUI.SetActive(true);
+        LoadLevel("MainScene");
+    }
+
+    private void LoadLevel(string levelName)
+    {
+        StartCoroutine(LoadLevelAsync(levelName));
+    }
+
+    private IEnumerator LoadLevelAsync(string levelName)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(levelName);
+
+        while(!operation.isDone)
+        {
+            float progress = Mathf.Clamp01(operation.progress);
+
+            progress = progress >= 0.9f ? 1 : progress;
+            loadingFillbar.fillAmount = Mathf.Clamp01(progress);
+            
+            percentageText.text = (progress * 100f).ToString("F0") + "%";
+
+            yield return null;
+        }
+    }
+    #endregion
 }
