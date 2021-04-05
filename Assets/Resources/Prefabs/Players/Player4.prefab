@@ -161,8 +161,8 @@ MonoBehaviour:
   handTransform: {fileID: 1230013394088199639}
   fireFromPos: {fileID: 5693017684401840816}
   arrowHudParent: {fileID: 4799788443114808150}
-  arrowHudHeight: 0.31
-  arrowHudSpacing: 0.55
+  arrowHudHeight: 0.71
+  arrowHudSpacing: 0.51
   showGizmos: 0
   walkParticle: {fileID: 1672144448872606862}
   jumpParticle: {fileID: 4808881234628532996}
