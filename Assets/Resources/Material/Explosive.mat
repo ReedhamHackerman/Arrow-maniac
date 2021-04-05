@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RimZim
+  m_Name: RimZim 1
   m_Shader: {fileID: -6465566751694194690, guid: 91cac7ab093b7c44d9b6ef7019cb7a85,
     type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
