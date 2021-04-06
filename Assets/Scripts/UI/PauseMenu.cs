@@ -7,6 +7,8 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject pauseUIObj;
     [SerializeField] private GameObject pauseButtonsParent;
+
+    [SerializeField] private float canPauseAfterTime = 2f;
     
     private RoundSystemUI roundSystemUI;
 
@@ -24,7 +26,7 @@ public class PauseMenu : MonoBehaviour
 
         InitializeAllRawImages();
 
-        TimeManager.Instance.AddDelegate(() => canPause = true, 2f, 1);
+        TimeManager.Instance.AddDelegate(() => canPause = true, canPauseAfterTime, 1);
     }
 
     private void Update()
