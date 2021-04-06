@@ -18,6 +18,8 @@ public class GameManager
     #endregion
     private AudioSource BackgroundMusic;
     public Camera MainCamera => Camera.main;
+
+   
     public void Initialize()
     {
         MapManager.Instance.Initialize();
@@ -47,4 +49,5 @@ public class GameManager
         
        
     }
+    
 }
