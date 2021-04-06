@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2293,6 +2293,42 @@ MonoBehaviour:
       _behaviorId: 0
       _userAssignable: 1
       _categoryId: 2
+    - _id: 14
+      _name: Pause
+      _type: 1
+      _descriptiveName: Pause
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 2
+    - _id: 15
+      _name: Go Down
+      _type: 1
+      _descriptiveName: Go Down
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 2
+    - _id: 16
+      _name: Go Up
+      _type: 1
+      _descriptiveName: Go Up
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 2
+    - _id: 17
+      _name: ResumeGame
+      _type: 1
+      _descriptiveName: ResumeGame
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 2
     actionCategories:
     - _name: Default
       _descriptiveName: Default
@@ -2309,7 +2345,7 @@ MonoBehaviour:
       - categoryId: 0
         actionIds: 0000000001000000020000000300000004000000
       - categoryId: 2
-        actionIds: 05000000060000000700000008000000090000000b000000
+        actionIds: 05000000060000000700000008000000090000000b0000000e0000000f0000001000000011000000
     inputBehaviors:
     - _id: 0
       _name: Default
@@ -2523,6 +2559,50 @@ MonoBehaviour:
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 14
+        _elementType: 1
+        _elementIdentifierId: 15
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 15
+        _elementType: 1
+        _elementIdentifierId: 21
+        _axisRange: 2
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 16
+        _elementType: 1
+        _elementIdentifierId: 19
+        _axisRange: 1
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 17
+        _elementType: 1
+        _elementIdentifierId: 4
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     keyboardMaps:
     - id: 0
       categoryId: 0
@@ -2537,7 +2617,7 @@ MonoBehaviour:
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 3
-    actionIdCounter: 14
+    actionIdCounter: 18
     actionCategoryIdCounter: 4
     inputBehaviorIdCounter: 1
     mapCategoryIdCounter: 4

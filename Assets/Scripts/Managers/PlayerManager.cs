@@ -22,7 +22,6 @@ public class PlayerManager
     }
     #endregion
 
-    public List<PlayerUnit> PlayerUnitList { get; private set; }
     public int playerIdUsedAbility;
 
     public Dictionary<int, PlayerUnit> UnitDictionary { get; set; } = new Dictionary<int, PlayerUnit>();
@@ -31,16 +30,18 @@ public class PlayerManager
     private GameObject playerSpawnParent;
 
     private RoundSystemUI roundSystemUI;
+    private PauseMenu pauseMenuUI;
 
     public void Initialize()
     {
         GetPlayerCountAndInitialize();
 
         roundSystemUI = GameObject.FindObjectOfType<RoundSystemUI>();
+        pauseMenuUI = GameHUD.FindObjectOfType<PauseMenu>();
     }
     public void Start()
     {
-        
+        pauseMenuUI.Initialize(UnitDictionary);
     }
 
     public void Refresh()

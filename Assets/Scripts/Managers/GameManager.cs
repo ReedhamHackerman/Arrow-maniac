@@ -18,6 +18,15 @@ public class GameManager
     #endregion
     private AudioSource BackgroundMusic;
     public Camera MainCamera => Camera.main;
+
+    private bool isPaused;
+    public bool IsPaused
+    {
+        get { return isPaused; }
+        
+        set { isPaused = value; }
+    }
+
     public void Initialize()
     {
         MapManager.Instance.Initialize();
