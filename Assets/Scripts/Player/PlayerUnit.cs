@@ -143,7 +143,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
         for (int i = 0; i < START_ARROW_COUNT; i++)
         {
-            arrowStack.Push(ArrowType.NORMAL);
+            arrowStack.Push(ArrowType.RICOCHET);
             AddNewArrowTOHUD(ArrowType.NORMAL);
         }
 
