@@ -58,7 +58,7 @@ public class PauseMenu : MonoBehaviour
                     ManageSelector(false);
                 }
 
-                if (player.Value.GetInput.GetResumeButtonDown)
+                if (player.Value.GetInput.IsSelectButtonPressed)
                 {
                     OnClickMenuButton();
                 }

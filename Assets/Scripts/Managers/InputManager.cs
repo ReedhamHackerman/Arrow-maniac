@@ -17,7 +17,7 @@ public class InputManager
     public bool GetPauseButtonDown => player?.GetButtonUp("Pause") ?? false;
     public bool GetGoDownButtonDown => player?.GetButtonDown("Go Down") ?? false;
     public bool GetGoUpButtonDown => player?.GetButtonDown("Go Up") ?? false;
-    public bool GetResumeButtonDown => player?.GetButtonDown("ResumeGame") ?? false;
+    public bool IsSelectButtonPressed => player?.GetButtonDown("SelectInPause") ?? false;
 
     public InputManager(Player player)
     {
