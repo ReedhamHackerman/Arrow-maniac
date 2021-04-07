@@ -19,6 +19,7 @@ public class GameManager
     private AudioSource BackgroundMusic;
     public Camera MainCamera => Camera.main;
 
+
     private bool isPaused;
     public bool IsPaused
     {
@@ -26,7 +27,6 @@ public class GameManager
         
         set { isPaused = value; }
     }
-
     public void Initialize()
     {
         MapManager.Instance.Initialize();
@@ -56,4 +56,5 @@ public class GameManager
         
        
     }
+    
 }
