@@ -69,6 +69,7 @@ public class PickCollectible : MonoBehaviour
                 if (isArrow)
                 {
                     PlayerEquipArrow(this.playerUnit, this.arrowType, maxArrowEquipCount);
+                    Destroy(gameObject);
                 }
                 else
                 {
@@ -76,11 +77,12 @@ public class PickCollectible : MonoBehaviour
                     {
                         PlayerEquipAbility(this.playerUnit, this.abilityType);
                         playerUnit.AbilityCount++;
+                        Destroy(gameObject);
                     }
 
                 }
 
-                Destroy(gameObject);
+               
 
             }
 
