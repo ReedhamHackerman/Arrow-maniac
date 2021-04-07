@@ -1,5 +1,4 @@
-﻿
-public class UIManager
+﻿public class UIManager
 {
     #region Singleton
     private UIManager() { }
@@ -16,18 +15,22 @@ public class UIManager
         }
     }
     #endregion
+
     public void Initialize()
     {
 
     }
+
     public void Start()
     {
 
     }
+
     public void Refresh()
     {
 
     }
+
     public void FixedRefresh()
     {
 
