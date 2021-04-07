@@ -205,7 +205,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     {
         if (inputManager.HorizontalInput == 0 && !isWallSliding)
         {
-            SetBoolForAnimation(_animator, true, false, false, false);
+            SetBoolForAnimation(_animator, true, false, false, false, false);
         }
 
         if (!isAiming)
@@ -217,7 +217,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
                 {
                     PlayParticle(walkParticle);
 
-                    SetBoolForAnimation(_animator, false, true, false, false);
+                    SetBoolForAnimation(_animator, false, true, false, false, false);
                 }
             }
 
@@ -268,7 +268,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
         if(!Grounded)
         {
-            SetBoolForAnimation(_animator, false, false, true, false);
+            SetBoolForAnimation(_animator, false, false, true, false, false);
         }
     }
     void PlayJumpSound()
@@ -322,7 +322,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             isMoving = false;
             _rb.velocity = new Vector2(_rb.velocity.x, -wallSlideSpeed);
 
-            SetBoolForAnimation(_animator, false, false, false, true);
+            SetBoolForAnimation(_animator, false, false, false, true, false);
         }
         else
         {
@@ -364,6 +364,8 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             {
                 handTransform.localEulerAngles = new Vector3(0f, 0f, angleAim);
             }
+
+            SetBoolForAnimation(_animator, false, false, false, false, true);
         }
         else
             handTransform.localEulerAngles = Vector2.zero;
@@ -562,11 +564,12 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         particleSystem.Clear();
     }
 
-    private void SetBoolForAnimation(Animator myAnimator, bool isIdle, bool isWalking, bool isJumping, bool isSliding)
+    private void SetBoolForAnimation(Animator myAnimator, bool isIdle, bool isWalking, bool isJumping, bool isSliding, bool isAim)
     {
         myAnimator.SetBool("isIdle", isIdle);
         myAnimator.SetBool("isWalking", isWalking);
         myAnimator.SetBool("isJumping", isJumping);
         myAnimator.SetBool("isSliding", isSliding);
+        myAnimator.SetBool("isAim", isAim);
     }
 }

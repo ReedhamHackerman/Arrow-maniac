@@ -14,7 +14,6 @@ public class PickCollectible : MonoBehaviour
     [SerializeField] private float aboveValue;
     [SerializeField] private LayerMask playerLayerMask;
 
-    private CollectibleType collectibleType;
     private ArrowType arrowType;
     private AbilitiesType abilityType;
 
@@ -23,7 +22,6 @@ public class PickCollectible : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     private bool isArrow;
-    private bool isEquipped;
     
     public void InitializeArrow(ArrowType arrowType, PlayerUnit playerUnit, Sprite collectibleSprite)
     {
