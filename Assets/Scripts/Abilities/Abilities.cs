@@ -10,7 +10,6 @@ public enum AbilitiesType
 public abstract class Abilities : MonoBehaviour
 {
     public AbilitiesType abilitiesType;
-    
     [SerializeField] protected float abilityTime;
     public InputManager inputManager;
     void Start()

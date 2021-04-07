@@ -6,18 +6,18 @@ public class Invisible : Abilities, IFreezable
 {
     public List<SpriteRenderer> ChildSprites { get; set; } = new List<SpriteRenderer>();
     private float fade = 1f;
-    private bool canPerfomeFade;
+    private bool canPerfomeFade = true;
     private bool canUseAbility = true;
-    [SerializeField] private GameObject invisibleAbilityUI;
+    
     [SerializeField] private AudioClip invisiblityAudioClip;
+
+    PlayerUnit player;
 
     protected override void Initialize()
     {
-        invisibleAbilityUI.SetActive(true);
         abilityTime = 2f;
         ChildSprites.AddRange(GetComponentsInChildren<SpriteRenderer>());
-        canPerfomeFade = true;
-
+        player = gameObject.GetComponent<PlayerUnit>();
     }
 
     protected override void Refresh()
@@ -28,7 +28,10 @@ public class Invisible : Abilities, IFreezable
            
             StartCoroutine(InvisibleAbility());
             canUseAbility = false;
-            invisibleAbilityUI.SetActive(false);
+            player.InvisibleAbilityUI.SetActive(false);
+            player.IsPlayerInvisible = true;
+            player.StopShoot = true;
+          
         }
     }
 
@@ -44,8 +47,15 @@ public class Invisible : Abilities, IFreezable
         
             yield return new WaitForSeconds(abilityTime);   
        
-            while(fade <= 1)
+            while(fade < 1)
             {
+            if (fade > 0.98f)
+            {
+                fade = 1f;
+                FadeAnimation();
+                ResetInvisibleAbility();
+            }
+
                 fade += (canPerfomeFade)? Time.deltaTime : 0;
                 FadeAnimation();
                 yield return null;
@@ -60,6 +70,15 @@ public class Invisible : Abilities, IFreezable
                 spriteRenderer.material.SetFloat("_Fade", fade);
         }
 
+    }
+
+    private void ResetInvisibleAbility()
+    {
+        player.StopShoot = false;
+        player.AbilityCount = 0;
+        player.IsPlayerInvisible = false;
+        canUseAbility = true;
+        player.SetInvisibleScriptOff();
     }
 
     public void MakeGrabbedArrowInvisible(GameObject gameObjToInvisible)
