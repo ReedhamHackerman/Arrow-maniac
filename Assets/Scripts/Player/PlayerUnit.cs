@@ -226,10 +226,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             if (isDashing)
             {
                 _rb.velocity = new Vector2(inputManager.HorizontalInput * dashSpeed, _rb.velocity.y);
-                if (inputManager.HorizontalInput != 0 && isGrounded())
-                {
-                    PlayParticle(walkParticle);
-                }
             }
         }
     }
@@ -296,16 +292,32 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     {
         isDashing = true;
         isMoving = false;
-        
-        TimeManager.Instance.AddDelegate(() => StopDash(), maxDashTime, 1);
+        if (TimeManager.Instance.IsTimeStopped)
+        {
+            TimeManager.Instance.AddDelegateRelatedToTime(() => StopDash(), maxDashTime, 1, true);
+        }
+        else
+        {
+            TimeManager.Instance.AddDelegate(() => StopDash(), maxDashTime, 1);
+        }  
     }
 
     private void StopDash()
     {
+
         isDashing = false;
         isMoving = true;
         canUseDash = false;
-        TimeManager.Instance.AddDelegate(() => canUseDash = true, dashCooldown, 1);
+
+        if (TimeManager.Instance.IsTimeStopped)
+        {
+            TimeManager.Instance.AddDelegateRelatedToTime(() => canUseDash = true, dashCooldown, 1, true);
+        }
+        else
+        {
+            TimeManager.Instance.AddDelegate(() => canUseDash = true, dashCooldown, 1);
+        }
+        
     }
 
     private void WallSlide()
@@ -466,8 +478,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             arrowStack.Push(toEquip);
             AddNewArrowTOHUD(toEquip);
         }
-
-
     }
     
     void PlayArrowEquipSound()
@@ -491,9 +501,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
                 case AbilitiesType.TIME_STOP:
                     timeStopScript.enabled = true;
                     TimeStopAbilityUI.SetActive (true);
-
-
-                   // this.gameObject.GetComponent("TimeStop");
                     break;
 
                 default:
