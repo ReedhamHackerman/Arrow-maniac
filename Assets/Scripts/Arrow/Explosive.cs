@@ -3,6 +3,7 @@
 public class Explosive : Arrow
 {
 
+    private GameObject explosionIndication;
     [SerializeField] private AudioClip timerClock;
     [SerializeField] private AudioClip directHitBombExplosion;
     //Specify the time That Arrow Should Stuck in the Object
@@ -27,12 +28,14 @@ public class Explosive : Arrow
         HasHit = true;
         RB2D.velocity = Vector2.zero;
         RB2D.isKinematic = true;
+        explosionIndication = Instantiate(ArrowManager.Instance.ExplosionRadiusIndication, transform.position, Quaternion.identity);
         TimeManager.Instance.AddDelegate(() => Explode(), explodeAfterTimer, 1);
     }
 
     private void Explode()
     {
         ExplosionParticleEffect();
+        Destroy(explosionIndication);
         AudioSource.PlayClipAtPoint(directHitBombExplosion, GameManager.Instance.MainCamera.transform.position, 0.85f);
         Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(transform.position, explosionRadius, LayerMask.GetMask("Player"));
         for (int i = 0; i < collider2Ds.Length; i++)

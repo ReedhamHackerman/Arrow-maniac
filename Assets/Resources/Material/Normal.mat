@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RimZim
+  m_Name: Normal
   m_Shader: {fileID: -6465566751694194690, guid: 91cac7ab093b7c44d9b6ef7019cb7a85,
     type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
@@ -25,7 +25,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _GradientTexture:
-        m_Texture: {fileID: 2800000, guid: aff60de2a697c6c4dbeb4d9599bc6f8b, type: 3}
+        m_Texture: {fileID: 2800000, guid: b821a99af9786db4699de6272685873a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:

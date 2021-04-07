@@ -147,12 +147,11 @@ MonoBehaviour:
   arrowType: 1
   shootForce: 30
   arrowFireSound: {fileID: 8300000, guid: 4688ac0be2d15c740a3dc99d12a6b71b, type: 3}
-  arrowStuckSound: {fileID: 8300000, guid: e8a7f1243c61c5a4db071f0e9be9a821, type: 3}
   timerClock: {fileID: 8300000, guid: 523c887fa05ea064bb4a989db091cb3b, type: 3}
   directHitBombExplosion: {fileID: 8300000, guid: b0bb2aa8a6b2db14faafe95a7c850a87,
     type: 3}
   explodeAfterTimer: 4
-  explosionRadius: 5
+  explosionRadius: 3
 --- !u!82 &3055793966739433628
 AudioSource:
   m_ObjectHideFlags: 0
