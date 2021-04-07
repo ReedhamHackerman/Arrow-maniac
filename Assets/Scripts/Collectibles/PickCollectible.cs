@@ -63,18 +63,31 @@ public class PickCollectible : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if ((playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask && !TimeManager.Instance.IsTimeStopped)
+        if(!playerUnit.IsPlayerInvisible)
         {
-            if (isArrow)
+
+            if ((playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask && !TimeManager.Instance.IsTimeStopped)
             {
-                PlayerEquipArrow(this.playerUnit, this.arrowType, maxArrowEquipCount);
-            }
-            else
-            {
-                PlayerEquipAbility(this.playerUnit, this.abilityType);
+                if (isArrow)
+                {
+                    PlayerEquipArrow(this.playerUnit, this.arrowType, maxArrowEquipCount);
+                }
+                else
+                {
+                    if ( playerUnit.AbilityCount == 0)
+                    {
+                        PlayerEquipAbility(this.playerUnit, this.abilityType);
+                        playerUnit.AbilityCount++;
+                    }
+
+                }
+
+                Destroy(gameObject);
+
             }
 
-            Destroy(gameObject);
+
+        
         }   
     }
 }

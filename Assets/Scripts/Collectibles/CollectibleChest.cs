@@ -43,14 +43,20 @@ public class CollectibleChest : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isOpened && (playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask && !TimeManager.Instance.IsTimeStopped)
+        if (!isOpened  && (playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask && !TimeManager.Instance.IsTimeStopped)
         {
+
             playerUnit = collision.gameObject.GetComponent<PlayerUnit>();
 
-            mySpriteRenderer.sprite = openedChestSprite;
-            isOpened = true;
+            if (!playerUnit.IsPlayerInvisible)
+            {
+                mySpriteRenderer.sprite = openedChestSprite;
+                isOpened = true;
 
-            EquipRandomCollectible(playerUnit);
+                EquipRandomCollectible(playerUnit);
+            }
+
+           
         }
     }
 
