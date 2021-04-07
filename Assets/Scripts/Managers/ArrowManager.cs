@@ -17,12 +17,14 @@ public class ArrowManager
         }
     }
     #endregion
-
     private ArrowFactory arrowFactory;
+    private GameObject explosionRadiusIndicationPrefab;
+    public GameObject ExplosionRadiusIndication => explosionRadiusIndicationPrefab;
     private ParticleSystem explosioPartical;
     public ParticleSystem ExplosionPartical=>explosioPartical;
     public void Initialize()
     {
+        explosionRadiusIndicationPrefab = Resources.Load<GameObject>("Prefabs/ExplosionRadius/ExplosionRadius");
         explosioPartical = Resources.Load<ParticleSystem>("Prefabs/Particles/ExplosionParticle");
         arrowFactory = new ArrowFactory();
     }
