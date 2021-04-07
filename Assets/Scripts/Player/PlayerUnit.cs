@@ -81,8 +81,10 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private LayerMask groundLayerMask;
     private LayerMask arrowLayerMask;
 
-    private Player player;
     private InputManager inputManager;
+    public InputManager GetInput => inputManager;
+
+    private Player player;
     private Invisible invisibleScript;
     private TimeStop timeStopScript;
 
@@ -162,7 +164,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     public void UpdateUnit()
     {
-        if (IsMovementStop) return;
+        if (IsMovementStop || GameManager.Instance.IsPaused) return;
 
         Grounded = isGrounded();
         LeftHit = isLeftHit();
