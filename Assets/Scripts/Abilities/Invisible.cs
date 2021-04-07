@@ -10,28 +10,18 @@ public class Invisible : Abilities, IFreezable
     private bool canUseAbility = true;
     
     [SerializeField] private AudioClip invisiblityAudioClip;
-   // private bool doReInitialize = false;
 
     PlayerUnit player;
-    
 
     protected override void Initialize()
     {
-     
         abilityTime = 2f;
         ChildSprites.AddRange(GetComponentsInChildren<SpriteRenderer>());
         player = gameObject.GetComponent<PlayerUnit>();
-
-       
     }
-
-
-    
 
     protected override void Refresh()
     {
-
-
         if (inputManager.UseAbility && canUseAbility)    
         { 
             AudioSource.PlayClipAtPoint(invisiblityAudioClip, Camera.main.transform.position, 1f);
@@ -72,8 +62,6 @@ public class Invisible : Abilities, IFreezable
             }
     }
 
-
-    
     private void FadeAnimation()
     {
         foreach (SpriteRenderer spriteRenderer in ChildSprites)

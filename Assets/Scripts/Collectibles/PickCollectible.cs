@@ -61,10 +61,7 @@ public class PickCollectible : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(!playerUnit.IsPlayerInvisible)
-        {
-
-            if ((playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask && !TimeManager.Instance.IsTimeStopped)
+            if ((playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask && !playerUnit.IsPlayerInvisible && !TimeManager.Instance.IsTimeStopped)
             {
                 if (isArrow)
                 {
@@ -81,13 +78,6 @@ public class PickCollectible : MonoBehaviour
                     }
 
                 }
-
-               
-
-            }
-
-
-        
-        }   
+            } 
     }
 }

@@ -45,18 +45,13 @@ public class CollectibleChest : MonoBehaviour
     {
         if (!isOpened  && (playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask && !TimeManager.Instance.IsTimeStopped)
         {
-
             playerUnit = collision.gameObject.GetComponent<PlayerUnit>();
-
             if (!playerUnit.IsPlayerInvisible)
             {
                 mySpriteRenderer.sprite = openedChestSprite;
                 isOpened = true;
-
                 EquipRandomCollectible(playerUnit);
             }
-
-           
         }
     }
 
