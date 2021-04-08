@@ -61,6 +61,11 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     [SerializeField] private AudioClip collectAbilitySound;
     [SerializeField] private AudioClip playerDieSound;
 
+    [Header("Ability UI")]
+    [SerializeField] public GameObject TimeStopAbilityUI;
+    [SerializeField] public GameObject InvisibleAbilityUI;
+
+
     private Rigidbody2D _rb;
     private Animator _animator;
     private SpriteRenderer _myCharacterSprite;
@@ -73,8 +78,10 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private bool isAiming;
     private bool canUseDash;
     private bool canJump;
+    
     public bool IsMovementStop { get; set; } = false;
-    private bool stopShoot = false;
+    public bool IsPlayerInvisible { get; set; } = false;
+    public bool StopShoot { get; set; } = false;
 
     private Vector2 storedPlayerVelocity;
 
@@ -87,6 +94,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private Player player;
     private Invisible invisibleScript;
     private TimeStop timeStopScript;
+    
 
     private Stack<ArrowType> arrowStack;
 
@@ -97,6 +105,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     public bool Grounded { get; set; } = true;
     public bool LeftHit { get; set; } = true;
     public bool RightHit { get; set; } = true;
+    public int AbilityCount { get; set; } = 0;
     public void Initialize(int playerId)
     {
         LoadAlltheArrowHUD();
@@ -217,10 +226,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             if (isDashing)
             {
                 _rb.velocity = new Vector2(inputManager.HorizontalInput * dashSpeed, _rb.velocity.y);
-                if (inputManager.HorizontalInput != 0 && isGrounded())
-                {
-                    PlayParticle(walkParticle);
-                }
             }
         }
     }
@@ -287,16 +292,32 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     {
         isDashing = true;
         isMoving = false;
-        
-        TimeManager.Instance.AddDelegate(() => StopDash(), maxDashTime, 1);
+        if (TimeManager.Instance.IsTimeStopped)
+        {
+            TimeManager.Instance.AddDelegateRelatedToTime(() => StopDash(), maxDashTime, 1, true);
+        }
+        else
+        {
+            TimeManager.Instance.AddDelegate(() => StopDash(), maxDashTime, 1);
+        }  
     }
 
     private void StopDash()
     {
+
         isDashing = false;
         isMoving = true;
         canUseDash = false;
-        TimeManager.Instance.AddDelegate(() => canUseDash = true, dashCooldown, 1);
+
+        if (TimeManager.Instance.IsTimeStopped)
+        {
+            TimeManager.Instance.AddDelegateRelatedToTime(() => canUseDash = true, dashCooldown, 1, true);
+        }
+        else
+        {
+            TimeManager.Instance.AddDelegate(() => canUseDash = true, dashCooldown, 1);
+        }
+        
     }
 
     private void WallSlide()
@@ -328,7 +349,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     private void Aim()
     {
-        if (stopShoot) return;
+        if (StopShoot) return;
         if (inputManager.GetAimButton && !isWallSliding)
         {
             isAiming = true;
@@ -457,8 +478,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             arrowStack.Push(toEquip);
             AddNewArrowTOHUD(toEquip);
         }
-
-
     }
     
     void PlayArrowEquipSound()
@@ -469,22 +488,27 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     }
    public void EquipAbility(AbilitiesType toEquip)
    {
-        PlayAbilityEquipSound();
-        switch(toEquip)
-        {
-            case AbilitiesType.INVISIBLE:
-                invisibleScript.enabled = true;
-                break;
+        
+            PlayAbilityEquipSound();
+            switch (toEquip)
+            {
+                case AbilitiesType.INVISIBLE:                  
+                    invisibleScript.enabled = true;
+                InvisibleAbilityUI.SetActive(true);
 
-            case AbilitiesType.TIME_STOP:
-                timeStopScript.enabled = true;
-                break;
+                    break;
 
-            default:
-                Debug.LogError("Something went wrong while equiping Ability!");
-                break;
+                case AbilitiesType.TIME_STOP:
+                    timeStopScript.enabled = true;
+                    TimeStopAbilityUI.SetActive (true);
+                    break;
 
-        }   
+                default:
+                    Debug.LogError("Something went wrong while equiping Ability!");
+                    break;
+
+            }
+         
    }
     void PlayAbilityEquipSound()
     {
@@ -494,7 +518,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     public void Freeze()
     {
-        stopShoot = true;
+        StopShoot = true;
         if (this.playerId != PlayerManager.Instance.playerIdUsedAbility)
         {
             storedPlayerVelocity = _rb.velocity;
@@ -505,7 +529,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
     public void UnFreeze()
     {
-        stopShoot = false;
+        StopShoot = false;
         if (playerId != PlayerManager.Instance.playerIdUsedAbility)
         {
             _rb.bodyType = RigidbodyType2D.Dynamic;
@@ -513,6 +537,23 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             IsMovementStop = false;
 
         }
+    }
+
+    private void CanPickUpAbilityCheck()
+    {
+
+
+    }
+
+
+    public void SetInvisibleScriptOff()
+    {
+        invisibleScript.enabled = false;
+    }
+
+    public void SetTimeStopScriptOff()
+    {
+        timeStopScript.enabled = false;
     }
 
     public void Die()

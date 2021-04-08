@@ -1238,6 +1238,8 @@ MonoBehaviour:
   collectArrowSound: {fileID: 8300000, guid: 13b60e8279e6c7243be27b29be61eaad, type: 3}
   collectAbilitySound: {fileID: 8300000, guid: da396ebbccfac39429409bb95a4f0c67, type: 3}
   playerDieSound: {fileID: 8300000, guid: 4b5fe9ccacc4b1a4bb25844a36ab0eeb, type: 3}
+  TimeStopAbilityUI: {fileID: 1266508070669028000}
+  InvisibleAbilityUI: {fileID: 4696012328588412364}
 --- !u!114 &-7357970344771826038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1252,7 +1254,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilitiesType: 0
   abilityTime: 0
-  invisibleAbilityUI: {fileID: 4696012328588412364}
   invisiblityAudioClip: {fileID: 8300000, guid: cbf7a52409ebd21428065ee2628c8a1b,
     type: 3}
 --- !u!114 &4937460923129494612
@@ -1270,7 +1271,6 @@ MonoBehaviour:
   abilitiesType: 0
   abilityTime: 0
   isPlayerStopped: 0
-  TimeStopAbilityUI: {fileID: 1266508070669028000}
   timeStopAudioClip: {fileID: 8300000, guid: 0219d0141a4357741a90c2ceccb63e79, type: 3}
 --- !u!82 &2025378956395729317
 AudioSource:
