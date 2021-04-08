@@ -59,6 +59,7 @@ public class Arrow : MonoBehaviour, IFreezable
         }
     }
 
+
     public virtual void Oninitialize()
     {
         audioSourceArrow = GetComponent<AudioSource>();
@@ -75,6 +76,15 @@ public class Arrow : MonoBehaviour, IFreezable
         {
             ArrowRotation();
         }
+
+    }
+
+    public void IgnoreSelfCollision(Collider2D playerCollider)
+    {
+        Physics2D.IgnoreCollision(playerCollider, selfCollider2D, true);
+
+        TimeManager.Instance.AddDelegate(() => Physics2D.IgnoreCollision(playerCollider, selfCollider2D, false), 0.1f, 1);
+
 
     }
 

@@ -25,6 +25,12 @@ public class CharacterSelection : MonoBehaviour
 
     private Texture[] allCharacterTextures;
 
+
+    [Header("SoundEffects")]
+    private AudioSource pauseMenuAudioSource;
+    [SerializeField] private AudioClip selectionSound;
+    [SerializeField] private AudioClip playerChangeSound;
+
     private int p1_CurrentSelectedId;
     private int p2_CurrentSelectedId;
 
@@ -37,6 +43,7 @@ public class CharacterSelection : MonoBehaviour
     {
         InitializeAllConnectedPlayers();
         InitializeAllCharacterImages();
+        pauseMenuAudioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -96,7 +103,7 @@ public class CharacterSelection : MonoBehaviour
     private void ChangeNextById(int playerId)
     {
         if (playersIsCofirmed[playerId]) return;
-
+        AudioSource.PlayClipAtPoint(playerChangeSound, GameManager.Instance.MainCamera.transform.position);
         switch (playerId)
         {
             case 0:
@@ -115,7 +122,7 @@ public class CharacterSelection : MonoBehaviour
     private void ChangePrevioustById(int playerId)
     {
         if (playersIsCofirmed[playerId]) return;
-
+        AudioSource.PlayClipAtPoint(playerChangeSound, GameManager.Instance.MainCamera.transform.position);
         switch (playerId)
         {
             case 0:
@@ -160,6 +167,7 @@ public class CharacterSelection : MonoBehaviour
 
     private void ConfirmSelection(int playerId)
     {
+       
         if (!playersIsCofirmed[playerId])
         {
             switch (playerId)
@@ -177,7 +185,7 @@ public class CharacterSelection : MonoBehaviour
                 default:
                     break;
             }
-
+            AudioSource.PlayClipAtPoint(selectionSound, GameManager.Instance.MainCamera.transform.position);
             playersIsCofirmed[playerId] = true;
             confirmedCount++;
         }
