@@ -69,6 +69,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private Rigidbody2D _rb;
     private Animator _animator;
     private SpriteRenderer _myCharacterSprite;
+    private Collider2D thisPlayerCollider;
 
     private float angleAim;
    
@@ -127,6 +128,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     private void InitializeReferences()
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
+        thisPlayerCollider = gameObject.GetComponent<Collider2D>();
         _animator = GetComponent<Animator>();
         groundLayerMask = LayerMask.GetMask("Ground");
         arrowLayerMask = LayerMask.GetMask("Arrow");
@@ -415,6 +417,9 @@ public class PlayerUnit : MonoBehaviour, IFreezable
             Arrow newArrow = ArrowManager.Instance.Fire(arrowType, fireFromPos.position, fireFromPos.rotation);
             newArrow.Oninitialize();
             newArrow.AddForceInDirection(fireFromPos.right);
+
+            newArrow.IgnoreSelfCollision(thisPlayerCollider);
+
            
         }
         else Debug.Log("no arrows!");
