@@ -13,7 +13,11 @@ public class RoundSystemUI : MonoBehaviour
     [SerializeField] private GameObject player2Parent;
     [SerializeField] private GameObject roundUI;
     [SerializeField] private GameObject WinUI;
+   /* [SerializeField] private GameObject player1Image;
+    [SerializeField] private GameObject player2Image;*/
+
     [SerializeField] private RawImage WonPlayerImage;
+    [SerializeField] private Text winPlayerText;
 
     private GameObject[] player1trophies;
     private GameObject[] player2trophies;    
@@ -66,19 +70,33 @@ public class RoundSystemUI : MonoBehaviour
         for (int i = 0; i < connectedPlayerCount; i++)
         {
             int charId = CharacterSelection.playerWithSelectedCharacter[i];
-            GameObject playerchar =  GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/HUD/CharImage"),new Vector3 (player1Parent.transform.position.x,player1Parent.transform.position.y - charImageSpawnDistance,player1Parent.transform.position.z) ,Quaternion.identity,roundUI.transform);
-            RawImage playerImage = playerchar.GetComponent<RawImage>();
-            playerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + charId);
-            charImageSpawnDistance += 245;
+            if (i==0)
+            {
+               // new Vector3(player1Parent.transform.position.x, player1Parent.transform.position.y - charImageSpawnDistance, player1Parent.transform.position.z)
+                GameObject playerchar = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/HUD/CharImage"),player1Parent.transform.position , Quaternion.identity, roundUI.transform);
+                RawImage playerImage = playerchar.GetComponent<RawImage>();
+                playerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + charId);
+            }
+            else
+            {
+                GameObject playerchar = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/HUD/CharImage"), player2Parent.transform.position, Quaternion.identity, roundUI.transform);
+                RawImage playerImage = playerchar.GetComponent<RawImage>();
+                playerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + charId);
+            }
         }
+    }
+
+    private void LoadChar()
+    {
+
     }
 
     public  void LoadTrophiesinArray()
     {
         for (int i = 0; i < WinScore; i++)
         {
-            player1trophies[i] = Instantiate(scoreTrophy,new Vector3(player1Parent.transform.position.x + trophySpawnDistance, player1Parent.transform.position.y,player1Parent.transform.position.z), Quaternion.identity, player1Parent.transform);
-            player2trophies[i] = Instantiate(scoreTrophy,new Vector3(player2Parent.transform.position.x + trophySpawnDistance, player2Parent.transform.position.y, player2Parent.transform.position.z), Quaternion.identity, player2Parent.transform);
+            player1trophies[i] = Instantiate(scoreTrophy,new Vector3(player1Parent.transform.position.x + trophySpawnDistance, player1Parent.transform.position.y,player1Parent.transform.position.z), Quaternion.identity, roundUI.transform);
+            player2trophies[i] = Instantiate(scoreTrophy,new Vector3(player2Parent.transform.position.x + trophySpawnDistance, player2Parent.transform.position.y, player2Parent.transform.position.z), Quaternion.identity, roundUI.transform);
 
             trophySpawnDistance += 120;
         }
@@ -114,6 +132,8 @@ public class RoundSystemUI : MonoBehaviour
         {
             if (dict.Value == WinScore)
             {
+                int playerIDName = dict.Key + 1;  // adding 1 because player id start with 0
+                winPlayerText.text = "P"+ playerIDName +" WON!"; 
                 int charId = CharacterSelection.playerWithSelectedCharacter[dict.Key];
                 WonPlayerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + charId);
                 WinUI.SetActive(true);
