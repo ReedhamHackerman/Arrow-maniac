@@ -33,15 +33,13 @@ public class CharacterSelection : MonoBehaviour
     private int connectedPlayers;
     private int confirmedCount;
 
-    void Start()
+    private UI_PlayerManager UI_PlayerManager;
+
+    public void InitializeCharacterSelection(UI_PlayerManager UI_PlayerManager)
     {
+        this.UI_PlayerManager = UI_PlayerManager;
         InitializeAllConnectedPlayers();
         InitializeAllCharacterImages();
-    }
-
-    void Update()
-    {
-        RefreshInput();
     }
 
     private void InitializeAllConnectedPlayers()
@@ -62,9 +60,9 @@ public class CharacterSelection : MonoBehaviour
         }
     }
 
-    private void RefreshInput()
+    public void RefreshInput()
     {
-        foreach (KeyValuePair<int, UIInputManager> input in playerInputs)
+        foreach (KeyValuePair<int, UIInputManager> input in UI_PlayerManager.GetAllPlayersInput)
         {
             if (input.Value.GetPreviousButtonDown)
             {

@@ -2,15 +2,23 @@
 
 public class UI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
+    UI_PlayerManager UI_PlayerManager;
+    CharacterSelection characterSelection;
 
+    private void Awake()
+    {
+        UI_PlayerManager = GetComponent<UI_PlayerManager>();
+        characterSelection = GameObject.FindObjectOfType<CharacterSelection>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
+        UI_PlayerManager.InitializeAllConnectedPlayers();
+        characterSelection.InitializeCharacterSelection(UI_PlayerManager);
+    }
 
+    private void Update()
+    {
+        characterSelection.RefreshInput();
     }
 }

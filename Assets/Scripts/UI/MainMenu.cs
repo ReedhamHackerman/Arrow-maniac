@@ -1,16 +1,45 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject indicationParentObj;
+    public GameObject btnParentObj;
+
+    public RawImage[] arrowIndications;
+    public Image[] btnImages;
+
+    private void Start()
     {
+        InitializeAndEnableImagesOnStart();
+    }
+
+    private void InitializeAndEnableImagesOnStart()
+    {
+        arrowIndications = new RawImage[indicationParentObj.transform.childCount];
+        for (int i = 0; i < arrowIndications.Length; i++)
+        {
+            arrowIndications[i] = indicationParentObj.transform.GetChild(i).GetComponent<RawImage>();
+        }
+
+        btnImages = new Image[btnParentObj.transform.childCount];
+        for (int i = 0; i < btnImages.Length; i++)
+        {
+            btnImages[i] = btnParentObj.transform.GetChild(i).GetComponent<Image>();
+        }
+
 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void ManageSelector(bool isDown)
     {
+        if(isDown)
+        {
 
+        }
+        else
+        {
+
+        }
     }
 }
