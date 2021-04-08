@@ -1286,6 +1286,7 @@ GameObject:
   - component: {fileID: 644051960}
   - component: {fileID: 644051959}
   - component: {fileID: 644051961}
+  - component: {fileID: 644051962}
   m_Layer: 5
   m_Name: CharactersParent
   m_TagString: Untagged
@@ -1368,8 +1369,10 @@ MonoBehaviour:
   loadingUI: {fileID: 1605523198}
   loadingFillbar: {fileID: 609120710}
   percentageText: {fileID: 1641138742}
---- !u!1 &827434425
-GameObject:
+  selectionSound: {fileID: 8300000, guid: 2d5249f2cd9c75a45808427d3861ce40, type: 3}
+  playerChangeSound: {fileID: 8300000, guid: 21dfbbd32826095418f84099a8b352b3, type: 3}
+--- !u!82 &644051962
+AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
