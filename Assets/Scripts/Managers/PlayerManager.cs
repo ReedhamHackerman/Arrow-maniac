@@ -93,7 +93,7 @@ public class PlayerManager
         //Need to implement this
         PlayerUnit unit = UnitDictionary[id];
         UnitDictionary.Remove(id);
-        ActivateUI();
+        TimeManager.Instance.AddDelegate(() => ActivateUI(), 0.1f, 1);
         unit.Die();
     }
 
@@ -111,12 +111,20 @@ public class PlayerManager
 
     public void ActivateUI()
     {
-        roundSystemUI.IncrementScore();
-        CheckForWin();
-        if (!roundSystemUI.IsGameOver)
+        if (UnitDictionary.Count == 1)
+        {
+            roundSystemUI.IncrementScore();
+            CheckForWin();
+            if (!roundSystemUI.IsGameOver)
+            {
+                ActivateRoundUI();
+            }
+        }
+        else
         {
             ActivateRoundUI();
         }
+        
     }
 
     public void ActivateRoundUI()
