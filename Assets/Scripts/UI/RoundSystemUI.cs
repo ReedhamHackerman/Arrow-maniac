@@ -9,39 +9,34 @@ using System.Linq;
 
 public class RoundSystemUI : MonoBehaviour
 {
+    public bool IsGameOver { get; set; } = false;
+    public int WinScore { get; private set; } = 5;
+
     [SerializeField] private GameObject player1Parent;
     [SerializeField] private GameObject player2Parent;
     [SerializeField] private GameObject roundUI;
     [SerializeField] private GameObject WinUI;
-   /* [SerializeField] private GameObject player1Image;
-    [SerializeField] private GameObject player2Image;*/
+    [SerializeField] private GameObject[] player1trophies = new GameObject[5];
+    [SerializeField] private GameObject[] player2trophies = new GameObject[5];
+    /* [SerializeField] private GameObject player1Image;
+     [SerializeField] private GameObject player2Image;*/
+
 
     [SerializeField] private RawImage WonPlayerImage;
     [SerializeField] private Text winPlayerText;
 
-    private GameObject[] player1trophies;
-    private GameObject[] player2trophies;    
+        
     private GameObject scoreTrophy; 
     private int trophySpawnDistance = 120;
-    private int charImageSpawnDistance = 0;
-
-
-    public bool IsGameOver { get; set; } = false;
-    public int WinScore { get; private set; } = 5;
-   
 
     private void Awake()
     {
-        player1trophies = new GameObject[WinScore];
-        player2trophies = new GameObject[WinScore];
-
         scoreTrophy = Resources.Load<GameObject>("Prefabs/HUD/Trophy");
         LoadCharImageInUI();
     }
 
     void Start()
     {
-        LoadTrophiesinArray();
         MakeAllTrophyDeactive();
         roundUI.SetActive(false);
         WinUI.SetActive(false);
@@ -72,7 +67,6 @@ public class RoundSystemUI : MonoBehaviour
             int charId = CharacterSelection.playerWithSelectedCharacter[i];
             if (i==0)
             {
-               // new Vector3(player1Parent.transform.position.x, player1Parent.transform.position.y - charImageSpawnDistance, player1Parent.transform.position.z)
                 GameObject playerchar = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/HUD/CharImage"),player1Parent.transform.position , Quaternion.identity, roundUI.transform);
                 RawImage playerImage = playerchar.GetComponent<RawImage>();
                 playerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + charId);
@@ -86,12 +80,7 @@ public class RoundSystemUI : MonoBehaviour
         }
     }
 
-    private void LoadChar()
-    {
-
-    }
-
-    public  void LoadTrophiesinArray()
+    /*public  void LoadTrophiesinArray()
     {
         for (int i = 0; i < WinScore; i++)
         {
@@ -100,7 +89,7 @@ public class RoundSystemUI : MonoBehaviour
 
             trophySpawnDistance += 120;
         }
-    }
+    }*/
 
     public void MakeAllTrophyDeactive()
     {
