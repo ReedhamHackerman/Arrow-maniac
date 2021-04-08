@@ -14,6 +14,7 @@ public class RoundSystemUI : MonoBehaviour
     [SerializeField] private GameObject roundUI;
     [SerializeField] private GameObject WinUI;
     [SerializeField] private RawImage WonPlayerImage;
+    [SerializeField] private Text winPlayerText;
 
     private GameObject[] player1trophies;
     private GameObject[] player2trophies;    
@@ -114,6 +115,8 @@ public class RoundSystemUI : MonoBehaviour
         {
             if (dict.Value == WinScore)
             {
+                int playerIDName = dict.Key + 1;  // adding 1 because player id start with 0
+                winPlayerText.text = "P"+ playerIDName +" WON!"; 
                 int charId = CharacterSelection.playerWithSelectedCharacter[dict.Key];
                 WonPlayerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + charId);
                 WinUI.SetActive(true);
