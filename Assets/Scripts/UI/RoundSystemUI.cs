@@ -1,11 +1,8 @@
 ﻿using Rewired;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static Rewired.Controller;
-using System.Linq;
 
 public class RoundSystemUI : MonoBehaviour
 {
@@ -15,24 +12,33 @@ public class RoundSystemUI : MonoBehaviour
     [SerializeField] private GameObject player1Parent;
     [SerializeField] private GameObject player2Parent;
     [SerializeField] private GameObject roundUI;
-    [SerializeField] private GameObject WinUI;
     [SerializeField] private GameObject[] player1trophies = new GameObject[5];
     [SerializeField] private GameObject[] player2trophies = new GameObject[5];
-    /* [SerializeField] private GameObject player1Image;
-     [SerializeField] private GameObject player2Image;*/
 
-
+    [Header("Win Screen")]
+    [SerializeField] private GameObject WinUI;
+    [SerializeField] private GameObject winBorderParentObj;
     [SerializeField] private RawImage WonPlayerImage;
     [SerializeField] private Text winPlayerText;
 
-        
+    private RawImage[] winBtnBorderArr;
+
+    private PauseMenu pauseMenu;
+
+    /* [SerializeField] private GameObject player1Image;
+     [SerializeField] private GameObject player2Image;*/
+
     private GameObject scoreTrophy; 
     private int trophySpawnDistance = 120;
+    private int currentSelectedOption;
 
     private void Awake()
     {
         scoreTrophy = Resources.Load<GameObject>("Prefabs/HUD/Trophy");
+        pauseMenu = GetComponent<PauseMenu>();
+
         LoadCharImageInUI();
+        LoadWinUIBtnBorders();
     }
 
     void Start()
@@ -42,10 +48,9 @@ public class RoundSystemUI : MonoBehaviour
         WinUI.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-       
+        RefreshInputForWinScreen();
     }
 
     public void StopTrophyUI()
@@ -77,6 +82,75 @@ public class RoundSystemUI : MonoBehaviour
                 RawImage playerImage = playerchar.GetComponent<RawImage>();
                 playerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + charId);
             }
+        }
+    }
+
+    private void LoadWinUIBtnBorders()
+    {
+        winBtnBorderArr = winBorderParentObj.GetComponentsInChildren<RawImage>();
+        winBtnBorderArr[0].enabled = true;
+    }
+
+    private void RefreshInputForWinScreen()
+    {
+        if (PlayerManager.Instance.UnitDictionary.Count > 0 && WinUI.activeSelf)
+        {
+            foreach (KeyValuePair<int, PlayerUnit> players in PlayerManager.Instance.UnitDictionary)
+            {
+                if (players.Value.GetInput.GetWinRightMoveDown)
+                {
+                    ManageButtonBorders(true);
+                }
+
+                if (players.Value.GetInput.GetWinLeftMoveDown)
+                {
+                    ManageButtonBorders(false);
+                }
+
+                if (players.Value.GetInput.GetWinOnOptionSelect)
+                {
+                    OnClickWinScreen();
+                }
+            }
+        }
+    }
+
+    private void ManageButtonBorders(bool isRight)
+    {
+        if(isRight)
+        {
+            winBtnBorderArr[currentSelectedOption].enabled = false;
+
+            currentSelectedOption++;
+            currentSelectedOption = currentSelectedOption >= winBtnBorderArr.Length ? 0 : currentSelectedOption;
+
+            winBtnBorderArr[currentSelectedOption].enabled = true;
+        }
+        else
+        {
+            winBtnBorderArr[currentSelectedOption].enabled = false;
+
+            currentSelectedOption--;
+            currentSelectedOption = currentSelectedOption < 0 ? (winBtnBorderArr.Length - 1) : currentSelectedOption;
+
+            winBtnBorderArr[currentSelectedOption].enabled = true;
+        }
+    }
+
+    private void OnClickWinScreen()
+    {
+        switch (currentSelectedOption)
+        {
+            case 0:
+                pauseMenu.LoadLevel("Menu");
+                break;
+
+            case 1:
+                PlayAgain();
+                break;
+
+            default:
+                break;
         }
     }
 

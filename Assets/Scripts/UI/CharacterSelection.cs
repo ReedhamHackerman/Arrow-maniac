@@ -34,68 +34,71 @@ public class CharacterSelection : MonoBehaviour
     private int p1_CurrentSelectedId;
     private int p2_CurrentSelectedId;
 
-    public static Dictionary<int, int> playerWithSelectedCharacter = new Dictionary<int, int>();
+    public static Dictionary<int, int> playerWithSelectedCharacter;
 
     private int connectedPlayers;
     private int confirmedCount;
 
-    void Start()
+    private GameObject mainMenuObj;
+
+    private UI_PlayerManager UI_PlayerManager;
+
+    public void InitializeCharacterSelection(GameObject mainMenuObj, UI_PlayerManager UI_PlayerManager)
     {
+        this.UI_PlayerManager = UI_PlayerManager;
+        this.mainMenuObj = mainMenuObj;
+
         InitializeAllConnectedPlayers();
         InitializeAllCharacterImages();
         pauseMenuAudioSource = GetComponent<AudioSource>();
     }
 
-    void Update()
-    {
-        RefreshInput();
-    }
-
     private void InitializeAllConnectedPlayers()
     {
-        connectedPlayers = ReInput.controllers.joystickCount;
+        playerWithSelectedCharacter = new Dictionary<int, int>();
+
+        connectedPlayers = UI_PlayerManager.GetConnectedPlayers;
 
         if (connectedPlayers > 0)
         {
             for (int i = 0; i < connectedPlayers; i++)
             {
-                Player p = ReInput.players.GetPlayer(i);
-                UIInputManager input = new UIInputManager(p);
-
-                playerInputs.Add(i, input);
                 playersIsCofirmed.Add(i, false);
                 playerWithSelectedCharacter.Add(i, 0);
             }
         }
     }
 
-    private void RefreshInput()
+    public void RefreshInput()
     {
-        foreach (KeyValuePair<int, UIInputManager> input in playerInputs)
+        if (gameObject.activeSelf)
         {
-            if (input.Value.GetPreviousButtonDown)
+            foreach (KeyValuePair<int, UIInputManager> input in UI_PlayerManager.GetAllPlayersInput)
             {
-                ChangePrevioustById(input.Key);
-            }
+                if (input.Value.GetPreviousButtonDown)
+                {
+                    ChangePrevioustById(input.Key);
+                }
 
-            if (input.Value.GetNextButtonDown)
-            {
-                ChangeNextById(input.Key);
-            }
+                if (input.Value.GetNextButtonDown)
+                {
+                    ChangeNextById(input.Key);
+                }
 
-            if(input.Value.GetConfirmButtonDown)
-            {
-                ConfirmSelection(input.Key);
-            }
+                if (input.Value.GetConfirmButtonDown)
+                {
+                    ConfirmSelection(input.Key);
+                }
 
-            if (input.Value.GetCancelButtonDown)
-            {
-                CancelSelection(input.Key);
-            }
+                if (input.Value.GetCancelButtonDown)
+                {
+                    CancelSelection(input.Key);
+                }
 
-            if (input.Value.GetStartButtonDown)
-            {
-                CheckForAllPlayersAndStart();
+                if (input.Value.GetStartButtonDown)
+                {
+                    CheckForAllPlayersAndStart();
+                }
             }
         }
     }
@@ -103,7 +106,7 @@ public class CharacterSelection : MonoBehaviour
     private void ChangeNextById(int playerId)
     {
         if (playersIsCofirmed[playerId]) return;
-        AudioSource.PlayClipAtPoint(playerChangeSound, GameManager.Instance.MainCamera.transform.position);
+        AudioSource.PlayClipAtPoint(playerChangeSound, GameManager.Instance.MainCamera.transform.position,0.322f);
         switch (playerId)
         {
             case 0:
@@ -122,7 +125,7 @@ public class CharacterSelection : MonoBehaviour
     private void ChangePrevioustById(int playerId)
     {
         if (playersIsCofirmed[playerId]) return;
-        AudioSource.PlayClipAtPoint(playerChangeSound, GameManager.Instance.MainCamera.transform.position);
+        AudioSource.PlayClipAtPoint(playerChangeSound, GameManager.Instance.MainCamera.transform.position, 0.322f);
         switch (playerId)
         {
             case 0:
@@ -193,7 +196,20 @@ public class CharacterSelection : MonoBehaviour
 
     private void CancelSelection(int playerId)
     {
-        if (playersIsCofirmed[playerId])
+        int counter = 0;
+
+        foreach (var item in playersIsCofirmed)
+        {
+            if (item.Value == false)
+                counter++;
+        }
+
+        if(counter == connectedPlayers)
+        {
+            mainMenuObj.SetActive(true);
+            gameObject.SetActive(false);
+        }
+        else if (playersIsCofirmed[playerId])
         {
             switch (playerId)
             {

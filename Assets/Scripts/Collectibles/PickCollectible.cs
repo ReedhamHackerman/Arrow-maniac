@@ -17,25 +17,21 @@ public class PickCollectible : MonoBehaviour
     private ArrowType arrowType;
     private AbilitiesType abilityType;
 
-    private PlayerUnit playerUnit;
-
     private SpriteRenderer spriteRenderer;
 
     private bool isArrow;
-    
-    public void InitializeArrow(ArrowType arrowType, PlayerUnit playerUnit, Sprite collectibleSprite)
+
+    public void InitializeArrow(ArrowType arrowType, Sprite collectibleSprite)
     {
         isArrow = true;
-        
-        this.playerUnit = playerUnit;
+
         this.arrowType = arrowType;
 
         SetSpriteAndTransform(collectibleSprite);
     }
 
-    public void InitializeAbility(PlayerUnit playerUnit, AbilitiesType abilityType, Sprite collectibleSprite)
+    public void InitializeAbility(AbilitiesType abilityType, Sprite collectibleSprite)
     {
-        this.playerUnit = playerUnit;
         this.abilityType = abilityType;
 
         SetSpriteAndTransform(collectibleSprite);
@@ -61,23 +57,27 @@ public class PickCollectible : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-            if ((playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask && !playerUnit.IsPlayerInvisible && !TimeManager.Instance.IsTimeStopped)
+        if ((playerLayerMask | 1 << collision.gameObject.layer) == playerLayerMask)
+        {
+            PlayerUnit playerUnit = collision.GetComponent<PlayerUnit>();
+
+            if (!playerUnit.IsPlayerInvisible && !TimeManager.Instance.IsTimeStopped)
             {
                 if (isArrow)
                 {
-                    PlayerEquipArrow(this.playerUnit, this.arrowType, maxArrowEquipCount);
+                    PlayerEquipArrow(playerUnit, this.arrowType, maxArrowEquipCount);
                     Destroy(gameObject);
                 }
                 else
                 {
-                    if ( playerUnit.AbilityCount == 0)
+                    if (playerUnit.AbilityCount == 0)
                     {
-                        PlayerEquipAbility(this.playerUnit, this.abilityType);
+                        PlayerEquipAbility(playerUnit, this.abilityType);
                         playerUnit.AbilityCount++;
                         Destroy(gameObject);
                     }
-
                 }
-            } 
+            }
+        }
     }
 }

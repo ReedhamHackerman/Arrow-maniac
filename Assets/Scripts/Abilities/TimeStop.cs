@@ -34,7 +34,7 @@ public class TimeStop : Abilities
 
     protected override void Refresh()
     {
-        if (inputManager.UseAbility && canUseTimeStop )
+        if (inputManager.UseAbility && canUseTimeStop && !TimeManager.Instance.IsTimeStopped )
         {
             AudioSource.PlayClipAtPoint(timeStopAudioClip, Camera.main.transform.position, 1.0f);
             PlayerManager.Instance.playerIdUsedAbility = thisPlayerUnit.PlayerId;

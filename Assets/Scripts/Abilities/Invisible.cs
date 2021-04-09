@@ -22,7 +22,7 @@ public class Invisible : Abilities, IFreezable
 
     protected override void Refresh()
     {
-        if (inputManager.UseAbility && canUseAbility)    
+        if (inputManager.UseAbility && canUseAbility && !TimeManager.Instance.IsTimeStopped)    
         { 
             AudioSource.PlayClipAtPoint(invisiblityAudioClip, Camera.main.transform.position, 1f);
            
