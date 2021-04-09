@@ -131,7 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 19530475}
   m_Layer: 5
-  m_Name: ArrowIndications
+  m_Name: BtnBorders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3051,6 +3051,33 @@ MonoBehaviour:
       _behaviorId: 0
       _userAssignable: 1
       _categoryId: 0
+    - _id: 21
+      _name: WinRightMove
+      _type: 1
+      _descriptiveName: WinRightMove
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 0
+    - _id: 22
+      _name: WinLeftMove
+      _type: 1
+      _descriptiveName: WinLeftMove
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 0
+    - _id: 23
+      _name: WinOnClick
+      _type: 1
+      _descriptiveName: Action0
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 0
     actionCategories:
     - _name: Default
       _descriptiveName: Default
@@ -3065,7 +3092,7 @@ MonoBehaviour:
     actionCategoryMap:
       list:
       - categoryId: 0
-        actionIds: 0000000001000000020000000300000004000000120000001300000014000000
+        actionIds: 0000000001000000020000000300000004000000120000001300000014000000150000001600000017000000
       - categoryId: 2
         actionIds: 05000000060000000700000008000000090000000b0000000e0000000f0000001000000011000000
     inputBehaviors:
@@ -3358,6 +3385,39 @@ MonoBehaviour:
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 21
+        _elementType: 0
+        _elementIdentifierId: 0
+        _axisRange: 1
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 22
+        _elementType: 0
+        _elementIdentifierId: 0
+        _axisRange: 2
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 23
+        _elementType: 1
+        _elementIdentifierId: 4
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     keyboardMaps:
     - id: 0
       categoryId: 0
@@ -3372,7 +3432,7 @@ MonoBehaviour:
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 3
-    actionIdCounter: 21
+    actionIdCounter: 24
     actionCategoryIdCounter: 4
     inputBehaviorIdCounter: 1
     mapCategoryIdCounter: 4
@@ -3439,7 +3499,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.104562506, y: 0}
   m_AnchorMax: {x: 0.3881875, y: 1}
-  m_AnchoredPosition: {x: 4.2998047, y: 0}
+  m_AnchoredPosition: {x: 4, y: 0}
   m_SizeDelta: {x: -8.770752, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1858866594
@@ -3946,7 +4006,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00048828125, y: 0.0021972656}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -0.00048828125, y: -0.0045166016}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2238893738555996793
@@ -4020,7 +4080,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00048828125, y: 0.0021972656}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -0.00048828125, y: -0.0045166016}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2238893738682042115
@@ -4168,7 +4228,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0021972656}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0.00024414062, y: -0.0045166016}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2238893738865701503

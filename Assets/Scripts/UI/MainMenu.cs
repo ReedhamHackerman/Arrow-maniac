@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject indicationParentObj;
-    public GameObject btnParentObj;
+    [SerializeField] private GameObject indicationParentObj;
+    [SerializeField] private GameObject btnParentObj;
 
-    public RawImage[] arrowIndications;
-    public Image[] btnImages;
+    [SerializeField] private RawImage[] arrowIndications;
+    [SerializeField] private Image[] btnImages;
 
     private UI_PlayerManager UI_PlayerManager;
 
@@ -26,11 +26,7 @@ public class MainMenu : MonoBehaviour
 
     private void InitializeAndEnableImagesOnStart()
     {
-        arrowIndications = new RawImage[indicationParentObj.transform.childCount];
-        for (int i = 0; i < arrowIndications.Length; i++)
-        {
-            arrowIndications[i] = indicationParentObj.transform.GetChild(i).GetComponent<RawImage>();
-        }
+        arrowIndications = indicationParentObj.GetComponentsInChildren<RawImage>();
 
         currentSelectedOption = 0;
         arrowIndications[currentSelectedOption].enabled = true;

@@ -187,11 +187,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         Dash();
         WallSlide();
         Aim();
-
-        
-
-        if (Input.GetKeyDown(KeyCode.G))
-            SceneManager.LoadScene("MainScene");
     }
     private void LateUpdate()
     {
@@ -422,7 +417,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
            
         }
-        else Debug.Log("no arrows!");
     }
 
     #region ON COLLISION CODE
@@ -543,13 +537,6 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
         }
     }
-
-    private void CanPickUpAbilityCheck()
-    {
-
-
-    }
-
 
     public void SetInvisibleScriptOff()
     {
