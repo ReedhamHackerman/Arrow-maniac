@@ -87,7 +87,7 @@ public class MainMenu : MonoBehaviour
                 gameObject.SetActive(false);
                 break;
 
-            case 2:
+            case 1:
 
             #if UNITY_EDITOR
                     UnityEditor.EditorApplication.isPlaying = false;

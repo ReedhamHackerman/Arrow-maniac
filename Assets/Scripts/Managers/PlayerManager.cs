@@ -22,7 +22,7 @@ public class PlayerManager
     }
     #endregion
 
-    public int playerIdUsedAbility;
+    public int PlayerIdUsedAbility { get; set; }
 
     public Dictionary<int, PlayerUnit> UnitDictionary { get; set; } = new Dictionary<int, PlayerUnit>();
     public Dictionary<int, int> ScoreDict { get; set; } = new Dictionary<int, int>();
@@ -31,6 +31,8 @@ public class PlayerManager
 
     private RoundSystemUI roundSystemUI;
     private PauseMenu pauseMenuUI;
+
+    private int connectedPlayerCount;
 
     public void Initialize()
     {
@@ -60,7 +62,7 @@ public class PlayerManager
     {
         UnitDictionary.Clear();
 
-        int connectedPlayerCount = ReInput.controllers.joystickCount;
+        connectedPlayerCount = ReInput.controllers.joystickCount;
         playerSpawnParent = new GameObject("Players Parent");
 
         if (connectedPlayerCount > 0)
@@ -95,6 +97,9 @@ public class PlayerManager
         UnitDictionary.Remove(id);
         TimeManager.Instance.AddDelegate(() => ActivateUI(), 0.1f, 1);
         unit.Die();
+
+        if (UnitDictionary.Count <= 1)
+            pauseMenuUI.CanPause = false;
     }
 
     public void CheckForWin()
