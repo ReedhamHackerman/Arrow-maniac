@@ -83,6 +83,7 @@ public class Invisible : Abilities, IFreezable
     {
         SpriteRenderer sr = gameObjToInvisible.GetComponent<SpriteRenderer>();
         sr.material.SetFloat("_Fade", fade);
+        ChildSprites.Add(sr);
     }
 
     void IFreezable.Freeze()

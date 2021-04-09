@@ -150,7 +150,7 @@ MonoBehaviour:
   timerClock: {fileID: 8300000, guid: 523c887fa05ea064bb4a989db091cb3b, type: 3}
   directHitBombExplosion: {fileID: 8300000, guid: b0bb2aa8a6b2db14faafe95a7c850a87,
     type: 3}
-  explodeAfterTimer: 4
+  explodeAfterTimer: 2
   explosionRadius: 3
 --- !u!82 &3055793966739433628
 AudioSource:

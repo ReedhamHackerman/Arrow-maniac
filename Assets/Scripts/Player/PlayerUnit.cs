@@ -185,8 +185,8 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         Jump();
         Rotate();
         Dash();
-        WallSlide();
         Aim();
+        WallSlide();
     }
     private void LateUpdate()
     {
@@ -331,6 +331,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         if (isWallSliding)
         {
             isMoving = false;
+            isAiming = false;
             _rb.velocity = new Vector2(_rb.velocity.x, -wallSlideSpeed);
 
             SetBoolForAnimation(_animator, false, false, false, true, false);
@@ -389,8 +390,8 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
         if (invisibleScript != null &&  invisibleScript.gameObject == true)
         {
-            invisibleScript.ChildSprites.Add(arrowHud.GetComponent<SpriteRenderer>());
-            //invisibleScript.MakeGrabbedArrowInvisible(arrowHud);
+            //invisibleScript.ChildSprites.Add(arrowHud.GetComponent<SpriteRenderer>());
+            invisibleScript.MakeGrabbedArrowInvisible(arrowHud);
         }
        
         //GameObject arrowHud = Instantiate(AllArrowHUDS[ourArrowTYPE], new Vector2(0f, 0), Quaternion.identity, arrowHudParent.transform);

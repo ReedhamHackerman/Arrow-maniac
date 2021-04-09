@@ -95,11 +95,16 @@ public class PlayerManager
         //Need to implement this
         PlayerUnit unit = UnitDictionary[id];
         UnitDictionary.Remove(id);
-        TimeManager.Instance.AddDelegate(() => ActivateUI(), 0.1f, 1);
+        
         unit.Die();
 
         if (UnitDictionary.Count <= 1)
+        {
             pauseMenuUI.CanPause = false;
+            TimeManager.Instance.IsTimeStopped = false;
+        }
+
+        TimeManager.Instance.AddDelegate(() => ActivateUI(), 0.1f, 1);
     }
 
     public void CheckForWin()
