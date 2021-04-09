@@ -106,7 +106,7 @@ public class CharacterSelection : MonoBehaviour
     private void ChangeNextById(int playerId)
     {
         if (playersIsCofirmed[playerId]) return;
-        AudioSource.PlayClipAtPoint(playerChangeSound, GameManager.Instance.MainCamera.transform.position);
+        AudioSource.PlayClipAtPoint(playerChangeSound, GameManager.Instance.MainCamera.transform.position,0.322f);
         switch (playerId)
         {
             case 0:
@@ -125,7 +125,7 @@ public class CharacterSelection : MonoBehaviour
     private void ChangePrevioustById(int playerId)
     {
         if (playersIsCofirmed[playerId]) return;
-        AudioSource.PlayClipAtPoint(playerChangeSound, GameManager.Instance.MainCamera.transform.position);
+        AudioSource.PlayClipAtPoint(playerChangeSound, GameManager.Instance.MainCamera.transform.position, 0.322f);
         switch (playerId)
         {
             case 0:
