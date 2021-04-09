@@ -154,17 +154,6 @@ public class RoundSystemUI : MonoBehaviour
         }
     }
 
-    /*public  void LoadTrophiesinArray()
-    {
-        for (int i = 0; i < WinScore; i++)
-        {
-            player1trophies[i] = Instantiate(scoreTrophy,new Vector3(player1Parent.transform.position.x + trophySpawnDistance, player1Parent.transform.position.y,player1Parent.transform.position.z), Quaternion.identity, roundUI.transform);
-            player2trophies[i] = Instantiate(scoreTrophy,new Vector3(player2Parent.transform.position.x + trophySpawnDistance, player2Parent.transform.position.y, player2Parent.transform.position.z), Quaternion.identity, roundUI.transform);
-
-            trophySpawnDistance += 120;
-        }
-    }*/
-
     public void MakeAllTrophyDeactive()
     {
         for (int i = 0; i < WinScore; i++)
@@ -182,8 +171,8 @@ public class RoundSystemUI : MonoBehaviour
             foreach (int key in PlayerManager.Instance.UnitDictionary.Keys)
             {
                 PlayerUnit playerUnit = PlayerManager.Instance.UnitDictionary[key];
-                playerUnit.IsMovementStop = true;
                 PlayerManager.Instance.ScoreDict[key] = PlayerManager.Instance.ScoreDict[key] + 1;
+                playerUnit.StopEverythingAfterWin();
             }
         }
     }

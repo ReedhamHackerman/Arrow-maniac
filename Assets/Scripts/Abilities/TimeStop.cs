@@ -37,7 +37,7 @@ public class TimeStop : Abilities
         if (inputManager.UseAbility && canUseTimeStop && !TimeManager.Instance.IsTimeStopped )
         {
             AudioSource.PlayClipAtPoint(timeStopAudioClip, Camera.main.transform.position, 1.0f);
-            PlayerManager.Instance.playerIdUsedAbility = thisPlayerUnit.PlayerId;
+            PlayerManager.Instance.PlayerIdUsedAbility = thisPlayerUnit.PlayerId;
             //StartCoroutine(TimeStopAbility());
             TimeManager.Instance.AddDelegate(() => Activate(), 0, 1);
             canUseTimeStop = false;

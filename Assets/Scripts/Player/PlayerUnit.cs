@@ -518,7 +518,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     public void Freeze()
     {
         StopShoot = true;
-        if (this.playerId != PlayerManager.Instance.playerIdUsedAbility)
+        if (this.playerId != PlayerManager.Instance.PlayerIdUsedAbility)
         {
             storedPlayerVelocity = _rb.velocity;
             _rb.bodyType = RigidbodyType2D.Static;
@@ -529,13 +529,21 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     public void UnFreeze()
     {
         StopShoot = false;
-        if (playerId != PlayerManager.Instance.playerIdUsedAbility)
+        if (playerId != PlayerManager.Instance.PlayerIdUsedAbility)
         {
             _rb.bodyType = RigidbodyType2D.Dynamic;
             _rb.velocity = storedPlayerVelocity;
             IsMovementStop = false;
 
         }
+    }
+
+    public void StopEverythingAfterWin()
+    {
+        _rb.bodyType = RigidbodyType2D.Static;
+        SetBoolForAnimation(_animator, false, false, false, false, false);
+        StopShoot = true;
+        IsMovementStop = true;
     }
 
     public void SetInvisibleScriptOff()
