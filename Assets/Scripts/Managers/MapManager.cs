@@ -55,7 +55,7 @@ public class MapManager
         chestSpawnParent = new GameObject("Collectible Chests");
 
         int _random = Random.Range(0, loadedMaps.Length);
-        _random = 0;
+        _random = 1;
         currentMainMap = GameObject.Instantiate(loadedMaps[_random]);
     }
 
