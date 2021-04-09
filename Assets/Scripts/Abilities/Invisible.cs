@@ -15,7 +15,7 @@ public class Invisible : Abilities, IFreezable
 
     protected override void Initialize()
     {
-        abilityTime = 2f;
+        abilityTime = 4f;
         ChildSprites.AddRange(GetComponentsInChildren<SpriteRenderer>());
         player = gameObject.GetComponent<PlayerUnit>();
     }
@@ -30,7 +30,6 @@ public class Invisible : Abilities, IFreezable
             canUseAbility = false;
             player.InvisibleAbilityUI.SetActive(false);
             player.IsPlayerInvisible = true;
-            player.StopShoot = true;
           
         }
     }
@@ -74,7 +73,6 @@ public class Invisible : Abilities, IFreezable
 
     private void ResetInvisibleAbility()
     {
-        player.StopShoot = false;
         player.AbilityCount = 0;
         player.IsPlayerInvisible = false;
         canUseAbility = true;

@@ -12,7 +12,7 @@ public class TimeStop : Abilities
     [SerializeField] private AudioClip timeStopAudioClip;
     protected override void Initialize()
     {
-        abilityTime = 2f;
+        abilityTime = 5f;
         thisPlayerUnit = gameObject.GetComponent<PlayerUnit>();
 
     }
