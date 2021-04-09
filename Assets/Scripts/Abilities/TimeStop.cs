@@ -14,7 +14,6 @@ public class TimeStop : Abilities
     {
         abilityTime = 5f;
         thisPlayerUnit = gameObject.GetComponent<PlayerUnit>();
-
     }
 
     public static List<T> Finds<T>()
