@@ -18,9 +18,6 @@ public class RoundSystemUI : MonoBehaviour
     [SerializeField] private GameObject WinUI;
     [SerializeField] private GameObject[] player1trophies = new GameObject[5];
     [SerializeField] private GameObject[] player2trophies = new GameObject[5];
-    /* [SerializeField] private GameObject player1Image;
-     [SerializeField] private GameObject player2Image;*/
-
 
     [SerializeField] private RawImage WonPlayerImage;
     [SerializeField] private Text winPlayerText;
