@@ -545,6 +545,8 @@ public class PlayerUnit : MonoBehaviour, IFreezable
         SetBoolForAnimation(_animator, false, false, false, false, false);
         StopShoot = true;
         IsMovementStop = true;
+        timeStopScript.enabled = false;
+        invisibleScript.enabled = false;
     }
 
     public void SetInvisibleScriptOff()
