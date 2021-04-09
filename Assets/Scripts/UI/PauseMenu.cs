@@ -22,7 +22,7 @@ public class PauseMenu : MonoBehaviour
     private RawImage[] selectorImages;
     private Dictionary<int, PlayerUnit> players = new Dictionary<int, PlayerUnit>();
 
-    private bool canPause = false;
+    public bool CanPause { get; set; }
     
     private int currentSelectedBtnId;
 
@@ -33,7 +33,7 @@ public class PauseMenu : MonoBehaviour
 
         InitializeAllRawImages();
 
-        TimeManager.Instance.AddDelegate(() => canPause = true, canPauseAfterTime, 1);
+        TimeManager.Instance.AddDelegate(() => CanPause = true, canPauseAfterTime, 1);
     }
 
     private void Update()
@@ -48,7 +48,7 @@ public class PauseMenu : MonoBehaviour
 
     private void RefreshPlayerInputs()
     {
-        if(players.Count > 0 && canPause)
+        if(players.Count > 0 && CanPause)
         {
             foreach (var player in players)
             {
