@@ -167,12 +167,12 @@ public class PauseMenu : MonoBehaviour
     #region LOADING UI REGION
     private void LoadMainMenu()
     {
-        loadingUI.SetActive(true);
         LoadLevel("Menu");
     }
 
-    private void LoadLevel(string levelName)
+    public void LoadLevel(string levelName)
     {
+        loadingUI.SetActive(true);
         StartCoroutine(LoadLevelAsync(levelName));
     }
 

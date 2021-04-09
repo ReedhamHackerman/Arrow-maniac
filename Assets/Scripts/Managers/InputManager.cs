@@ -15,6 +15,9 @@ public class InputManager
     public bool GetGoDownButtonDown => player?.GetButtonDown("Go Down") ?? false;
     public bool GetGoUpButtonDown => player?.GetButtonDown("Go Up") ?? false;
     public bool IsSelectButtonPressed => player?.GetButtonDown("SelectInPause") ?? false;
+    public bool GetWinRightMoveDown => player?.GetButtonDown("WinRightMove") ?? false;
+    public bool GetWinLeftMoveDown => player?.GetButtonDown("WinLeftMove") ?? false;
+    public bool GetWinOnOptionSelect => player?.GetButtonDown("WinOnClick") ?? false;
 
     public InputManager(Player player)
     {
