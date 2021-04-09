@@ -18,7 +18,7 @@ public class UI : MonoBehaviour
     private void Start()
     {
         UI_PlayerManager.InitializeAllConnectedPlayers();
-        characterSelection.InitializeCharacterSelection(UI_PlayerManager);
+        characterSelection.InitializeCharacterSelection(mainMenu.gameObject, UI_PlayerManager);
         mainMenu.InitializeMainMenu(UI_PlayerManager, characterSelection.gameObject);
     }
 

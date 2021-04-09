@@ -39,11 +39,15 @@ public class CharacterSelection : MonoBehaviour
     private int connectedPlayers;
     private int confirmedCount;
 
+    private GameObject mainMenuObj;
+
     private UI_PlayerManager UI_PlayerManager;
 
-    public void InitializeCharacterSelection(UI_PlayerManager UI_PlayerManager)
+    public void InitializeCharacterSelection(GameObject mainMenuObj, UI_PlayerManager UI_PlayerManager)
     {
         this.UI_PlayerManager = UI_PlayerManager;
+        this.mainMenuObj = mainMenuObj;
+
         InitializeAllConnectedPlayers();
         InitializeAllCharacterImages();
         pauseMenuAudioSource = GetComponent<AudioSource>();
@@ -192,7 +196,20 @@ public class CharacterSelection : MonoBehaviour
 
     private void CancelSelection(int playerId)
     {
-        if (playersIsCofirmed[playerId])
+        int counter = 0;
+
+        foreach (var item in playersIsCofirmed)
+        {
+            if (item.Value == false)
+                counter++;
+        }
+
+        if(counter == connectedPlayers)
+        {
+            mainMenuObj.SetActive(true);
+            gameObject.SetActive(false);
+        }
+        else if (playersIsCofirmed[playerId])
         {
             switch (playerId)
             {
