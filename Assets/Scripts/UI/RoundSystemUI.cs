@@ -36,7 +36,7 @@ public class RoundSystemUI : MonoBehaviour
     {
         scoreTrophy = Resources.Load<GameObject>("Prefabs/HUD/Trophy");
         pauseMenu = GetComponent<PauseMenu>();
-
+        TimeManager.Instance.IsTimeStopped = false;
         LoadCharImageInUI();
         LoadWinUIBtnBorders();
     }
