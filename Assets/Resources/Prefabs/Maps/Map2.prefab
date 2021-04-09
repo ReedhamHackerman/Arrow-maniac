@@ -1739,7 +1739,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8449584684974507865}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8449584685669664719}
@@ -4522,33 +4522,9 @@ CompositeCollider2D:
   - m_Collider: {fileID: 8449584685669664718}
     m_ColliderPaths:
     - - X: 200000000
-        Y: 59999900
-      - X: 200000041
-        Y: 59999900
-      - X: 200000100
-        Y: 59999959
-      - X: 200000100
-        Y: 80000041
-      - X: 200000041
-        Y: 80000100
-      - X: 200000000
-        Y: 80000100
-      - X: 200000000
         Y: 120000000
       - X: -200000000
         Y: 120000000
-      - X: -200000000
-        Y: 90000100
-      - X: -200000041
-        Y: 90000100
-      - X: -200000100
-        Y: 90000041
-      - X: -200000100
-        Y: 59999959
-      - X: -200000041
-        Y: 59999900
-      - X: -200000000
-        Y: 59999900
       - X: -200000000
         Y: -110000000
       - X: 200000000
@@ -4576,51 +4552,9 @@ CompositeCollider2D:
       - X: -190000000
         Y: 30000000
       - X: -190000000
-        Y: 59999900
-      - X: -189999959
-        Y: 59999900
-      - X: -189999900
-        Y: 59999959
-      - X: -189999900
-        Y: 90000041
-      - X: -189999959
-        Y: 90000100
-      - X: -190000000
-        Y: 90000100
-      - X: -190000000
-        Y: 110000000
-      - X: -20000100
-        Y: 110000000
-      - X: -20000100
-        Y: 110000041
-      - X: -20000041
-        Y: 110000100
-      - X: 20000041
-        Y: 110000100
-      - X: 20000100
-        Y: 110000041
-      - X: 20000100
         Y: 110000000
       - X: 190000000
         Y: 110000000
-      - X: 190000000
-        Y: 90000100
-      - X: 190000041
-        Y: 90000100
-      - X: 190000100
-        Y: 90000041
-      - X: 190000100
-        Y: 80000100
-      - X: 189999959
-        Y: 80000100
-      - X: 189999900
-        Y: 80000041
-      - X: 189999900
-        Y: 59999959
-      - X: 189999959
-        Y: 59999900
-      - X: 190000000
-        Y: 59999900
       - X: 190000000
         Y: 30000000
       - X: 160000000
@@ -4689,18 +4623,6 @@ CompositeCollider2D:
         Y: -60000000
       - X: -90000000
         Y: -100000000
-    - - X: -90000000
-        Y: 70000000
-      - X: -119687504
-        Y: 70000000
-      - X: -120000000
-        Y: 69687504
-      - X: -120000000
-        Y: 60312500
-      - X: -119687504
-        Y: 60000000
-      - X: -90000000
-        Y: 60000000
     - - X: 120000000
         Y: 70000000
       - X: 90312496
@@ -4712,6 +4634,18 @@ CompositeCollider2D:
       - X: 90312496
         Y: 60000000
       - X: 120000000
+        Y: 60000000
+    - - X: -90000000
+        Y: 70000000
+      - X: -119687504
+        Y: 70000000
+      - X: -120000000
+        Y: 69687504
+      - X: -120000000
+        Y: 60312500
+      - X: -119687504
+        Y: 60000000
+      - X: -90000000
         Y: 60000000
     - - X: -20000000
         Y: -29687500
@@ -5502,25 +5436,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Falling Leaves 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1479225721683512, guid: a7e045589d761bb4abb0cf6ece0b7b68, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
     - target: {fileID: 4670977357719278, guid: a7e045589d761bb4abb0cf6ece0b7b68, type: 3}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4670977357719278, guid: a7e045589d761bb4abb0cf6ece0b7b68, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4670977357719278, guid: a7e045589d761bb4abb0cf6ece0b7b68, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4670977357719278, guid: a7e045589d761bb4abb0cf6ece0b7b68, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 10.992224
       objectReference: {fileID: 0}
     - target: {fileID: 4670977357719278, guid: a7e045589d761bb4abb0cf6ece0b7b68, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5561,51 +5479,6 @@ PrefabInstance:
     - target: {fileID: 4670977357719278, guid: a7e045589d761bb4abb0cf6ece0b7b68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 198566352031416708, guid: a7e045589d761bb4abb0cf6ece0b7b68,
-        type: 3}
-      propertyPath: useRigidbodyForVelocity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 198566352031416708, guid: a7e045589d761bb4abb0cf6ece0b7b68,
-        type: 3}
-      propertyPath: ExternalForcesModule.enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 198566352031416708, guid: a7e045589d761bb4abb0cf6ece0b7b68,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 198566352031416708, guid: a7e045589d761bb4abb0cf6ece0b7b68,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 198566352031416708, guid: a7e045589d761bb4abb0cf6ece0b7b68,
-        type: 3}
-      propertyPath: InitialModule.gravityModifier.scalar
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 199299519818748136, guid: a7e045589d761bb4abb0cf6ece0b7b68,
-        type: 3}
-      propertyPath: m_SortMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 199299519818748136, guid: a7e045589d761bb4abb0cf6ece0b7b68,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 199299519818748136, guid: a7e045589d761bb4abb0cf6ece0b7b68,
-        type: 3}
-      propertyPath: m_RenderAlignment
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 199299519818748136, guid: a7e045589d761bb4abb0cf6ece0b7b68,
-        type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7e045589d761bb4abb0cf6ece0b7b68, type: 3}
