@@ -395,7 +395,7 @@ MonoBehaviour:
   abilitiesType: 0
   abilityTime: 0
   isPlayerStopped: 0
-  timeStopAudioClip: {fileID: 8300000, guid: 0219d0141a4357741a90c2ceccb63e79, type: 3}
+  timeStopAudioClip: {fileID: 8300000, guid: cd9a41a981328524f93eb833a32ad3be, type: 3}
 --- !u!82 &4089425149785124960
 AudioSource:
   m_ObjectHideFlags: 0

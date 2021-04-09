@@ -143,8 +143,9 @@ public class PauseMenu : MonoBehaviour
                     break;
 
                 case 2:
-                    GameManager.Instance.IsPaused = true;
-                    LoadMainMenu();
+                    GameManager.Instance.IsPaused = false;
+                    roundSystemUI.PlayerDataReset();
+                    LoadLevel("Menu");
                     Time.timeScale = 1;
                     break;
 
@@ -165,11 +166,6 @@ public class PauseMenu : MonoBehaviour
     }
 
     #region LOADING UI REGION
-    private void LoadMainMenu()
-    {
-        LoadLevel("Menu");
-    }
-
     public void LoadLevel(string levelName)
     {
         loadingUI.SetActive(true);
