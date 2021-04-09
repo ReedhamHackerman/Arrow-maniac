@@ -18,6 +18,8 @@ public class MainMenu : MonoBehaviour
 
     public void InitializeMainMenu(UI_PlayerManager UI_PlayerManager, GameObject characterSelectionObj)
     {
+        Cursor.visible = false;
+
         this.UI_PlayerManager = UI_PlayerManager;
         this.characterSelectionObj = characterSelectionObj;
 

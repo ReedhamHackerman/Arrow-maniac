@@ -146,7 +146,8 @@ public class RoundSystemUI : MonoBehaviour
                 break;
 
             case 1:
-                PlayAgain();
+                PlayerDataReset();
+                pauseMenu.LoadLevel("MainScene");
                 break;
 
             default:
@@ -190,8 +191,9 @@ public class RoundSystemUI : MonoBehaviour
                 WonPlayerImage.texture = Resources.Load<Texture2D>("Prefabs/Characters/" + charId);
                 WinUI.SetActive(true);
             }
-
         }
+
+        PlayerDataReset();
     }
 
 
@@ -222,16 +224,20 @@ public class RoundSystemUI : MonoBehaviour
         }
     }
 
-
-    public void PlayAgain()
+    public void PlayerDataReset()
     {
         List<int> tempKeys = new List<int>(PlayerManager.Instance.ScoreDict.Keys);
 
         foreach (int key in tempKeys)
         {
-            PlayerManager.Instance.ScoreDict[key] = 0; 
+            PlayerManager.Instance.ScoreDict[key] = 0;
         }
         MakeAllTrophyDeactive();
+    }
+
+    public void PlayAgain()
+    {
+        PlayerDataReset();
         ReloadScene();
     }
 
