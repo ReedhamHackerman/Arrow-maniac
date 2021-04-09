@@ -34,68 +34,67 @@ public class CharacterSelection : MonoBehaviour
     private int p1_CurrentSelectedId;
     private int p2_CurrentSelectedId;
 
-    public static Dictionary<int, int> playerWithSelectedCharacter = new Dictionary<int, int>();
+    public static Dictionary<int, int> playerWithSelectedCharacter;
 
     private int connectedPlayers;
     private int confirmedCount;
 
-    void Start()
+    private UI_PlayerManager UI_PlayerManager;
+
+    public void InitializeCharacterSelection(UI_PlayerManager UI_PlayerManager)
     {
+        this.UI_PlayerManager = UI_PlayerManager;
         InitializeAllConnectedPlayers();
         InitializeAllCharacterImages();
         pauseMenuAudioSource = GetComponent<AudioSource>();
     }
 
-    void Update()
-    {
-        RefreshInput();
-    }
-
     private void InitializeAllConnectedPlayers()
     {
-        connectedPlayers = ReInput.controllers.joystickCount;
+        playerWithSelectedCharacter = new Dictionary<int, int>();
+
+        connectedPlayers = UI_PlayerManager.GetConnectedPlayers;
 
         if (connectedPlayers > 0)
         {
             for (int i = 0; i < connectedPlayers; i++)
             {
-                Player p = ReInput.players.GetPlayer(i);
-                UIInputManager input = new UIInputManager(p);
-
-                playerInputs.Add(i, input);
                 playersIsCofirmed.Add(i, false);
                 playerWithSelectedCharacter.Add(i, 0);
             }
         }
     }
 
-    private void RefreshInput()
+    public void RefreshInput()
     {
-        foreach (KeyValuePair<int, UIInputManager> input in playerInputs)
+        if (gameObject.activeSelf)
         {
-            if (input.Value.GetPreviousButtonDown)
+            foreach (KeyValuePair<int, UIInputManager> input in UI_PlayerManager.GetAllPlayersInput)
             {
-                ChangePrevioustById(input.Key);
-            }
+                if (input.Value.GetPreviousButtonDown)
+                {
+                    ChangePrevioustById(input.Key);
+                }
 
-            if (input.Value.GetNextButtonDown)
-            {
-                ChangeNextById(input.Key);
-            }
+                if (input.Value.GetNextButtonDown)
+                {
+                    ChangeNextById(input.Key);
+                }
 
-            if(input.Value.GetConfirmButtonDown)
-            {
-                ConfirmSelection(input.Key);
-            }
+                if (input.Value.GetConfirmButtonDown)
+                {
+                    ConfirmSelection(input.Key);
+                }
 
-            if (input.Value.GetCancelButtonDown)
-            {
-                CancelSelection(input.Key);
-            }
+                if (input.Value.GetCancelButtonDown)
+                {
+                    CancelSelection(input.Key);
+                }
 
-            if (input.Value.GetStartButtonDown)
-            {
-                CheckForAllPlayersAndStart();
+                if (input.Value.GetStartButtonDown)
+                {
+                    CheckForAllPlayersAndStart();
+                }
             }
         }
     }

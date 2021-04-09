@@ -53,14 +53,16 @@ public class Ricochet : Arrow
             AudioSource.PlayClipAtPoint(ricochetHitSound, GameManager.Instance.MainCamera.transform.position, 0.444f);
             Vector2 LastContact;
             //float speed = lastVelocity.magnitude;
-            if (collision.contacts.Length>1)
-            {
-               LastContact = collision.contacts[1].normal;
-            }
-            else
-            {
+            //if (collision.contacts.Length>1)
+            //{
+            //   LastContact = collision.contacts[1].normal;
+            //}
+            //else
+            //{
+            //LastContact = collision.contacts[0].normal;
+            //}
+
             LastContact = collision.contacts[0].normal;
-            }
 
             Vector3 direction = Vector3.Reflect(lastVelocity.normalized, LastContact);
             RB2D.velocity = direction  *  shootForce ;
