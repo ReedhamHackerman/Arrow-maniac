@@ -1,15 +1,22 @@
 ﻿using Rewired;
 using System.Collections.Generic;
+using System.Collections;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject pauseUIObj;
     [SerializeField] private GameObject pauseButtonsParent;
-
     [SerializeField] private float canPauseAfterTime = 2f;
-    
+
+    [Header("Loading UI")]
+    [SerializeField] private GameObject loadingUI;
+    [SerializeField] private Image loadingFillbar;
+    [SerializeField] private Text percentageText;
+
     private RoundSystemUI roundSystemUI;
 
     private RawImage[] selectorImages;
@@ -136,7 +143,9 @@ public class PauseMenu : MonoBehaviour
                     break;
 
                 case 2:
-                    Debug.Log("main menu");
+                    GameManager.Instance.IsPaused = true;
+                    LoadMainMenu();
+                    Time.timeScale = 1;
                     break;
 
                 case 3:
@@ -154,4 +163,34 @@ public class PauseMenu : MonoBehaviour
             }
         }
     }
+
+    #region LOADING UI REGION
+    private void LoadMainMenu()
+    {
+        loadingUI.SetActive(true);
+        LoadLevel("Menu");
+    }
+
+    private void LoadLevel(string levelName)
+    {
+        StartCoroutine(LoadLevelAsync(levelName));
+    }
+
+    private IEnumerator LoadLevelAsync(string levelName)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(levelName);
+
+        while (!operation.isDone)
+        {
+            float progress = Mathf.Clamp01(operation.progress);
+
+            progress = progress >= 0.9f ? 1 : progress;
+            loadingFillbar.fillAmount = Mathf.Clamp01(progress);
+
+            percentageText.text = (progress * 100f).ToString("F0") + "%";
+
+            yield return null;
+        }
+    }
+    #endregion
 }

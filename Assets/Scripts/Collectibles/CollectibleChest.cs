@@ -89,7 +89,7 @@ public class CollectibleChest : MonoBehaviour
 
         ArrowType typeOfArrow = (ArrowType) UnityEngine.Random.Range(1, Enum.GetValues(typeof(ArrowType)).Length);
 
-        newCollectible.InitializeArrow(typeOfArrow, playerUnit, arrowSprites[typeOfArrow]);
+        newCollectible.InitializeArrow(typeOfArrow, arrowSprites[typeOfArrow]);
     }
     #endregion
 
@@ -100,7 +100,7 @@ public class CollectibleChest : MonoBehaviour
 
         AbilitiesType abilityType = (AbilitiesType) UnityEngine.Random.Range(0, Enum.GetValues(typeof(AbilitiesType)).Length);
 
-        newCollectible.InitializeAbility(playerUnit, abilityType, abilitySprites[abilityType]);
+        newCollectible.InitializeAbility(abilityType, abilitySprites[abilityType]);
 
     }
     #endregion
