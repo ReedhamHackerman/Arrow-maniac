@@ -18,7 +18,6 @@ Keywords
  - Inheritance
  - Interface
  - Enums
- - Tilemap
 
 Asset used for Local-Multiplayer and Controller Input
  - Rewired: https://assetstore.unity.com/packages/tools/utilities/rewired-21676
