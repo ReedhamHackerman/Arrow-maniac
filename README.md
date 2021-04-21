@@ -4,12 +4,21 @@ Arrow Maniac is a 2D-platformer local multiplayer game in a fast-paced environme
 
 Following are the features we developed in Arrow Maniac:
  - Local-Multiplayer (2 Player Battle with Controller)
- - Player Movement Mechanics (Move, Jump, Dash, Wall Sliding, Wall Jumping)
+ - Player Movement Mechanics (Move, Jump, Dash, Wall Sliding, Wall Jumping, Aiming, Shooting)
  - Normal arrow, Explosive arrow and Ricochet arrrow
  - Time Stop ability and Invisible ability
  - Character Selection Feature (4 different character sprites)
  - Round winning system (Best of 9)
 
+
+Keywords
+ - Singleton pattern
+ - Factory Pattern
+ - Top-Down Main flow pattern
+ - Inheritance
+ - Interface
+ - Enums
+ - Tilemap
 
 Asset used for Local-Multiplayer and Controller Input
  - Rewired: https://assetstore.unity.com/packages/tools/utilities/rewired-21676
