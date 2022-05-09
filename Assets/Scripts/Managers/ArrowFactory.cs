@@ -17,6 +17,8 @@ public class ArrowFactory
         arrowDictionary.Add(ArrowType.NORMAL, Resources.Load<Arrow>("Prefabs/Arrows/NormalArrow"));
         arrowDictionary.Add(ArrowType.EXPLOSIVE, Resources.Load<Arrow>("Prefabs/Arrows/ExplosiveArrow"));
         arrowDictionary.Add(ArrowType.RICOCHET, Resources.Load<Arrow>("Prefabs/Arrows/RicochetArrow"));
+        arrowDictionary.Add(ArrowType.HOMING, Resources.Load<Arrow>("Prefabs/Arrows/HomingArrow"));
+        arrowDictionary.Add(ArrowType.TRIPLE, Resources.Load<Arrow>("Prefabs/Arrows/TripleArrow"));
 
         arrowList = new List<Arrow>();
     }
@@ -37,6 +39,15 @@ public class ArrowFactory
                 arrow.OnUpdate();
         }
     }
+    public void RefreshFixedUpdate()
+    {
+        if (arrowList.Count > 0)
+        {
+            foreach (var arrow in arrowList)
+                arrow.OnFixedUpdate();
+        }
+    }
+
 
     public void RemoveFromList(Arrow toDest)
     {

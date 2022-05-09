@@ -40,11 +40,12 @@ public class ArrowManager
 
     public void FixedRefresh()
     {
-        // AddArrow(new Ricochet());
+        arrowFactory?.RefreshFixedUpdate();
     }
 
     public Arrow Fire(ArrowType arrowType, Vector2 pos, Quaternion rot)
     {
+     
         Arrow toRet = arrowFactory.GetNewArrow(arrowType, pos, rot);
         return toRet;
     }

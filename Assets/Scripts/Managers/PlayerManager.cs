@@ -57,7 +57,17 @@ public class PlayerManager
         foreach (KeyValuePair<int, PlayerUnit> p in UnitDictionary)
             p.Value.FixedUpdateUnit();
     }
-
+    public PlayerUnit GetAnotherPlayer(PlayerUnit player)
+    {
+        foreach (var toRetPlayer in UnitDictionary)
+        {
+            if (toRetPlayer.Value != player )
+            {
+                return toRetPlayer.Value;
+            }
+        }
+        return null;
+    }
     private void GetPlayerCountAndInitialize()
     {
         UnitDictionary.Clear();
