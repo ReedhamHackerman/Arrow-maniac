@@ -36,6 +36,9 @@ public class CollectibleChest : MonoBehaviour
     {
         arrowSprites.Add(ArrowType.EXPLOSIVE, Resources.Load<Sprite>("PNGS/ArrowSprites/ExplosiveArrow"));
         arrowSprites.Add(ArrowType.RICOCHET, Resources.Load<Sprite>("PNGS/ArrowSprites/RicoChetArrow"));
+        arrowSprites.Add(ArrowType.HOMING, Resources.Load<Sprite>("PNGS/ArrowSprites/HOMINGArrow"));
+        arrowSprites.Add(ArrowType.TRIPLE, Resources.Load<Sprite>("PNGS/ArrowSprites/TRIPLEArrow"));
+
 
         abilitySprites.Add(AbilitiesType.TIME_STOP, Resources.Load<Sprite>("PNGS/Abilities/TimeStopAbility"));
         abilitySprites.Add(AbilitiesType.INVISIBLE, Resources.Load<Sprite>("PNGS/Abilities/Invisible"));
