@@ -7,12 +7,12 @@ public class Homing : Arrow
     [SerializeField]private float rotationForce;
     [SerializeField]private AudioClip directHitBombExplosion;
     [SerializeField]private float explosionRadius;
-
+    private  PlayerUnit enemyPlayer;
     public override void Oninitialize()
     {
         base.Oninitialize();
         RB2D.gravityScale = 0.0f;
-     
+        enemyPlayer = PlayerManager.Instance?.GetAnotherPlayer(playerUnit);
     }
 
     public override void OnHit(Collision2D collision)
@@ -42,7 +42,7 @@ public class Homing : Arrow
     }
     public override void OnFixedUpdate()
     {
-        Vector2 direction = base.AnotherPlayerDirection(PlayerManager.Instance.GetAnotherPlayer(playerUnit));
+        Vector2 direction = base.AnotherPlayerDirection(enemyPlayer);
         base.AddForceInDirection(direction) ;
         RotateTowardsEnemy(direction);
         
