@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &626630590394036848
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1260798652966547128}
+  m_Layer: 10
+  m_Name: UP
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1260798652966547128
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626630590394036848}
+  m_LocalRotation: {x: 0, y: 0, z: 0.17364816, w: 0.9848078}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8476890787093892672}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 20}
 --- !u!1 &1849624126929666729
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,6 +141,36 @@ Transform:
   m_Father: {fileID: 8476890787093892672}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3738006303326185666
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 96033180973489580}
+  m_Layer: 10
+  m_Name: DOWN
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &96033180973489580
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3738006303326185666}
+  m_LocalRotation: {x: 0, y: 0, z: -0.08715578, w: 0.9961947}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8476890787093892672}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -10}
 --- !u!1 &4918655387147926752
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,6 +554,10 @@ MonoBehaviour:
   wallJumpAngle: {x: 1.5, y: 2}
   handTransform: {fileID: 8476890787468060010}
   fireFromPos: {fileID: 2670805510485863802}
+  tripleArrowShootPos:
+  - {fileID: 1260798652966547128}
+  - {fileID: 2670805510485863802}
+  - {fileID: 96033180973489580}
   arrowHudParent: {fileID: 4918655387147926752}
   arrowHudHeight: 0.71
   arrowHudSpacing: 0.51
@@ -520,8 +584,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af4e438eaa654f4fa529b6e7b1a3281, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitiesType: 1
-  abilityTime: 0
   invisiblityAudioClip: {fileID: 8300000, guid: cbf7a52409ebd21428065ee2628c8a1b,
     type: 3}
 --- !u!114 &6092602023212908800
@@ -536,8 +598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ef1d49f33566f40b04a36b598dacea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilitiesType: 0
-  abilityTime: 0
   isPlayerStopped: 0
   timeStopAudioClip: {fileID: 8300000, guid: cd9a41a981328524f93eb833a32ad3be, type: 3}
 --- !u!82 &9180630441021631030
@@ -862,6 +922,8 @@ Transform:
   m_Children:
   - {fileID: 8476890787422944678}
   - {fileID: 2670805510485863802}
+  - {fileID: 1260798652966547128}
+  - {fileID: 96033180973489580}
   m_Father: {fileID: 8476890786672357666}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
