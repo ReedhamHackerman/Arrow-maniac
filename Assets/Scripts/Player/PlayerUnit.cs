@@ -37,7 +37,7 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     [Header("AIM-SHOOT")]
     [SerializeField] private Transform handTransform;
     [SerializeField] private Transform fireFromPos;
-
+    [SerializeField] private Transform[] tripleArrowShootPos;
     [Header("ARROW HUD")]
     [SerializeField] private GameObject arrowHudParent;
     private Dictionary<ArrowType, GameObject> AllArrowHUDSDictionary = new Dictionary<ArrowType, GameObject>();
@@ -121,7 +121,10 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     }
 
 
-
+    public Vector2 PlayerPosition()
+    {
+        return transform.position;
+    }
 
 
     #region INITIALIZATION CODE
@@ -156,8 +159,13 @@ public class PlayerUnit : MonoBehaviour, IFreezable
 
         for (int i = 0; i < START_ARROW_COUNT; i++)
         {
-            arrowStack.Push(ArrowType.NORMAL);
-            AddNewArrowTOHUD(ArrowType.NORMAL);
+            arrowStack.Push(ArrowType.TRIPLE);
+            AddNewArrowTOHUD(ArrowType.TRIPLE);
+        }
+        for (int i = 0; i < START_ARROW_COUNT; i++)
+        {
+            arrowStack.Push(ArrowType.HOMING);
+            AddNewArrowTOHUD(ArrowType.HOMING);
         }
 
 
@@ -408,15 +416,37 @@ public class PlayerUnit : MonoBehaviour, IFreezable
     {
         if (arrowStack.Count > 0)
         {
-            ArrowType arrowType = arrowStack.Pop();
+                ArrowType arrowType = arrowStack.Pop();
+                if (arrowType == ArrowType.TRIPLE)
+                {
+                    for (int i = 0; i < tripleArrowShootPos.Length; i++)
+                    {
+                        Arrow newArrow = ArrowManager.Instance.Fire(arrowType, tripleArrowShootPos[i].position, tripleArrowShootPos[i].rotation);
+                        newArrow.playerUnit = this;
+                        newArrow.Oninitialize();
+                        newArrow.IgnoreSelfCollision(thisPlayerCollider);
+                        newArrow.AddForceInDirection(tripleArrowShootPos[i].right);
+                    }
+                }
+                else
+                {
+                        Arrow newArrow = ArrowManager.Instance.Fire(arrowType, fireFromPos.position, fireFromPos.rotation);
+                        newArrow.playerUnit = this;
+                        newArrow.Oninitialize();
+                        newArrow.IgnoreSelfCollision(thisPlayerCollider);
+                        newArrow.AddForceInDirection(fireFromPos.right);
+
+                 }
             RemoveArrowFromHUD(arrowType);
-            Arrow newArrow = ArrowManager.Instance.Fire(arrowType, fireFromPos.position, fireFromPos.rotation);
-            newArrow.Oninitialize();
-            newArrow.AddForceInDirection(fireFromPos.right);
 
-            newArrow.IgnoreSelfCollision(thisPlayerCollider);
 
-           
+
+
+
+
+
+
+
         }
     }
 
