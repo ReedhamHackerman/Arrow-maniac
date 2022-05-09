@@ -19,6 +19,10 @@ public class Normal : Arrow
 
     }
 
+    public override void AddForceInDirection(Vector2 dir)
+    {
+        base.AddForceInDirection(dir);
+    }
     private void Stuck()
     {
         AudioSource.PlayClipAtPoint(arrowStuckSound, GameManager.Instance.MainCamera.transform.position, 0.04f);
@@ -50,7 +54,7 @@ public class Normal : Arrow
 
         }
     }
-
+    
     public override void UnFreeze()
     {
         if (HasHit) return; // so that stuck normal arrows do not get affected 

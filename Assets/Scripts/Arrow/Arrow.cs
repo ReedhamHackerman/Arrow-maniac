@@ -3,7 +3,9 @@ public enum ArrowType
 {
     NORMAL,
     EXPLOSIVE,
-    RICOCHET
+    RICOCHET,
+    HOMING,
+    TRIPLE
 }
 public class Arrow : MonoBehaviour, IFreezable
 {
@@ -13,7 +15,7 @@ public class Arrow : MonoBehaviour, IFreezable
 
     protected Vector2 arrowValocity;
 
-
+    public PlayerUnit playerUnit { get; set; }
     
     protected bool isTimeStopped;
 
@@ -26,7 +28,7 @@ public class Arrow : MonoBehaviour, IFreezable
     [Header("All Audio Related Things")]
     protected AudioSource audioSourceArrow;
     [SerializeField] private AudioClip arrowFireSound;
-   
+
     public virtual void ArrowRotation()
     {
         if (HasHit == false && !isTimeStopped)
@@ -36,6 +38,7 @@ public class Arrow : MonoBehaviour, IFreezable
         }
 
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -58,7 +61,7 @@ public class Arrow : MonoBehaviour, IFreezable
             }
         }
     }
-
+    
 
     public virtual void Oninitialize()
     {
@@ -78,8 +81,16 @@ public class Arrow : MonoBehaviour, IFreezable
         }
 
     }
+    public virtual void OnFixedUpdate()
+    {
 
-    public void IgnoreSelfCollision(Collider2D playerCollider)
+    }
+    public virtual void PlayerFollow()
+    {
+
+    }
+
+    public virtual void IgnoreSelfCollision(Collider2D playerCollider)
     {
         Physics2D.IgnoreCollision(playerCollider, selfCollider2D, true);
 
@@ -87,8 +98,17 @@ public class Arrow : MonoBehaviour, IFreezable
 
 
     }
+    
 
-    public void AddForceInDirection(Vector2 dir)
+    public virtual Vector2 AnotherPlayerDirection(PlayerUnit punit)
+    {
+        Vector2 anotherP = punit.PlayerPosition();
+        Vector2 direction = (anotherP- (Vector2)transform.position).normalized;
+        return direction;
+    }
+
+   
+    public virtual void AddForceInDirection(Vector2 dir)
     {
         RB2D.velocity = dir * shootForce;
     }
